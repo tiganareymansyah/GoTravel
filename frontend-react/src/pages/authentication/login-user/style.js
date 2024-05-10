@@ -10,11 +10,45 @@ export const useLoginStyles = makeStyles({
         minHeight: "100vh"
     },
 
-    loginContainer: {
-        minHeight: "100vh",
+    containerRoot: {
+        minHeight: "100vh"
+    },
+
+    containerNavbarLogin: {
+        backgroundColor: "#0005",
         display: "flex",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         alignItems: "center"
+    },
+
+    navbarIcon: {
+        display: "flex",
+        alignItems: "center",
+        paddingLeft: "24px",
+        cursor: "pointer"
+    },
+
+    containerFormLogin: {
+        marginTop: "128px",
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+
+    containerLoginGoTravel: {
+        width: "50%",
+        display: "flex",
+        justifyContent: "center"  
+    },
+
+    loginGoTravel: {
+    },
+
+    containerForm: {
+        width: "40%",
+        display: "flex",
+        justifyContent: "center"
     },
 
     loginForm: {
@@ -22,6 +56,23 @@ export const useLoginStyles = makeStyles({
         borderRadius: "8px",
         display: "flex",
         flexDirection: "column",
-        opacity: 5
-    }
+    },
+
+    loginFormCekAccount: {
+        display: "flex",
+        justifyContent: "center",
+        fontSize: "12px",
+        gap: "4px"
+    },
+
+    containerFooter: {
+        backgroundColor: "#0005",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        padding: "16px",
+        position: "fixed",
+        bottom: 0
+    },
 });

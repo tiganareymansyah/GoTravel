@@ -5,9 +5,9 @@ import {
   Button,
   FormControl,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
   TextField,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
@@ -16,8 +16,85 @@ import { apiLoginAccount } from "../../../api/api.js";
 import Alert from "../../../components/Alert/Alert.jsx";
 import { useLoginStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
+import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
+import { 
+  Person, 
+  AirportShuttle
+} from '@mui/icons-material';
+import { orange } from "@mui/material/colors";
 
 export default function Login() {
+  const styles = {
+    judulNavbarLogin: {
+      margin: 0,
+      padding: 0,
+      color: "white",
+      fontStyle: "italic",
+      fontWeight: "bold",
+      fontSize: "32px",
+      display: "flex"
+    },
+
+    textGoTravel: {
+      textAlign: "center",
+      color: `${orange[100]}`,
+      fontSize: "70px",
+      fontFamily: "Curlz MT",
+      letterSpacing: "10px"
+    },
+
+    textMoveContent: {
+      color: `${orange[100]}`,
+      textAlign: "center",
+      letterSpacing: "2px"
+    },
+    
+    judulFormLogin: {
+      fontFamily: "Curlz MT",
+      textAlign: "center", 
+      letterSpacing: "5px"
+    },
+
+    button: {
+      border: "1px solid", 
+      backgroundColor: "blue",
+      color: "white",
+      border: "none", 
+      fontFamily: "serif", 
+      letterSpacing: "2px", 
+      fontWeight: "bold"
+    },
+
+    formLogin: {
+      margin: "32px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "32px"
+    },
+
+    disclaimerAkun: {
+      color: "white",
+      letterSpacing: "1px"
+    },
+
+    toRegister: {
+      color: "blue",
+      borderBottom: "1px solid blue",
+      letterSpacing: "1px",
+      fontWeight: "bold",
+      cursor: "pointer",
+      "&:hover": {
+        color: "black",
+      }
+    },
+
+    footer: {
+      color: `${orange[100]}`,
+      fontStyle: "italic",
+      letterSpacing: "4px"
+    },
+  };
+
   const isMobile = useMediaQuery({ maxWidth: 991 });
   const classes = useLoginStyles({ isMobile });
   
@@ -128,80 +205,109 @@ export default function Login() {
   return (
     <>
       <Box className={classes.loginBackground}>
-        <Box className={classes.loginContainer}>
-          <Box>
-            <h2>Mau kemana hari ini</h2>
+        <Box className={classes.containerRoot}>
+          <Box className={classes.containerNavbarLogin}>
+            <Box className={classes.navbarIcon}>
+              <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p>
+              <p style={styles.judulNavbarLogin}>
+                Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
+              </p>
+            </Box>
+
+            <Box>
+              <p>
+                <Person 
+                  fontSize="large" 
+                  sx={{ 
+                    color: `${orange[100]}`, 
+                    cursor: "pointer",
+                    paddingRight: "32px" 
+                  }} 
+                />
+              </p>
+            </Box>
           </Box>
 
-          <Box className={classes.loginForm}>
-            <h3 
-              style={{ 
-                fontFamily: "Curlz MT", 
-                textAlign: "center", 
-                letterSpacing: "5px" 
-              }}
-            >
-              LOGIN
-            </h3>
-            <form 
-              onKeyDown={(e) => {
-                if(e.key === "Enter") {
-                  // e.preventDefault();
-                  formik.handleSubmit();
-                }
-              }}
-              style={{
-                margin: "16px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "32px"
-              }}
-            >
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-                inputRef={inputRefEmail}
-                defaultValue={formik.values.email}
-                onChange={() => handleChange("email", inputRefEmail.current?.value)}
-                required
-              />
-              <FormControl variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
-                <OutlinedInput
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton onClick={handleClickShowPassword}>
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                  inputRef={inputRefPassword}
-                  defaultValue={formik.values.password}
-                  onChange={() =>
-                    handleChange("password", inputRefPassword.current?.value)
-                  }
-                  required
-                />
-              </FormControl>
-              <Button 
-                sx={{ 
-                  border: "1px solid", 
-                  backgroundColor: "blue" 
-                }}
-                onClick={formik.handleSubmit}
-              >
-                Login
-              </Button>
-            </form>
+          <Box className={classes.containerFormLogin}>
+            <Box className={classes.containerLoginGoTravel}>
+                <Box className={classes.loginGoTravel}>
+                  <p style={styles.textGoTravel}>GoTravel</p>
+                  <p style={styles.textMoveContent}><MoveContent /></p>
+              </Box>
+            </Box>
+
+            <Box className={classes.containerForm}>
+              <Box className={classes.loginForm}>
+                <h3 style={styles.judulFormLogin}>LOGIN</h3>
+                <form 
+                  onKeyDown={(e) => {
+                    if(e.key === "Enter") {
+                      // e.preventDefault();
+                      formik.handleSubmit();
+                    }
+                  }}
+                  style={styles.formLogin}
+                >
+                  <TextField
+                    id="email"
+                    label="Email"
+                    variant="standard"
+                    inputRef={inputRefEmail}
+                    defaultValue={formik.values.email}
+                    onChange={() => handleChange("email", inputRefEmail.current?.value)}
+                    required
+                  />
+                  <FormControl variant="standard">
+                    <InputLabel htmlFor="standard-adornment-password">
+                      Password
+                    </InputLabel>
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleClickShowPassword}>
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Password"
+                      inputRef={inputRefPassword}
+                      defaultValue={formik.values.password}
+                      onChange={() =>
+                        handleChange("password", inputRefPassword.current?.value)
+                      }
+                      required
+                    />
+                  </FormControl>
+                  <Button 
+                    sx={styles.button}
+                    onClick={formik.handleSubmit}
+                  >
+                    Login
+                  </Button>
+                </form>
+
+                <Box className={classes.loginFormCekAccount}>
+                  <p style={styles.disclaimerAkun}>Belum punya akun ?</p>
+                  <p 
+                    style={styles.toRegister} 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      location.href = "/register"
+                    }}
+                  >
+                    Daftar
+                  </p>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box className={classes.containerFooter}>
+            <footer style={styles.footer}>&copy; 2024. Tigana Reymansyah</footer>
           </Box>
         </Box>
-
       </Box>
 
       {openAlert && (

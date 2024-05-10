@@ -1,0 +1,11 @@
+{
+    "require": {
+        "firebase/php-jwt": "*"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "MyApp\\": "backend-php/"
+        }
+    }
+}

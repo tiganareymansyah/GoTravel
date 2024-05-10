@@ -1,0 +1,9 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /aplikasi-ta-kuliah/backend-php/
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    RewriteRule ^api/(.*)$ index.php?path=api/$1 [QSA,L]
+</IfModule>

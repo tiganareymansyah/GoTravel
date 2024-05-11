@@ -14,11 +14,11 @@ import {
     TextField 
 } from "@mui/material";
 import { 
-    Person, 
     AirportShuttle,
     VisibilityOff,
     Visibility,
-    Logout
+    Logout,
+    CalendarToday
 } from '@mui/icons-material';
 import { useFormik } from "formik";
 import { apiRegisterAccount } from "../../../api/api.js";
@@ -26,6 +26,8 @@ import { useRegisterStyles } from "./style.js";
 import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
 import { orange } from "@mui/material/colors";
+import DatePicker from "react-datepicker";
+import InputMask from "react-input-mask";
 
 export default function Register() {
     const styles = {
@@ -149,6 +151,15 @@ export default function Register() {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+    const handleInputClick = (e) => {
+        if (e && e.target) {
+          e.target.readOnly = true;
+          e.target.placeholder = "dd/MM/yyyy";
+          e.target.blur();
+          e.target.readOnly = false;
+        }
+    };
+
     console.log(formik.values);
 
     return (
@@ -203,15 +214,87 @@ export default function Register() {
                                         onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
                                         required
                                     />
-                                    <TextField
-                                        id="tbt"
-                                        label="Birthday"
-                                        variant="outlined"
-                                        inputRef={inputRefTbt}
-                                        defaultValue={formik.values.tbt}
-                                        onChange={() => handleChange("tbt", inputRefTbt.current?.value)}
-                                        required
-                                    />
+
+                                    <Box className={classes.rowContainer}>
+                                        Birthday
+                                        <Box
+                                            sx={{
+                                                flex: 2,
+                                                width: "100%",
+                                                "& .react-datepicker-wrapper": {
+                                                    width: "100%",
+                                                },
+                                                "& .MuiOutlinedInput-input": {
+                                                    cursor: "pointer",
+                                                },
+                                            }}
+                                        >
+                                            <DatePicker
+                                                placeholderText="dd/mm/yyyy"
+                                                dropdownMode="select"
+                                                // disabled={}
+                                                onInputClick={handleInputClick}
+                                                dateFormat={"dd/MM/yyyy"}
+                                                showYearDropdown
+                                                showMonthDropdown
+                                                yearDropdownItemNumber={100}
+                                                maxDate={new Date()}
+                                                scrollableYearDropdown
+                                                className={classes.calendarContainer}
+                                                calendarClassName={classes.calendar}
+                                                selected={formik.values.tbt && new Date(formik.values.tbt)}
+                                                onChangeRaw={(event) => {
+                                                    const rawInput = event.target.value;
+                                                    const isValidInput = /^[0-3]?[0-9]\/[0-1]?[0-9]\/[0-9]{0,4}$/.test(rawInput);
+
+                                                    if (isValidInput) {
+                                                        if (rawInput.length === 10) {
+                                                            const [day, month, year] = rawInput.split("/");
+                                                            const parsedDate = new Date(`${year}-${month}-${day}`);
+
+                                                            if (!isNaN(parsedDate.getTime())) {
+                                                                formik.setFieldValue("tbt", parsedDate);
+                                                            } else {
+                                                                console.log("Invalid date");
+                                                            }
+                                                        }
+                                                    } else {
+                                                        console.log("Invalid input format");
+                                                    }
+                                                }}
+                                                onChange={(value) => {
+                                                    formik.setFieldValue("tbt", value);
+                                                }}
+                                                customInput={
+                                                    <InputMask mask="99/99/9999">
+                                                        {(inputProps) => (
+                                                            <TextField
+                                                                {...inputProps}
+                                                                type="tel"
+                                                                disableUnderline
+                                                                size="small"
+                                                                variant="outlined"
+                                                                sx={{
+                                                                    width: "100%",
+                                                                    cursor: "pointer",
+                                                                    "& .Mui-disabled": {
+                                                                        WebkitTextFillColor: "black !important",
+                                                                        background: "#d8d4d4",
+                                                                    },
+                                                                }}
+                                                                InputProps={{
+                                                                    style: { cursor: "pointer" },
+                                                                    autoComplete: "off",
+                                                                    endAdornment: <CalendarToday />,
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </InputMask>
+                                                }
+                                            />
+                                        </Box>
+                                    </Box>
+
                                     <FormControl>
                                         <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
                                         <RadioGroup

@@ -1,8 +1,8 @@
 import { makeStyles } from "@mui/styles";
 import background from "../../../media/ethan-robertson-SYx3UCHZJlo-unsplash.jpg";
 
-export const useLoginStyles = makeStyles({
-    loginBackground: {
+export const useRegisterStyles = makeStyles({
+    registerBackground: {
         backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${background})`,
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
@@ -14,7 +14,7 @@ export const useLoginStyles = makeStyles({
         minHeight: "100vh"
     },
 
-    containerNavbarLogin: {
+    containerNavbarRegister: {
         backgroundColor: "#0005",
         display: "flex",
         justifyContent: "space-between",
@@ -28,15 +28,19 @@ export const useLoginStyles = makeStyles({
         cursor: "pointer"
     },
 
-    containerFormLogin: {
-        marginTop: "128px",
+    buttonBackRegister: {
+        paddingRight: "16px"
+    },
+
+    containerFormRegister: {
+        marginTop: "48px",
         width: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
     },
 
-    containerLoginGoTravel: {
+    containerRegisterGoTravel: {
         width: "50%",
         display: "flex",
         justifyContent: "center"  
@@ -48,7 +52,7 @@ export const useLoginStyles = makeStyles({
         justifyContent: "center"
     },
 
-    loginForm: {
+    registerForm: {
         backgroundColor: "#fff5",
         borderRadius: "8px",
         display: "flex",
@@ -56,12 +60,11 @@ export const useLoginStyles = makeStyles({
         width: "70%"
     },
 
-    loginFormCekAccount: {
+    registerFormCekAccount: {
         display: "flex",
         justifyContent: "center",
         fontSize: "12px",
-        gap: "4px",
-        marginBottom: "32px"
+        gap: "4px"
     },
 
     containerFooter: {

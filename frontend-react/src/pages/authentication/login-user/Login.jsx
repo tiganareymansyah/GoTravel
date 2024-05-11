@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useFormik } from "formik";
 import {
   Box,
   Button,
@@ -10,6 +9,11 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
+import { 
+  Person, 
+  AirportShuttle
+} from '@mui/icons-material';
+import { useFormik } from "formik";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { apiLoginAccount } from "../../../api/api.js";
@@ -17,10 +21,6 @@ import Alert from "../../../components/Alert/Alert.jsx";
 import { useLoginStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
-import { 
-  Person, 
-  AirportShuttle
-} from '@mui/icons-material';
 import { orange } from "@mui/material/colors";
 
 export default function Login() {
@@ -230,9 +230,9 @@ export default function Login() {
 
           <Box className={classes.containerFormLogin}>
             <Box className={classes.containerLoginGoTravel}>
-                <Box className={classes.loginGoTravel}>
-                  <p style={styles.textGoTravel}>GoTravel</p>
-                  <p style={styles.textMoveContent}><MoveContent /></p>
+              <Box>
+                <p style={styles.textGoTravel}>GoTravel</p>
+                <p style={styles.textMoveContent}><MoveContent /></p>
               </Box>
             </Box>
 

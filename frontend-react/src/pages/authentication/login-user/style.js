@@ -39,7 +39,7 @@ export const useLoginStyles = makeStyles({
     containerLoginGoTravel: {
         width: "50%",
         display: "flex",
-        justifyContent: "center"  
+        justifyContent: "center" 
     },
 
     containerForm: {

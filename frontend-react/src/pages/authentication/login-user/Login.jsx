@@ -22,6 +22,7 @@ import { useLoginStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
 import { orange } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const styles = {
@@ -50,7 +51,6 @@ export default function Login() {
     },
     
     judulFormLogin: {
-      fontFamily: "Curlz MT",
       textAlign: "center", 
       letterSpacing: "5px"
     },
@@ -106,6 +106,8 @@ export default function Login() {
 
   const inputRefEmail = useRef(null);
   const inputRefPassword = useRef(null);
+
+  const navigate = useNavigate();
 
   const [token, setToken] = useState(localStorage.getItem('userLogin'));
 
@@ -223,6 +225,10 @@ export default function Login() {
                     cursor: "pointer",
                     paddingRight: "32px" 
                   }} 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/admin");
+                  }}
                 />
               </p>
             </Box>
@@ -294,7 +300,7 @@ export default function Login() {
                     style={styles.toRegister} 
                     onClick={(e) => {
                       e.preventDefault();
-                      location.href = "/register"
+                      navigate("/register");
                     }}
                   >
                     Daftar

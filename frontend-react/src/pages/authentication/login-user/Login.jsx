@@ -142,7 +142,7 @@ export default function Login() {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "successNoReload") {
-      location.href = "/home";
+      location.href = "/dashboard";
     } else {
       navigate("/");
     }

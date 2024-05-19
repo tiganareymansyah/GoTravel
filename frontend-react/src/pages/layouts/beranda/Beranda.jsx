@@ -1,13 +1,11 @@
 import { Box } from "@mui/material"
-import Navbar from "../../components/navbar/Navbar"
+import Navbar from "../../../components/navbar/Navbar"
 
-export default function Home() {
-    
-
+export default function Beranda() {
     return (
         <>
             <Navbar />
             <Box>Home</Box>
         </>    
     )
-}
+};

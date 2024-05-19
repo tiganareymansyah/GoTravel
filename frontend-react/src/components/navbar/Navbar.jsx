@@ -136,7 +136,7 @@ export default function Navbar() {
           variant="text"
           startIcon={<GridView />}
           sx={styles.colorBar}
-          href="/dasboard"
+          href="/dashboard"
         >
           Dashboard
         </Button>

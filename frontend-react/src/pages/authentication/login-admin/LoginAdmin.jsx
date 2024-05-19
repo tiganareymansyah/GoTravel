@@ -136,7 +136,7 @@ export default function LoginAdmin() {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "successNoReload") {
-      location.href = "/home";
+      location.href = "/dashboard";
     } else {
       navigate("/admin");
     }

@@ -3,9 +3,9 @@ import {
   Button 
 } from "@mui/material";
 import { 
-  AddShoppingCart,
+  EditCalendar,
   Call,
-  CoffeeMaker,
+  AirportShuttle,
   GridView,
   Info,
   Logout,
@@ -93,9 +93,9 @@ export default function Navbar() {
     <Box className={classes.root}>
       <Box className={classes.containerBar}>
         <Box className={classes.boxIcon}>
-          <p><CoffeeMaker fontSize="large" sx={{ color: "#fff" }} /></p>
+          <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p>
           <p className={classes.textIcon}>
-            Tentang<Box sx={{ color: `${orange[100]}` }}>Kopi</Box>
+            Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
           </p>
         </Box>
 
@@ -143,11 +143,11 @@ export default function Navbar() {
 
         <Button
           variant="text"
-          startIcon={<AddShoppingCart />}
+          startIcon={<EditCalendar />}
           sx={styles.colorBar}
-          href="/shopping"
+          href="/booking"
         >
-          Shopping
+          Booking
         </Button>
 
         <Button

@@ -16,7 +16,7 @@ import {
 import { useFormik } from "formik";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { apiLoginAccount } from "../../../api/api.js";
+import { apiLoginUserAccount } from "../../../api/api.js";
 import Alert from "../../../components/Alert/Alert.jsx";
 import { useLoginStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
@@ -25,6 +25,9 @@ import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const isMobile = useMediaQuery({ maxWidth: 991 });
+  const classes = useLoginStyles({ isMobile });
+
   const styles = {
     judulNavbarLogin: {
       margin: 0,
@@ -94,9 +97,6 @@ export default function Login() {
       letterSpacing: "4px"
     },
   };
-
-  const isMobile = useMediaQuery({ maxWidth: 991 });
-  const classes = useLoginStyles({ isMobile });
   
   const [showPassword, setShowPassword] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -109,33 +109,12 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-  const [token, setToken] = useState(localStorage.getItem('userLogin'));
+  const [token, setToken] = useState(localStorage.getItem("userLogin"));
 
   useEffect(() => {
-    const checkTokenExpiration = () => {
-      const storedToken = localStorage.getItem('userLogin');
-      const storedTimestamp = localStorage.getItem('tokenTimestamp');
-
-      if (storedToken && storedTimestamp) {
-        // const expirationTime = 60 * 1000; // 1 menit
-        const expirationTime = 24 * 60 * 60 * 1000 // 1 hari
-        const currentTimestamp = new Date().getTime();
-
-        if (currentTimestamp - parseInt(storedTimestamp, 10) > expirationTime) {
-          localStorage.removeItem('userLogin');
-          localStorage.removeItem('tokenTimestamp');
-          setToken(null);
-        }
-      }
-    };
-
-    checkTokenExpiration();
-
-    const intervalId = setInterval(() => {
-      checkTokenExpiration();
-    }, 10000);
-
-    return () => clearInterval(intervalId);
+    if(token && location.pathname.includes("/") && !location.pathname.includes("/home")) {
+      navigate("/home");
+    }
   }, [token]);
 
   const formik = useFormik({
@@ -145,7 +124,7 @@ export default function Login() {
     },
 
     onSubmit: async (values) => {
-      handleLogin(values);
+      handleLoginUser(values);
     },
   });
 
@@ -162,20 +141,22 @@ export default function Login() {
 
   const handleCloseAlert = () => {
     setOpenAlert(false);
-    // window.location.href = "/";
+    if(severity === "successNoReload") {
+      location.href = "/home";
+    } else {
+      navigate("/");
+    }
   }
 
-  const handleLogin = async (params) => {
+  const handleLoginUser = async (params) => {
     try {
-      const result = await apiLoginAccount({
+      const result = await apiLoginUserAccount({
         body: JSON.stringify(params)
       });
 
       const { status, message, data } = result;
 
       if(status === "success") {
-        setToken(JSON.stringify(data));
-
         Promise.all([
           localStorage.setItem("userLogin", JSON.stringify(data)),
           localStorage.setItem('tokenTimestamp', new Date().getTime().toString())

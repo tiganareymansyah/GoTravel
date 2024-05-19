@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { 
     Box, 
     Button, 
@@ -126,6 +126,14 @@ export default function Register() {
     const navigate = useNavigate();
 
     const today = dayjs();
+
+    const [token, setToken] = useState(localStorage.getItem("userLogin"));
+
+    useEffect(() => {
+        if(token && location.pathname.includes("/register") && !location.pathname.includes("/home")) {
+        navigate("/home");
+        }
+    }, [token]);
 
     const formik = useFormik({
         initialValues: {

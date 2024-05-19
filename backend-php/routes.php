@@ -29,6 +29,24 @@
             } else {
                 throw new Exception('Invalid Endpoint');
             }
+        } else if($paths[3] == "admin") {
+            include_once __DIR__ . '/controllers/logregController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] == "register") {
+                $logregController = new LogregController();
+                $data = $logregController->RegisterAdmin($jsonParams);
+
+                $result['status'] = "success";
+                $result['message'] = "Register Berhasil";
+            } else if($paths[4] == "login") {
+                $logregController = new LogregController();
+                $data = $logregController->LoginAdmin($jsonParams);
+                
+                $result['status'] = "success";
+                $result['message'] = "Login Berhasil";
+                $result['data'] = $data;
+            }
         } else {
             throw new Exception('Invalid Route');
         }

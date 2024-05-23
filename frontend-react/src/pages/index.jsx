@@ -6,20 +6,27 @@ import Contact from "./layouts/contact/Contact";
 
 export default function GoTravelIndex(props) {
     const pathname = useLocation().pathname;
-
-    console.log(props);
+    
     console.log(pathname);
+
+    const contohData = {
+        nama: "Tigana Reymansyah",
+        tbt: "Kalangan, 2 Mei 2002",
+        alamat: "AMD Kalangan BTN Sitio-Tio Hilir",
+        email: "tiganareymansyah2502@gmail.com",
+        no_telepon: "082267274100"
+    }
 
     return (
         <>
             {pathname === "/dashboard" ? (
-                <Beranda />
+                <Beranda userLogin={props.userLogin} />
             ) : pathname === "/booking" ? (
-                <Booking />
+                <Booking userLogin={props.userLogin} dataRequest={contohData} />
             ) : pathname === "/about" ? (
-                <About />
+                <About userLogin={props.userLogin} />
             ) : pathname === "/contact" ? (
-                <Contact />
+                <Contact userLogin={props.userLogin} />
             ) : ( 
                 console.log("Not Found")
             )}

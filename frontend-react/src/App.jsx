@@ -6,7 +6,7 @@ import LoginAdmin from './pages/authentication/login-admin/LoginAdmin.jsx';
 import GoTravelIndex from "./pages/index.jsx";
 
 export default function App() {
-  const [userLogin, setUserLogin] = useState(localStorage.getItem("userLogin"));
+  const [userLogin, setUserLogin] = useState(localStorage.getItem("userLogin") ? JSON.parse(localStorage.getItem("userLogin")) : null);
   const navigate = useNavigate();
 
   useEffect(() => {

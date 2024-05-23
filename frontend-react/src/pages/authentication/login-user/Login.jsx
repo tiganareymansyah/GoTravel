@@ -92,7 +92,7 @@ export default function Login() {
     },
 
     footer: {
-      color: `${orange[100]}`,
+      color: "#fff",
       fontStyle: "italic",
       letterSpacing: "4px"
     },
@@ -142,7 +142,7 @@ export default function Login() {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "successNoReload") {
-      location.href = "/dashboard";
+      location.href = "/booking";
     } else {
       navigate("/");
     }
@@ -202,7 +202,7 @@ export default function Login() {
                 <Person 
                   fontSize="large" 
                   sx={{ 
-                    color: `${orange[100]}`, 
+                    color: "#fff", 
                     cursor: "pointer",
                     paddingRight: "32px" 
                   }} 

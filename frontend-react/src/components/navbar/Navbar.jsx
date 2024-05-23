@@ -15,22 +15,28 @@ import {
 import { orange } from "@mui/material/colors";
 import { useNavbarStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const isMobile = useMediaQuery({ maxWidth: 991 });
   const classes = useNavbarStyles({ isMobile });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const styles = {
-    colorBar: {
-      color: "#fff",
+    colorBar: (isActive) => ({
+      color: isActive ? orange[100] : "#fff",
       fontSize: "12px",
       height: "32px",
+      borderBottom: isActive ? "3px solid #fff" : "none",
+      borderRadius: 0,
       "&:hover": {
-          color: `${orange[100]}`,
-          borderBottom: "3px solid #fff",
-          borderRadius: 0,
-      },
-    },
+        color: orange[100],
+        borderBottom: "3px solid #fff",
+        borderRadius: 0,
+      }
+    }),
 
     button: {
       padding: "7px 14px",
@@ -40,7 +46,7 @@ export default function Navbar() {
       color: "#000",
       backgroundColor: "#fff",
       "&:hover": {
-          color: `${orange[100]}`
+        color: `${orange[100]}`
       }
     },
 
@@ -81,11 +87,17 @@ export default function Navbar() {
     },
 
     footer: {
-      color: `${orange[100]}`,
+      color: "#fff",
       fontStyle: "italic",
       letterSpacing: "4px"
     },
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userLogin");
+    localStorage.removeItem("tokenTimestamp");
+    navigate("/");
+  }
 
   let profil = true;
 
@@ -124,7 +136,8 @@ export default function Navbar() {
 
           <Button 
             startIcon={<Logout />} 
-            sx={styles.button}
+            sx={styles.button} 
+            onClick={handleLogout} 
           >
             Keluar
           </Button>
@@ -132,41 +145,53 @@ export default function Navbar() {
       </Box>
 
       <Box className={classes.containerMenu}>
-        <Button
-          variant="text"
-          startIcon={<GridView />}
-          sx={styles.colorBar}
-          href="/dashboard"
-        >
-          Dashboard
-        </Button>
+        <NavLink to="/dashboard" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <Button
+              variant="text"
+              startIcon={<GridView />}
+              sx={styles.colorBar(isActive)}
+            >
+              Dashboard
+            </Button>
+          )}
+        </NavLink>
 
-        <Button
-          variant="text"
-          startIcon={<EditCalendar />}
-          sx={styles.colorBar}
-          href="/booking"
-        >
-          Booking
-        </Button>
+        <NavLink to="/booking" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <Button
+              variant="text"
+              startIcon={<EditCalendar />}
+              sx={styles.colorBar(isActive)}
+            >
+              Booking
+            </Button>
+          )}
+        </NavLink>
 
-        <Button
-          variant="text"
-          startIcon={<Info />}
-          sx={styles.colorBar}
-          href="/about"
-        >
-          About
-        </Button>
+        <NavLink to="/about" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <Button
+              variant="text"
+              startIcon={<Info />}
+              sx={styles.colorBar(isActive)}
+            >
+              About
+            </Button>
+          )}
+        </NavLink>
 
-        <Button
-          variant="text"
-          startIcon={<Call />}
-          sx={styles.colorBar}
-          href="/contact"
-        >
-          Contact
-        </Button>
+        <NavLink to="/contact" style={{ textDecoration: 'none' }}>
+          {({ isActive }) => (
+            <Button
+              variant="text"
+              startIcon={<Call />}
+              sx={styles.colorBar(isActive)}
+            >
+              Contact
+            </Button>
+          )}
+        </NavLink>
       </Box>
 
       <Box className={classes.containerFooter}>
@@ -174,4 +199,4 @@ export default function Navbar() {
       </Box>
     </Box>  
   )
-}
+};

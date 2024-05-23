@@ -94,7 +94,7 @@ export default function Register() {
             color: "black",
             backgroundColor: "#fff",
             "&:hover": {
-                color: "white"
+                color: `${orange[100]}`,
             }
         },
     
@@ -111,7 +111,7 @@ export default function Register() {
         },
     
         footer: {
-          color: `${orange[100]}`,
+          color: "#fff",
           fontStyle: "italic",
           letterSpacing: "4px"
         },

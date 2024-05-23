@@ -53,7 +53,7 @@ export default function LoginAdmin() {
       color: "black",
       backgroundColor: "#fff",
       "&:hover": {
-        color: "white",
+        color: `${orange[100]}`,
       },
     },
 
@@ -86,7 +86,7 @@ export default function LoginAdmin() {
     },
 
     footer: {
-      color: `${orange[100]}`,
+      color: "#fff",
       fontStyle: "italic",
       letterSpacing: "4px",
     },
@@ -136,7 +136,7 @@ export default function LoginAdmin() {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "successNoReload") {
-      location.href = "/dashboard";
+      location.href = "/booking";
     } else {
       navigate("/admin");
     }

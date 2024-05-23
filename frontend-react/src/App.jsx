@@ -10,13 +10,21 @@ export default function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if(!userLogin) {
+      navigate("/");
+    } else {
+      navigate("/booking");
+    }
+  }, [userLogin]);
+
+  useEffect(() => {
     const checkTokenExpiration = () => {
       const storedToken = localStorage.getItem("userLogin");
       const storedTimestamp = localStorage.getItem("tokenTimestamp");
 
       if (storedToken && storedTimestamp) {
-        const expirationTime = 60 * 1000; // 1 menit
-        // const expirationTime = 24 * 60 * 60 * 1000; // 1 hari
+        // const expirationTime = 60 * 1000; // 1 menit
+        const expirationTime = 24 * 60 * 60 * 1000; // 1 hari
         const currentTimestamp = new Date().getTime();
         
         if (currentTimestamp - parseInt(storedTimestamp, 10) > expirationTime) {
@@ -25,8 +33,6 @@ export default function App() {
           setUserLogin(null);
           navigate("/");
         }
-      } else {
-        navigate("/");
       }
     };
 

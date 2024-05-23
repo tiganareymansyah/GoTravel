@@ -21,7 +21,7 @@ export default function GoTravelIndex(props) {
             ) : pathname === "/contact" ? (
                 <Contact />
             ) : ( 
-                console.log("HHHHHHAHAHAHAHA")
+                console.log("Not Found")
             )}
         </>  
     );

@@ -6,7 +6,7 @@ export const useNavbarStyles = makeStyles({
     },
 
     containerBar: {
-        backgroundColor: "#000",
+        backgroundColor: "#0005",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center"
@@ -35,7 +35,7 @@ export const useNavbarStyles = makeStyles({
     },
 
     containerMenu: {
-        backgroundColor: "#000",
+        backgroundColor: "#0005",
         display: "flex", 
         justifyContent: "center",
         gap: "8rem",
@@ -43,7 +43,7 @@ export const useNavbarStyles = makeStyles({
     },
 
     containerFooter: {
-        backgroundColor: "#000",
+        backgroundColor: "#0005",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

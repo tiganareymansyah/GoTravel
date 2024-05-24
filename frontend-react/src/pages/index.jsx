@@ -3,6 +3,7 @@ import Beranda from "./layouts/beranda/Beranda";
 import Booking from "./layouts/booking/Booking";
 import About from "./layouts/about/About";
 import Contact from "./layouts/contact/Contact";
+import FormBooking from "./layouts/booking/formBooking/FormBooking";
 
 export default function GoTravelIndex(props) {
     const pathname = useLocation().pathname;
@@ -27,6 +28,8 @@ export default function GoTravelIndex(props) {
                 <About userLogin={props.userLogin} />
             ) : pathname === "/contact" ? (
                 <Contact userLogin={props.userLogin} />
+            ) : pathname === "/booking/form-booking" ? (
+                <FormBooking userLogin={props.userLogin} />
             ) : ( 
                 console.log("Not Found")
             )}

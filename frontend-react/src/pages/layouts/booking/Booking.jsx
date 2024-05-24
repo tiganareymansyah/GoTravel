@@ -4,12 +4,14 @@ import Navbar from "../../../components/navbar/Navbar";
 import { useMediaQuery } from "react-responsive";
 import { useBookingStyles } from "./style";
 import { orange } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 export default function Booking(props) {
     console.log(props);
 
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useBookingStyles({ isMobile });
+    const navigate = useNavigate();
 
     const styles = {
         buttonTambah: {
@@ -57,10 +59,10 @@ export default function Booking(props) {
                             <Button
                                 sx={styles.buttonTambah}
                                 startIcon={<Add />}
-                                // onClick={(e) => {
-                                //     e.preventDefault();
-                                //     navigate("/");
-                                // }}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    navigate("/booking/form-booking");
+                                }}
                             >
                                 Tambah
                             </Button>

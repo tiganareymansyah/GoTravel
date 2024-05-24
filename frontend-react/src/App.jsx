@@ -55,6 +55,7 @@ export default function App() {
         <Route path="/booking" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/about" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/contact" element={<GoTravelIndex userLogin={userLogin} />} />
+        <Route path="/booking/form-booking" element={<GoTravelIndex userLogin={userLogin} />} />
       </Routes>
     </>
   );

@@ -55,3 +55,35 @@ export async function apiLoginAdminAccount({ body }) {
         throw error;
     }
 }
+
+export async function apiGetTouristTransportation() {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + "/transportation/get-option",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiGetTouristDestination() {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + "/destination/get-option",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

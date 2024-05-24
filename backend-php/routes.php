@@ -47,6 +47,40 @@
                 $result['message'] = "Login Berhasil";
                 $result['data'] = $data;
             }
+        } else if($paths[3] === "transportation") {
+            include_once __DIR__ . '/controllers/transportationController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "insert") {
+                $transportationController = new TransportationController();
+                $data = $transportationController->InsertTransportation($jsonParams);
+                
+                $result['status'] = "success";
+                $result['message'] = "Data transportasi berhasil ditambahkan";
+            } else if($paths[4] === "get-option") {
+                $transportationController = new TransportationController();
+                $data = $transportationController->GetOptionTransportation($jsonParams);
+                
+                $result['status'] = "success";
+                $result['data'] = $data;
+            }
+        } else if($paths[3] === "destination") {
+            include_once __DIR__ . '/controllers/destinationController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "insert") {
+                $destinationController = new DestinationController();
+                $data = $destinationController->InsertDestination($jsonParams);
+                
+                $result['status'] = "success";
+                $result['message'] = "Data destinasi berhasil ditambahkan";
+            } else if($paths[4] === "get-option") {
+                $destinationController = new DestinationController();
+                $data = $destinationController->GetOptionDestination($jsonParams);
+                
+                $result['status'] = "success";
+                $result['data'] = $data;
+            }
         } else {
             throw new Exception('Invalid Route');
         }

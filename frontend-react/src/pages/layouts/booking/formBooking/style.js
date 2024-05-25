@@ -98,6 +98,7 @@ export const useFormBookingStyles = makeStyles({
     },
 
     boxPrevOrNext: {
+        paddingLeft: "5%", 
         paddingTop: "48px", 
         display: "flex", 
         justifyContent: "space-between" 

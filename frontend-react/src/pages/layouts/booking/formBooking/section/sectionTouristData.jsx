@@ -46,34 +46,10 @@ export const sectionTouristData = (
     };
 
     return (
-        <Box
-            sx={{
-                margin: "auto", 
-                padding: "16px", 
-                boxSizing: "border-box", 
-                width: "72%", 
-                height: "500px", 
-                borderRadius: "8px", 
-                backgroundColor: "#fff",
-                // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center"
-                }}
-            >
+        <Box className={classes.containerParent}>
+            <Box className={classes.containerChild}>
                 <Box sx={{ width: "60%" }}>
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center",
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Nama Lengkap KTP</Typography>
                         <TextField 
                             id="namaLengkap"
@@ -88,15 +64,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>NIK</Typography>
                         <TextField 
                             id="nik"
@@ -111,15 +79,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Email</Typography>
                         <TextField 
                             id="email"
@@ -134,15 +94,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Nomor HP</Typography>
                         <TextField 
                             id="nomorHp"
@@ -157,15 +109,7 @@ export const sectionTouristData = (
                         />
                     </Box>
                     
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Alamat</Typography>
                         <TextField 
                             id="alamat"
@@ -182,14 +126,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box 
-                        sx={{ 
-                            paddingLeft: "5%", 
-                            paddingTop: "48px", 
-                            display: "flex", 
-                            justifyContent: "space-between" 
-                        }}
-                    >
+                    <Box className={classes.boxPrevOrNext}>
                         <Button
                             sx={styles.buttonPrev}
                             startIcon={<ArrowBack />}
@@ -208,13 +145,7 @@ export const sectionTouristData = (
                     </Box>
                 </Box>
                 
-                <Box
-                    sx={{
-                        width: "40%",
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
+                <Box className={classes.boxKarikaturImage}>
                     <img src={KarikaturBeach} width={300} />
                 </Box>
             </Box>

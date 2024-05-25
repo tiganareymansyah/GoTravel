@@ -89,7 +89,7 @@ export const useFormBookingStyles = makeStyles({
         width: "60%" 
     },
 
-    boxTouristDestination: {
+    boxTouristData: {
         paddingLeft: "5%", 
         display: "flex", 
         justifyContent: "space-between", 

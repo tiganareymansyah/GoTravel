@@ -48,7 +48,7 @@ export const sectionTouristDestination = (
         <Box className={classes.containerParent}>
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Tujuan Wisata</Typography>
                         <Select 
                             value={selectState.touristDestination.selectedState}
@@ -76,7 +76,7 @@ export const sectionTouristDestination = (
                         />
                     </Box>
                     
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Transportasi Wisata</Typography>
                         <Select 
                             value={selectState.touristTransportation.selectedState}
@@ -200,7 +200,7 @@ export const sectionTouristDestination = (
                     </Box>
 
                     {selectState.touristTransportation.selectedState !== "" && (
-                        <Box className={classes.boxTouristDestination}>
+                        <Box className={classes.boxTouristData}>
                             <Typography variant="span" className="form-label" sx={styles.label}>Muatan</Typography>
                             <TextField 
                                 id="muatan"

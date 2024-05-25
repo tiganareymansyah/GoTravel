@@ -48,8 +48,8 @@ export const sectionTouristData = (
     return (
         <Box className={classes.containerParent}>
             <Box className={classes.containerChild}>
-                <Box sx={{ width: "60%" }}>
-                    <Box className={classes.boxTouristDestination}>
+                <Box className={classes.setForm}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Nama Lengkap KTP</Typography>
                         <TextField 
                             id="namaLengkap"
@@ -64,7 +64,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>NIK</Typography>
                         <TextField 
                             id="nik"
@@ -79,7 +79,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Email</Typography>
                         <TextField 
                             id="email"
@@ -94,7 +94,7 @@ export const sectionTouristData = (
                         />
                     </Box>
 
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Nomor HP</Typography>
                         <TextField 
                             id="nomorHp"
@@ -109,7 +109,7 @@ export const sectionTouristData = (
                         />
                     </Box>
                     
-                    <Box className={classes.boxTouristDestination}>
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Alamat</Typography>
                         <TextField 
                             id="alamat"

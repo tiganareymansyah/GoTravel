@@ -68,4 +68,44 @@ export const useFormBookingStyles = makeStyles({
             backgroundColor: "#d8d4d4",
         },
     },
+
+    containerParent: {
+        margin: "auto", 
+        padding: "16px", 
+        boxSizing: "border-box", 
+        width: "72%", 
+        height: "500px", 
+        borderRadius: "8px", 
+        backgroundColor: "#fff", 
+        // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"
+    },
+
+    containerChild: {
+        display: "flex", 
+        alignItems: "center" 
+    },
+
+    setForm: {
+        width: "60%" 
+    },
+
+    boxTouristDestination: {
+        paddingLeft: "5%", 
+        display: "flex", 
+        justifyContent: "space-between", 
+        alignItems: "center", 
+        paddingBottom: "4%" 
+    },
+
+    boxPrevOrNext: {
+        paddingTop: "48px", 
+        display: "flex", 
+        justifyContent: "space-between" 
+    },
+
+    boxKarikaturImage: {
+        width: "40%", 
+        display: "flex", 
+        justifyContent: "center" 
+    },
 });

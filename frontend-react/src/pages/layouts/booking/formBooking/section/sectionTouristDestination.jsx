@@ -1,19 +1,18 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach.jpg";
 
 export const sectionTouristDestination = (
-    props, 
+    isMobile, 
     classes, 
-    formik, 
     handleNext, 
-    handlePrev, 
     selectState, 
     handleChangeSelectState, 
+    hoveredOption, 
+    handleMouseOver, 
+    handleMouseLeave 
 ) => {
-    console.log(props);
-
     const styles = {
         label: {
             fontWeight: "700",
@@ -46,34 +45,10 @@ export const sectionTouristDestination = (
     };
 
     return (
-        <Box
-            sx={{
-                margin: "auto", 
-                padding: "16px", 
-                boxSizing: "border-box", 
-                width: "72%", 
-                height: "500px", 
-                borderRadius: "8px", 
-                backgroundColor: "#fff",
-                // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center"
-                }}
-            >
-                <Box sx={{ width: "60%" }}>
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center",
-                            paddingBottom: "4%"
-                        }}
-                    >
+        <Box className={classes.containerParent}>
+            <Box className={classes.containerChild}>
+                <Box className={classes.setForm}>
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Tujuan Wisata</Typography>
                         <Select 
                             value={selectState.touristDestination.selectedState}
@@ -101,15 +76,7 @@ export const sectionTouristDestination = (
                         />
                     </Box>
                     
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
+                    <Box className={classes.boxTouristDestination}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Transportasi Wisata</Typography>
                         <Select 
                             value={selectState.touristTransportation.selectedState}
@@ -134,19 +101,106 @@ export const sectionTouristDestination = (
                                 }),
                             }}
                             className="form-input"
+                            components={{
+                                Option: ({ innerProps, label, data }) => (
+                                    <>
+                                        {isMobile ? (
+                                            <Box
+                                                {...innerProps}
+                                                sx={{
+                                                    padding: 1.5,
+                                                    cursor: "pointer",
+                                                    "&:hover": {
+                                                        background: "#f0f0f0",
+                                                    },
+                                                }}
+                                            >
+                                                <div>{label}</div>
+                                                <div>
+                                                    <Divider sx={{ height: 2 }} />
+                                                    <Typography
+                                                        sx={{
+                                                            paddingLeft: "32px", 
+                                                            marginTop: "10px", 
+                                                            fontSize: "11px", 
+                                                            letterSpacing: "1px", 
+                                                            fontStyle: "italic",
+                                                            color: "#f00"  
+                                                        }}
+                                                        variant="body1"
+                                                    >
+                                                        Transportasi yang tersisa {data.stok} lagi
+                                                    </Typography>
+                
+                                                    {/* <Typography
+                                                        sx={{
+                                                            marginLeft: "10px",
+                                                            marginTop: "10px",
+                                                            fontSize: "12px",
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        {!data.label_distance
+                                                            ? "Jarak: -"
+                                                            : `Jarak: ${data.label_distance}`}
+                                                    </Typography> */}
+                                                </div>
+                                            </Box>
+                                        ) : (
+                                            <Box
+                                                {...innerProps}
+                                                sx={{
+                                                    padding: 1.5,
+                                                    cursor: "pointer",
+                                                    "&:hover": {
+                                                        background: "#f0f0f0",
+                                                    },
+                                                }}
+                                                onMouseOver={() => handleMouseOver(data)}
+                                                onMouseLeave={handleMouseLeave}
+                                            >
+                                                <div>{label}</div>
+                                                {hoveredOption === data && (
+                                                    <div>
+                                                        <Divider sx={{ height: 2 }} />
+                                                        <Typography
+                                                            sx={{
+                                                                paddingLeft: "32px", 
+                                                                marginTop: "10px", 
+                                                                fontSize: "11px", 
+                                                                letterSpacing: "1px", 
+                                                                fontStyle: "italic",
+                                                                color: "#f00"  
+                                                            }}
+                                                            variant="body1"
+                                                        >
+                                                            Transportasi yang tersisa {data.stok} lagi
+                                                        </Typography>
+                    
+                                                        {/* <Typography
+                                                            sx={{
+                                                                marginLeft: "10px",
+                                                                marginTop: "10px",
+                                                                fontSize: "12px",
+                                                                fontWeight: "bold",
+                                                            }}
+                                                        >
+                                                            {!data.label_distance
+                                                                ? "Jarak: -"
+                                                                : `Jarak: ${data.label_distance}`}
+                                                        </Typography> */}
+                                                    </div>
+                                                )}
+                                            </Box>
+                                        )}
+                                    </>
+                                ),
+                            }}
                         />
                     </Box>
 
                     {selectState.touristTransportation.selectedState !== "" && (
-                        <Box
-                            sx={{
-                                paddingLeft: "5%", 
-                                display: "flex", 
-                                justifyContent: "space-between", 
-                                alignItems: "center", 
-                                paddingBottom: "4%"
-                            }}
-                        >
+                        <Box className={classes.boxTouristDestination}>
                             <Typography variant="span" className="form-label" sx={styles.label}>Muatan</Typography>
                             <TextField 
                                 id="muatan"
@@ -168,7 +222,7 @@ export const sectionTouristDestination = (
                         </Box>
                     )}
 
-                    <Box sx={{ paddingTop: "48px", display: "flex", justifyContent: "space-between" }}>
+                    <Box className={classes.boxPrevOrNext}>
                         <Box />
                         <Button
                             sx={styles.buttonNext}
@@ -180,13 +234,7 @@ export const sectionTouristDestination = (
                     </Box>
                 </Box>
                 
-                <Box
-                    sx={{
-                        width: "40%",
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
+                <Box className={classes.boxKarikaturImage}>
                     <img src={KarikaturBeach} width={300} />
                 </Box>
             </Box>

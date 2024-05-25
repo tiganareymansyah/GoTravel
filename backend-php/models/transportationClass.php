@@ -48,7 +48,7 @@
         }
 
         public function getOptionTransportation($params) {
-            $query = "SELECT value, nama_transportasi_wisata AS label, muatan FROM tm_tourist_transportation";
+            $query = "SELECT value, nama_transportasi_wisata AS label, muatan, stok FROM tm_tourist_transportation";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();

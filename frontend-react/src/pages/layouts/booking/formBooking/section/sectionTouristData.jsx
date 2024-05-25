@@ -4,16 +4,11 @@ import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach1.jpg";
 
 export const sectionTouristData = (
-    props, 
     classes, 
     formik, 
     handleNext, 
     handlePrev, 
-    selectState, 
-    handleChangeSelectState, 
 ) => {
-    console.log(props);
-
     const styles = {
         label: {
             fontWeight: "700",

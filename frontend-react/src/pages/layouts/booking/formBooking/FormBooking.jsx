@@ -145,6 +145,16 @@ export default function FormBooking(props) {
         step === 0 ? setStep(0) : setStep(step - 1);
     };
 
+    const [hoveredOption, setHoveredOption] = useState(null);
+
+    const handleMouseOver = (option) => {
+        setHoveredOption(option);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredOption(null);
+    };
+
     console.log(formik.values);
     console.log(selectState);
 
@@ -196,25 +206,23 @@ export default function FormBooking(props) {
                         {step === 0 ? (
                             <>
                                 {sectionTouristDestination(
-                                    props, 
+                                    isMobile, 
                                     classes, 
-                                    formik, 
                                     handleNext, 
-                                    handlePrev, 
                                     selectState, 
                                     handleChangeSelectState, 
+                                    hoveredOption, 
+                                    handleMouseOver, 
+                                    handleMouseLeave 
                                 )}
                             </>
                         ) : step === 1 ? (
                             <>
                                 {sectionTouristData(
-                                    props, 
                                     classes, 
                                     formik, 
                                     handleNext, 
                                     handlePrev, 
-                                    selectState, 
-                                    handleChangeSelectState, 
                                 )}
                             </>
                         ) : step === 2 ? (

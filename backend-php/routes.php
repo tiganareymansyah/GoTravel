@@ -81,6 +81,23 @@
                 $result['status'] = "success";
                 $result['data'] = $data;
             }
+        } else if($paths[3] === "paymeth") {
+            include_once __DIR__ . '/controllers/paymentMethodController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "insert") {
+                $paymentMethodController = new PaymentMethodController();
+                $data = $paymentMethodController->InsertPaymentMethod($jsonParams);
+                
+                $result['status'] = "success";
+                $result['message'] = "Data payment method berhasil ditambahkan";
+            } else if($paths[4] === "get-option") {
+                $paymentMethodController = new PaymentMethodController();
+                $data = $paymentMethodController->GetOptionPaymentMethod($jsonParams);
+                
+                $result['status'] = "success";
+                $result['data'] = $data;
+            }
         } else {
             throw new Exception('Invalid Route');
         }

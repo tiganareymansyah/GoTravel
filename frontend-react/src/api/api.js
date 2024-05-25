@@ -87,3 +87,19 @@ export async function apiGetTouristDestination() {
         throw error;
     }
 }
+
+export async function apiGetPaymentMethod() {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + "/paymeth/get-option",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

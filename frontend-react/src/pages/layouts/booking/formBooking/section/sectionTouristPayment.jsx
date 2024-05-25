@@ -11,6 +11,7 @@ export const sectionTouristPayment = (
     handlePrev, 
     selectState, 
     handleChangeSelectState, 
+    inputRefBiaya 
 ) => {
     console.log(props);
 
@@ -19,6 +20,17 @@ export const sectionTouristPayment = (
             fontWeight: "700",
             fontSize: "18px",
             letterSpacing: "1px"
+        },
+
+        textField: {
+            width: "47%",
+            "& .MuiInputBase-root": {
+                height: "40px" 
+            },
+            "& .MuiInputBase-input": {
+                padding: "8px 14px", 
+                textIndent: "6px"
+            },
         },
 
         buttonPrev: {
@@ -47,109 +59,57 @@ export const sectionTouristPayment = (
     };
 
     return (
-        <Box
-            sx={{
-                margin: "auto", 
-                padding: "16px", 
-                boxSizing: "border-box", 
-                width: "72%", 
-                height: "500px", 
-                borderRadius: "8px", 
-                backgroundColor: "#fff",
-                // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    alignItems: "center"
-                }}
-            >
-                <Box sx={{ width: "60%" }}>
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center",
-                            paddingBottom: "4%"
-                        }}
-                    >
-                        <Typography variant="span" className="form-label" sx={styles.label}>Tujuan Wisata</Typography>
-                        <Select 
-                            // value={selectState.nationality.selectedState}
-                            // options={selectState.nationality.states}
-                            // onChange={(state) => {
-                            //     handleChangeSelectState("nationality", state);
-                            // }}
-                            styles={{
-                                // container: (baseStyles, state) => ({
-                                //     ...baseStyles,
-                                //     ...style.label,
-                                //     fontSize: 20,
-                                // }),
-                                control: (baseStyles, state) => ({
-                                    ...baseStyles,
-                                    // textIndent: "10px",
-                                    // border: "none",
-                                    // // backgroundColor: state.isDisabled && "#d8d4d4",
-                                    width: "300px"
-                                }),
-                                // singleValue: (baseStyles, state) => ({
-                                //     ...baseStyles,
-                                //     color: "#000000",
-                                // }),
+        <Box className={classes.containerParent}>
+            <Box className={classes.containerChild}>
+                <Box className={classes.setForm}>
+                    <Box className={classes.boxTouristData}>
+                        <Typography variant="span" className="form-label" sx={styles.label}>Biaya</Typography>
+                        <TextField 
+                            id="biaya"
+                            name="biaya"
+                            variant="outlined"
+                            defaultValue={"Rp.1.000.000,-"}
+                            InputProps={{
+                                classes: {
+                                    disabled: classes.disabled,
+                                    input: classes.inputUppercase,
+                                },
                             }}
-                            className="form-input"
+                            inputRef={inputRefBiaya}
+                            sx={styles.textField}
+                            disabled
                         />
                     </Box>
-                    
-                    <Box
-                        sx={{
-                            paddingLeft: "5%", 
-                            display: "flex", 
-                            justifyContent: "space-between", 
-                            alignItems: "center", 
-                            paddingBottom: "4%"
-                        }}
-                    >
-                        <Typography variant="span" className="form-label" sx={styles.label}>Transportasi Wisata</Typography>
+
+                    <Box className={classes.boxTouristData}>
+                        <Typography variant="span" className="form-label" sx={styles.label}>Metode Pembayaran</Typography>
                         <Select 
-                            // value={selectState.nationality.selectedState}
-                            // options={selectState.nationality.states}
-                            // onChange={(state) => {
-                            //     handleChangeSelectState("nationality", state);
-                            // }}
+                            value={selectState.paymentMethod.selectedState}
+                            options={selectState.paymentMethod.states}
+                            onChange={(state) => {
+                                handleChangeSelectState("paymentMethod", state);
+                            }}
                             styles={{
-                                // container: (baseStyles, state) => ({
-                                //     ...baseStyles,
-                                //     ...style.label,
-                                //     fontSize: 20,
-                                // }),
+                                container: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    fontSize: 20,
+                                }),
                                 control: (baseStyles, state) => ({
                                     ...baseStyles,
-                                    // textIndent: "10px",
-                                    // border: "none",
-                                    // // backgroundColor: state.isDisabled && "#d8d4d4",
+                                    textIndent: "10px",
+                                    // backgroundColor: state.isDisabled && "#d8d4d4",
                                     width: "300px"
                                 }),
-                                // singleValue: (baseStyles, state) => ({
-                                //     ...baseStyles,
-                                //     color: "#000000",
-                                // }),
+                                singleValue: (baseStyles, state) => ({
+                                    ...baseStyles,
+                                    color: "#000000",
+                                }),
                             }}
                             className="form-input"
                         />
                     </Box>
 
-                    <Box 
-                        sx={{ 
-                            paddingLeft: "5%", 
-                            paddingTop: "48px", 
-                            display: "flex", 
-                            justifyContent: "space-between" 
-                        }}
-                    >
+                    <Box className={classes.boxPrevOrNext}>
                         <Button
                             sx={styles.buttonPrev}
                             startIcon={<ArrowBack />}
@@ -168,13 +128,7 @@ export const sectionTouristPayment = (
                     </Box>
                 </Box>
                 
-                <Box
-                    sx={{
-                        width: "40%",
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
+                <Box className={classes.boxKarikaturImage}>
                     <img src={KarikaturBeach} width={300} />
                 </Box>
             </Box>

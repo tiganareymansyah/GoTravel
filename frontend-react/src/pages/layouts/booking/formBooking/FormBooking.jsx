@@ -9,7 +9,7 @@ import { sectionTouristDestination } from "./section/sectionTouristDestination";
 import { sectionTouristData } from "./section/sectionTouristData";
 import { sectionTouristPayment } from "./section/sectionTouristPayment";
 import { useFormik } from "formik";
-import { apiGetTouristDestination, apiGetTouristTransportation } from "../../../../api/api";
+import { apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation } from "../../../../api/api";
 
 export default function FormBooking(props) {
     const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -25,6 +25,10 @@ export default function FormBooking(props) {
             selectedState: "",
             states: [],
         },
+        paymentMethod: {
+            selectedState: "",
+            states: [],
+        },
     });
 
     const inputRefFullName = useRef(null);
@@ -32,6 +36,7 @@ export default function FormBooking(props) {
     const inputRefEmail = useRef(null);
     const inputRefNomorHp = useRef(null);
     const inputRefAlamat = useRef(null);
+    const inputRefBiaya = useRef(null);
     
     const navigate = useNavigate();
     const stepDone = [
@@ -50,6 +55,8 @@ export default function FormBooking(props) {
             email: "", 
             nomorHp: "", 
             alamat: "", 
+            biaya: "", 
+            paymentMethod: "", 
         },
     
         onSubmit: async (values) => {
@@ -84,9 +91,14 @@ export default function FormBooking(props) {
     }, [selectState.touristTransportation.selectedState]);
 
     useEffect(() => {
-        getTouristTransportation();
-        getTouristDestination();
-    }, []);
+        if(step === 0) {
+            getTouristDestination();
+            getTouristTransportation();
+        } else if(step === 2) {
+            getPaymentMethod();
+            formik.setFieldValue("biaya", inputRefBiaya.current?.value);
+        }
+    }, [step]);
 
     const getTouristDestination = async () => {
         try {
@@ -103,7 +115,7 @@ export default function FormBooking(props) {
                     },
                 }));
             } else {
-                console.log("Not Found");
+                console.log("Not Found Destination");
             }
         } catch (err) {
             console.log(err)
@@ -125,7 +137,29 @@ export default function FormBooking(props) {
                     },
                 }));
             } else {
-                console.log("Not Found");
+                console.log("Not Found Transportation");
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    const getPaymentMethod = async () => {
+        try {
+            const record = await apiGetPaymentMethod();
+
+            const { status, data } = record;
+
+            if(status === "success") {
+                setSelectState((prev) => ({
+                    ...prev,
+                    paymentMethod: {
+                        ...prev["paymentMethod"],
+                        states: data,
+                    },
+                }));
+            } else {
+                console.log("Not Found Payment Method");
             }
         } catch (err) {
             console.log(err)
@@ -161,10 +195,6 @@ export default function FormBooking(props) {
     const handleMouseLeave = () => {
         setHoveredOption(null);
     };
-
-    // const handleBlur = (fieldName, value) => {
-    //     formik.setFieldValue(fieldName, value);
-    // };
 
     console.log(formik.values);
     console.log(selectState);
@@ -251,6 +281,7 @@ export default function FormBooking(props) {
                                     handlePrev, 
                                     selectState, 
                                     handleChangeSelectState, 
+                                    inputRefBiaya 
                                 )}
                             </>
                         ) : (

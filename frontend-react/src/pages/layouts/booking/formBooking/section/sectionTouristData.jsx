@@ -1,6 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach1.jpg";
 
 export const sectionTouristData = (
@@ -8,6 +7,11 @@ export const sectionTouristData = (
     formik, 
     handleNext, 
     handlePrev, 
+    inputRefFullName, 
+    inputRefNik, 
+    inputRefEmail, 
+    inputRefNomorHp, 
+    inputRefAlamat 
 ) => {
     const styles = {
         label: {
@@ -56,9 +60,9 @@ export const sectionTouristData = (
                             name="namaLengkap"
                             variant="standard"
                             placeholder="Nama Lengkap"
-                            // inputRef={inputRefFullName}
-                            // defaultValue={formik.values.fullname}
-                            // onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
+                            inputRef={inputRefFullName}
+                            defaultValue={formik?.values?.fullName}
+                            onBlur={() => formik.setFieldValue("fullName", inputRefFullName.current?.value)}
                             required
                             sx={styles.textField}
                         />
@@ -71,9 +75,9 @@ export const sectionTouristData = (
                             name="nik"
                             variant="standard"
                             placeholder="NIK"
-                            // inputRef={inputRefFullName}
-                            // defaultValue={formik.values.fullname}
-                            // onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
+                            inputRef={inputRefNik}
+                            defaultValue={formik?.values?.nik}
+                            onBlur={() => formik.setFieldValue("nik", inputRefNik.current?.value)}
                             required
                             sx={styles.textField}
                         />
@@ -86,9 +90,9 @@ export const sectionTouristData = (
                             name="email"
                             variant="standard"
                             placeholder="Email"
-                            // inputRef={inputRefFullName}
-                            // defaultValue={formik.values.fullname}
-                            // onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
+                            inputRef={inputRefEmail}
+                            defaultValue={formik?.values?.email}
+                            onBlur={() => formik.setFieldValue("email", inputRefEmail.current?.value)}
                             required
                             sx={styles.textField}
                         />
@@ -101,9 +105,9 @@ export const sectionTouristData = (
                             name="nomorHp"
                             variant="standard"
                             placeholder="Nomor Hp"
-                            // inputRef={inputRefFullName}
-                            // defaultValue={formik.values.fullname}
-                            // onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
+                            inputRef={inputRefNomorHp}
+                            defaultValue={formik?.values?.nomorHp}
+                            onBlur={() => formik.setFieldValue("nomorHp", inputRefNomorHp.current?.value)}
                             required
                             sx={styles.textField}
                         />
@@ -118,9 +122,9 @@ export const sectionTouristData = (
                             placeholder="Alamat"
                             rows={3}
                             multiline
-                            // inputRef={inputRefFullName}
-                            // defaultValue={formik.values.fullname}
-                            // onChange={() => handleChange("fullname", inputRefFullName.current?.value)}
+                            inputRef={inputRefAlamat}
+                            defaultValue={formik?.values?.alamat}
+                            onBlur={() => formik.setFieldValue("alamat", inputRefAlamat.current?.value)}
                             required
                             sx={styles.textField}
                         />

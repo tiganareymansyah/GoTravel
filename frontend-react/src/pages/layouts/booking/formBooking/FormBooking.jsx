@@ -4,7 +4,7 @@ import { useMediaQuery } from "react-responsive";
 import { useFormBookingStyles } from "./style";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { sectionTouristDestination } from "./section/sectionTouristDestination";
 import { sectionTouristData } from "./section/sectionTouristData";
 import { sectionTouristPayment } from "./section/sectionTouristPayment";
@@ -15,14 +15,7 @@ export default function FormBooking(props) {
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useFormBookingStyles({ isMobile });
 
-    const navigate = useNavigate();
     const [step, setStep] = useState(0);
-    const stepDone = [
-        'Tujuan Wisata',
-        'Data Wisatawan',
-        'Pembayaran',
-    ];
-
     const [selectState, setSelectState] = useState({
         touristTransportation: {
             selectedState: "",
@@ -31,6 +24,36 @@ export default function FormBooking(props) {
         touristDestination: {
             selectedState: "",
             states: [],
+        },
+    });
+
+    const inputRefFullName = useRef(null);
+    const inputRefNik = useRef(null);
+    const inputRefEmail = useRef(null);
+    const inputRefNomorHp = useRef(null);
+    const inputRefAlamat = useRef(null);
+    
+    const navigate = useNavigate();
+    const stepDone = [
+        'Tujuan Wisata',
+        'Data Wisatawan',
+        'Pembayaran',
+    ];
+
+    const formik = useFormik({
+        initialValues: {
+            touristDestination: "", 
+            touristTransportation: "", 
+            touristLading: "", 
+            fullName: "", 
+            nik: "", 
+            email: "", 
+            nomorHp: "", 
+            alamat: "", 
+        },
+    
+        onSubmit: async (values) => {
+            // handleLoginUser(values);
         },
     });
 
@@ -53,18 +76,6 @@ export default function FormBooking(props) {
             letterSpacing: "4px"
         },
     };
-
-    const formik = useFormik({
-        initialValues: {
-            touristDestination: "", 
-            touristTransportation: "", 
-            touristLading: "" 
-        },
-    
-        onSubmit: async (values) => {
-            // handleLoginUser(values);
-        },
-    });
 
     useEffect(() => {
         if(selectState.touristTransportation.selectedState) {
@@ -133,10 +144,6 @@ export default function FormBooking(props) {
         formik.setFieldValue(name, state.value);
     };
 
-    // const handleBlur = (fieldName, value) => {
-    //     formik.setFieldValue(fieldName, value);
-    // };
-
     const handleNext = () => {
         setStep(step + 1);
     };
@@ -154,6 +161,10 @@ export default function FormBooking(props) {
     const handleMouseLeave = () => {
         setHoveredOption(null);
     };
+
+    // const handleBlur = (fieldName, value) => {
+    //     formik.setFieldValue(fieldName, value);
+    // };
 
     console.log(formik.values);
     console.log(selectState);
@@ -223,6 +234,11 @@ export default function FormBooking(props) {
                                     formik, 
                                     handleNext, 
                                     handlePrev, 
+                                    inputRefFullName, 
+                                    inputRefNik, 
+                                    inputRefEmail, 
+                                    inputRefNomorHp, 
+                                    inputRefAlamat 
                                 )}
                             </>
                         ) : step === 2 ? (

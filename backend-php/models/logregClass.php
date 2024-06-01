@@ -16,38 +16,48 @@
 
         public function registerUser($params) {
             try {
-                $query = "INSERT INTO login_user (
-                    id_user,
-                    fullname,
-                    tbt,
-                    gender,
-                    email,
-                    password,
-                    created_at
+                $querySelect = "SELECT email FROM login_user";
 
-                ) VALUES (
-                    :id_user,
-                    :fullname,
-                    :tbt,
-                    :gender,
-                    :email,
-                    :password,
-                    NOW()
-                )";
+                $stmtSelect = $this->connection->prepare($querySelect);
+                $stmtSelect->execute();
+                $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
 
-                $id_user = Utilities::generateGUID();;
-
-                $stmt = $this->connection->prepare($query);
-                $stmt->bindValue(":id_user", $id_user);
-                $stmt->bindValue(":fullname", $params['fullname']);
-                $stmt->bindValue(":tbt", $params['tbt']);
-                $stmt->bindValue(":gender", strtoupper($params['gender']));
-                $stmt->bindValue(":email", $params['email']);
-                $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
-                $stmt->execute();
-
-                if ($stmt->rowCount() > 0) return $stmt->fetch(PDO::FETCH_ASSOC);
-                else return false;
+                if($cekEmail['email'] === $params['email']) {
+                    return "data found";
+                } else {
+                    $query = "INSERT INTO login_user (
+                        id_user,
+                        fullname,
+                        tbt,
+                        gender,
+                        email,
+                        password,
+                        created_at
+    
+                    ) VALUES (
+                        :id_user,
+                        :fullname,
+                        :tbt,
+                        :gender,
+                        :email,
+                        :password,
+                        NOW()
+                    )";
+    
+                    $id_user = Utilities::generateGUID();;
+    
+                    $stmt = $this->connection->prepare($query);
+                    $stmt->bindValue(":id_user", $id_user);
+                    $stmt->bindValue(":fullname", $params['fullname']);
+                    $stmt->bindValue(":tbt", $params['tbt']);
+                    $stmt->bindValue(":gender", strtoupper($params['gender']));
+                    $stmt->bindValue(":email", $params['email']);
+                    $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
+                    $stmt->execute();
+    
+                    if ($stmt->rowCount() > 0) return true;
+                    else return false;
+                }
             } catch (Exception $e) {
                 throw $e;
             }
@@ -109,6 +119,8 @@
                     } else {
                         return false;
                     }
+                } else {
+                    return false;
                 }
             } catch (Exception $e) {
                 throw $e;
@@ -117,38 +129,48 @@
 
         public function registerAdmin($params) {
             try {
-                $query = "INSERT INTO login_admin (
-                    id_admin,
-                    fullname,
-                    tbt,
-                    gender,
-                    email,
-                    password,
-                    created_at
+                $querySelect = "SELECT email FROM login_admin";
 
-                ) VALUES (
-                    :id_admin,
-                    :fullname,
-                    :tbt,
-                    :gender,
-                    :email,
-                    :password,
-                    NOW()
-                )";
+                $stmtSelect = $this->connection->prepare($querySelect);
+                $stmtSelect->execute();
+                $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
 
-                $id_admin = Utilities::generateGUID();;
-
-                $stmt = $this->connection->prepare($query);
-                $stmt->bindValue(":id_admin", $id_admin);
-                $stmt->bindValue(":fullname", $params['fullname']);
-                $stmt->bindValue(":tbt", $params['tbt']);
-                $stmt->bindValue(":gender", strtoupper($params['gender']));
-                $stmt->bindValue(":email", $params['email']);
-                $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
-                $stmt->execute();
-
-                if ($stmt->rowCount() > 0) return $stmt->fetch(PDO::FETCH_ASSOC);
-                else return false;
+                if($cekEmail['email'] === $params['email']) {
+                    return "data found";
+                } else {
+                    $query = "INSERT INTO login_admin (
+                        id_admin,
+                        fullname,
+                        tbt,
+                        gender,
+                        email,
+                        password,
+                        created_at
+    
+                    ) VALUES (
+                        :id_admin,
+                        :fullname,
+                        :tbt,
+                        :gender,
+                        :email,
+                        :password,
+                        NOW()
+                    )";
+    
+                    $id_admin = Utilities::generateGUID();;
+    
+                    $stmt = $this->connection->prepare($query);
+                    $stmt->bindValue(":id_admin", $id_admin);
+                    $stmt->bindValue(":fullname", $params['fullname']);
+                    $stmt->bindValue(":tbt", $params['tbt']);
+                    $stmt->bindValue(":gender", strtoupper($params['gender']));
+                    $stmt->bindValue(":email", $params['email']);
+                    $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
+                    $stmt->execute();
+    
+                    if ($stmt->rowCount() > 0) return true;
+                    else return false;
+                }
             } catch (Exception $e) {
                 throw $e;
             }
@@ -164,28 +186,32 @@
 
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if(password_verify($params['password'], $result['password'])) {
-                    $payload = array(
-                        "email" => $result['email'],
-                        "loginDate" => date('Y-m-d H:i:s')
-                    );
-        
-                    $token = Utilities::jwtEncode($payload);;
-                    $result['token'] = $token;
-
-                    $dataAdminLogin = array(
-                        "id_admin" => $result['id_admin'],
-                        "fullname" => $result['fullname'],
-                        "date_of_birth" => $result['tbt'],
-                        "gender" => $result['gender'],
-                        "email" => $result['email'],
-                        "created_at" => $result['created_at'],
-                        "token" => $result['token']
-                        // "token_expiration" => time() + 60 // 1 menit
-                        // "token_expiration" => time() + 24 * 60 * 60 // 1 hari
-                    );
-
-                    return $dataAdminLogin;
+                if($result) {
+                    if(password_verify($params['password'], $result['password'])) {
+                        $payload = array(
+                            "email" => $result['email'],
+                            "loginDate" => date('Y-m-d H:i:s')
+                        );
+            
+                        $token = Utilities::jwtEncode($payload);;
+                        $result['token'] = $token;
+    
+                        $dataAdminLogin = array(
+                            "id_admin" => $result['id_admin'],
+                            "fullname" => $result['fullname'],
+                            "date_of_birth" => $result['tbt'],
+                            "gender" => $result['gender'],
+                            "email" => $result['email'],
+                            "created_at" => $result['created_at'],
+                            "token" => $result['token']
+                            // "token_expiration" => time() + 60 // 1 menit
+                            // "token_expiration" => time() + 24 * 60 * 60 // 1 hari
+                        );
+    
+                        return $dataAdminLogin;
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }

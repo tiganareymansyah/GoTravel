@@ -27,11 +27,9 @@ import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
+import DatePicker from "react-datepicker";
+import InputMask from "react-input-mask";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Register() {
     const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -125,8 +123,6 @@ export default function Register() {
 
     const navigate = useNavigate();
 
-    const today = dayjs();
-
     const [token, setToken] = useState(localStorage.getItem("userLogin"));
 
     useEffect(() => {
@@ -171,8 +167,13 @@ export default function Register() {
         formik.setFieldValue(field, value);
     };
 
-    const handleCalender = (value) => {
-        handleChange("tbt", value);
+    const handleInputClick = (e) => {
+        if (e && e.target) {
+            e.target.readOnly = true;
+            e.target.placeholder = "dd/MM/yyyy";
+            e.target.blur();
+            e.target.readOnly = false;
+        }
     };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -232,20 +233,81 @@ export default function Register() {
                                         required
                                     />
 
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DemoContainer components={['DatePicker']}>
-                                            <DatePicker 
-                                                label="Birthday" 
-                                                maxDate={today} 
-                                                value={formik.values.tbt} 
-                                                onChange={handleCalender} 
-                                                sx={{ 
-                                                    ...styles.datePicker, 
-                                                    width: "100%" 
-                                                }} 
-                                            />
-                                        </DemoContainer>
-                                    </LocalizationProvider>
+                                    <DatePicker
+                                        placeholderText="dd/mm/yyyy"
+                                        fullWidth
+                                        dropdownMode="select"
+                                        //   disabled={
+                                        //     props.dataRequest &&
+                                        //     props.userLogin.roleName !== "VERIFIKATOR"
+                                        //       ? true
+                                        //       : false
+                                        //   }
+                                        onInputClick={handleInputClick}
+                                        dateFormat={"dd/MM/yyyy"}
+                                        showYearDropdown
+                                        showMonthDropdown
+                                        yearDropdownItemNumber={100}
+                                        maxDate={new Date()}
+                                        scrollableYearDropdown
+                                        className={classes.calendarContainer}
+                                        calendarClassName={classes.calendar}
+                                        selected={
+                                            formik.values?.tbt &&
+                                            new Date(formik.values.tbt)
+                                        }
+                                        onChangeRaw={(event) => {
+                                            const rawInput = event.target.value;
+                                            const isValidInput = /^[0-3]?[0-9]\/[0-1]?[0-9]{0,4}$/.test(
+                                                rawInput
+                                            );
+
+                                            if (isValidInput) {
+                                                if (rawInput.length === 10) {
+                                                    const [day, month, year] = rawInput.split("/");
+                                                    const parsedDate = new Date(`${year}-${month}-${day}`);
+
+                                                    if (!isNaN(parsedDate.getTime())) {
+                                                        handleChange("tbt", parsedDate)
+                                                    } else {
+                                                        console.log("Invalid date");
+                                                    }
+                                                }
+                                            } else {
+                                                console.log("Invalid input format");
+                                            }
+                                        }}
+                                        onChange={(e) => handleChange("tbt", e)}
+                                        customInput={
+                                            <InputMask
+                                                mask="99/99/9999"
+                                                // value={props.value}
+                                            >
+                                                {(inputProps) => (
+                                                    <TextField
+                                                        {...inputProps}
+                                                        fullWidth
+                                                        type="tel"
+                                                        disableUnderline
+                                                        size="small"
+                                                        variant="standard"
+                                                        sx={{
+                                                                cursor: "pointer",
+                                                                "& .Mui-disabled": {
+                                                                    WebkitTextFillColor: "black !important",
+                                                                    background: "#ffffff",
+                                                                },
+                                                        }}
+                                                        InputProps={{
+                                                            style: { cursor: "pointer", width: "100%" },
+                                                            autoComplete: "off",
+                                                            endAdornment: <CalendarToday sx={{ paddingBottom: "6px" }} />
+                                                        }}
+                                                    />
+                                                )}
+                                            </InputMask>
+                                        }
+                                    />
 
                                     <FormControl>
                                         <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>

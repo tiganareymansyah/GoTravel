@@ -3,10 +3,44 @@
     
     class LogregController {
         public function RegisterUser($params) {
+            if(!isset($params['fullname']) || empty($params['fullname']) || 
+            !isset($params['tbt']) || empty($params['tbt']) || 
+            !isset($params['gender']) || empty($params['gender']) || 
+            !isset($params['email']) || empty($params['email']) || 
+            !isset($params['password']) || empty($params['password'])) {
+                http_response_code(400);
+                return array(
+                    "code" => 400, 
+                    "status" => "failed",
+                    "message" => "Parameter tidak boleh kosong, kurang atau value tidak boleh kosong"
+                );
+            }
+
             $logregClass = new LogregClass();
             $logregResult = $logregClass->registerUser($params);
 
-            return $logregResult;
+            if($logregResult === "data found") {
+                http_response_code(409); // Conflict
+                return array(
+                    "code" => 409, 
+                    "status" => "failed",
+                    "message" => "Email anda sudah pernah digunakan sebelumnya"
+                );
+            } else if (!$logregResult) {
+                http_response_code(500); // Internal Server Error
+                return array(
+                    "code" => 500, 
+                    "status" => "failed",
+                    "message" => "Error"
+                );
+            } else {
+                http_response_code(201); // Created
+                return array(
+                    "code" => 201, 
+                    "status" => "success",
+                    "message" => "Register berhasil"
+                );
+            }
         }
 
         public function CekCookie() {
@@ -17,40 +51,108 @@
         }
 
         public function LoginUser($params) {
-            if ($params['email'] == '' || $params['password'] == '') {
-                return throw new Exception('email atau password tidak boleh kosong');
+            if(!isset($params['email']) || empty($params['email']) || 
+            !isset($params['password']) || empty($params['password'])) {
+                http_response_code(400); // Bad Request
+                return array(
+                    "code" => 400, 
+                    "status" => "failed",
+                    "message" => "Parameter tidak boleh kosong, kurang atau value tidak boleh kosong"
+                );
             }
 
             $logregClass = new LogregClass();
             $logregResult = $logregClass->loginUser($params);
 
             if ($logregResult == false) {
-                return throw new Exception('email atau password anda salah');
+                http_response_code(401); // Unauthorized
+                return array(
+                    "code" => 401, 
+                    "status" => "failed",
+                    "message" => "Email atau password anda salah"
+                );
+            } else {
+                http_response_code(200); // Success
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Login berhasil",
+                    "data" => $logregResult
+                );
             }
-
-            return $logregResult;
         }
 
         public function RegisterAdmin($params) {
+            if(!isset($params['fullname']) || empty($params['fullname']) || 
+            !isset($params['tbt']) || empty($params['tbt']) || 
+            !isset($params['gender']) || empty($params['gender']) || 
+            !isset($params['email']) || empty($params['email']) || 
+            !isset($params['password']) || empty($params['password'])) {
+                http_response_code(400);
+                return array(
+                    "code" => 400, 
+                    "status" => "failed",
+                    "message" => "Parameter tidak boleh kosong, kurang atau value tidak boleh kosong"
+                );
+            }
+
             $logregClass = new LogregClass();
             $logregResult = $logregClass->registerAdmin($params);
 
-            return $logregResult;
+            if($logregResult === "data found") {
+                http_response_code(409);
+                return array(
+                    "code" => 409, 
+                    "status" => "failed",
+                    "message" => "Email anda sudah pernah digunakan sebelumnya"
+                );
+            } else if (!$logregResult) {
+                http_response_code(500);
+                return array(
+                    "code" => 500, 
+                    "status" => "failed",
+                    "message" => "Error"
+                );
+            } else {
+                http_response_code(201);
+                return array(
+                    "code" => 201, 
+                    "status" => "success",
+                    "message" => "Register berhasil"
+                );
+            }
         }
 
         public function LoginAdmin($params) {
-            if ($params['email'] == '' || $params['password'] == '') {
-                return throw new Exception('email atau password tidak boleh kosong');
+            if(!isset($params['email']) || empty($params['email']) || 
+            !isset($params['password']) || empty($params['password'])) {
+                http_response_code(400);
+                return array(
+                    "code" => 400, 
+                    "status" => "failed",
+                    "message" => "Parameter tidak boleh kosong, kurang atau value tidak boleh kosong"
+                );
             }
 
             $logregClass = new LogregClass();
             $logregResult = $logregClass->loginAdmin($params);
 
             if ($logregResult == false) {
-                return throw new Exception('email atau password anda salah');
+                http_response_code(401);
+                return array(
+                    "code" => 401, 
+                    "status" => "failed",
+                    "message" => "Email atau password anda salah"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Login berhasil",
+                    "data" => $logregResult
+                );
             }
-
-            return $logregResult;
         }
     }
 ?>

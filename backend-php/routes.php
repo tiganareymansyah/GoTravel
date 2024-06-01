@@ -13,8 +13,7 @@
                 $logregController = new LogregController();
                 $data = $logregController->RegisterUser($jsonParams);
 
-                $result['status'] = "success";
-                $result['message'] = "Register Berhasil";
+                $result = $data;
             } else if($paths[4] == "cek-cookie") {
                 $logregController = new LogregController();
                 $data = $logregController->CekCookie();
@@ -23,9 +22,7 @@
                 $logregController = new LogregController();
                 $data = $logregController->LoginUser($jsonParams);
                 
-                $result['status'] = "success";
-                $result['message'] = "Login Berhasil";
-                $result['data'] = $data;
+                $result = $data;
             } else {
                 throw new Exception('Invalid Endpoint');
             }
@@ -37,15 +34,12 @@
                 $logregController = new LogregController();
                 $data = $logregController->RegisterAdmin($jsonParams);
 
-                $result['status'] = "success";
-                $result['message'] = "Register Berhasil";
+                $result = $data;
             } else if($paths[4] == "login") {
                 $logregController = new LogregController();
                 $data = $logregController->LoginAdmin($jsonParams);
                 
-                $result['status'] = "success";
-                $result['message'] = "Login Berhasil";
-                $result['data'] = $data;
+                $result = $data;
             }
         } else if($paths[3] === "transportation") {
             include_once __DIR__ . '/controllers/transportationController.php';
@@ -55,14 +49,12 @@
                 $transportationController = new TransportationController();
                 $data = $transportationController->InsertTransportation($jsonParams);
                 
-                $result['status'] = "success";
-                $result['message'] = "Data transportasi berhasil ditambahkan";
+                $result = $data;
             } else if($paths[4] === "get-option") {
                 $transportationController = new TransportationController();
                 $data = $transportationController->GetOptionTransportation($jsonParams);
                 
-                $result['status'] = "success";
-                $result['data'] = $data;
+                $result = $data;
             }
         } else if($paths[3] === "destination") {
             include_once __DIR__ . '/controllers/destinationController.php';
@@ -72,14 +64,12 @@
                 $destinationController = new DestinationController();
                 $data = $destinationController->InsertDestination($jsonParams);
                 
-                $result['status'] = "success";
-                $result['message'] = "Data destinasi berhasil ditambahkan";
+                $result = $data;
             } else if($paths[4] === "get-option") {
                 $destinationController = new DestinationController();
                 $data = $destinationController->GetOptionDestination($jsonParams);
                 
-                $result['status'] = "success";
-                $result['data'] = $data;
+                $result = $data;
             }
         } else if($paths[3] === "paymeth") {
             include_once __DIR__ . '/controllers/paymentMethodController.php';
@@ -89,14 +79,12 @@
                 $paymentMethodController = new PaymentMethodController();
                 $data = $paymentMethodController->InsertPaymentMethod($jsonParams);
                 
-                $result['status'] = "success";
-                $result['message'] = "Data payment method berhasil ditambahkan";
+                $result = $data;
             } else if($paths[4] === "get-option") {
                 $paymentMethodController = new PaymentMethodController();
                 $data = $paymentMethodController->GetOptionPaymentMethod($jsonParams);
                 
-                $result['status'] = "success";
-                $result['data'] = $data;
+                $result = $data;
             }
         } else {
             throw new Exception('Invalid Route');

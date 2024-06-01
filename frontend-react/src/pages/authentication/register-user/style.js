@@ -124,5 +124,9 @@ export const useRegisterStyles = makeStyles({
     "& .react-datepicker__year-select": {
       padding: 2,
     },
+    // "& .react-datepicker__triangle": {
+    //   fill: 'blue',
+    //   top: '-8px',
+    // },
   },
 });

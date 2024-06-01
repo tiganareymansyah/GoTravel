@@ -234,7 +234,7 @@ export default function Register() {
                                     />
 
                                     <DatePicker
-                                        placeholderText="dd/mm/yyyy"
+                                        // placeholderText="dd/mm/yyyy"
                                         fullWidth
                                         dropdownMode="select"
                                         //   disabled={
@@ -256,6 +256,7 @@ export default function Register() {
                                             formik.values?.tbt &&
                                             new Date(formik.values.tbt)
                                         }
+                                        // popperPlacement="right-start"
                                         onChangeRaw={(event) => {
                                             const rawInput = event.target.value;
                                             const isValidInput = /^[0-3]?[0-9]\/[0-1]?[0-9]{0,4}$/.test(
@@ -286,6 +287,7 @@ export default function Register() {
                                                 {(inputProps) => (
                                                     <TextField
                                                         {...inputProps}
+                                                        label="Birthday (dd/mm/yyyy)"
                                                         fullWidth
                                                         type="tel"
                                                         disableUnderline
@@ -303,6 +305,7 @@ export default function Register() {
                                                             autoComplete: "off",
                                                             endAdornment: <CalendarToday sx={{ paddingBottom: "6px" }} />
                                                         }}
+                                                        required
                                                     />
                                                 )}
                                             </InputMask>
@@ -310,7 +313,7 @@ export default function Register() {
                                     />
 
                                     <FormControl>
-                                        <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+                                        <FormLabel id="demo-row-radio-buttons-group-label">Gender *</FormLabel>
                                         <RadioGroup
                                             row
                                             aria-labelledby="demo-row-radio-buttons-group-label"
@@ -340,6 +343,7 @@ export default function Register() {
                                             />
                                         </RadioGroup>
                                     </FormControl>
+
                                     <TextField
                                         id="email"
                                         label="Email"
@@ -349,9 +353,10 @@ export default function Register() {
                                         onChange={() => handleChange("email", inputRefEmail.current?.value)}
                                         required
                                     />
+
                                     <FormControl variant="standard">
                                         <InputLabel htmlFor="standard-adornment-password">
-                                            Password
+                                            Password *
                                         </InputLabel>
                                         <Input
                                             id="password"
@@ -372,6 +377,7 @@ export default function Register() {
                                             required
                                         />
                                     </FormControl>
+
                                     <Button 
                                         sx={styles.button}
                                         onClick={formik.handleSubmit}

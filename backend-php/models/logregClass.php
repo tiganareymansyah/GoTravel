@@ -83,30 +83,32 @@
 
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if(password_verify($params['password'], $result['password'])) {
-                    $payload = array(
-                        "email" => $result['email'],
-                        "loginDate" => date('Y-m-d H:i:s')
-                    );
-        
-                    $token = Utilities::jwtEncode($payload);;
-                    $result['token'] = $token;
-
-                    $dataUserLogin = array(
-                        "id_user" => $result['id_user'],
-                        "fullname" => $result['fullname'],
-                        "date_of_birth" => $result['tbt'],
-                        "gender" => $result['gender'],
-                        "email" => $result['email'],
-                        "created_at" => $result['created_at'],
-                        "token" => $result['token']
-                        // "token_expiration" => time() + 60 // 1 menit
-                        // "token_expiration" => time() + 24 * 60 * 60 // 1 hari
-                    );
-
-                    return $dataUserLogin;
-                } else {
-                    return false;
+                if($result) {
+                    if(password_verify($params['password'], $result['password'])) {
+                        $payload = array(
+                            "email" => $result['email'],
+                            "loginDate" => date('Y-m-d H:i:s')
+                        );
+            
+                        $token = Utilities::jwtEncode($payload);;
+                        $result['token'] = $token;
+    
+                        $dataUserLogin = array(
+                            "id_user" => $result['id_user'],
+                            "fullname" => $result['fullname'],
+                            "date_of_birth" => $result['tbt'],
+                            "gender" => $result['gender'],
+                            "email" => $result['email'],
+                            "created_at" => $result['created_at'],
+                            "token" => $result['token']
+                            // "token_expiration" => time() + 60 // 1 menit
+                            // "token_expiration" => time() + 24 * 60 * 60 // 1 hari
+                        );
+    
+                        return $dataUserLogin;
+                    } else {
+                        return false;
+                    }
                 }
             } catch (Exception $e) {
                 throw $e;

@@ -60,12 +60,12 @@ export const sectionTouristDestination = (
                                 container: (baseStyles, state) => ({
                                     ...baseStyles,
                                     fontSize: 20,
+                                    width: "47%",
                                 }),
                                 control: (baseStyles, state) => ({
                                     ...baseStyles,
                                     textIndent: "10px",
                                     // backgroundColor: state.isDisabled && "#d8d4d4",
-                                    width: "300px"
                                 }),
                                 singleValue: (baseStyles, state) => ({
                                     ...baseStyles,
@@ -88,12 +88,12 @@ export const sectionTouristDestination = (
                                 container: (baseStyles, state) => ({
                                     ...baseStyles,
                                     fontSize: 20,
+                                    width: "47%",
                                 }),
                                 control: (baseStyles, state) => ({
                                     ...baseStyles,
                                     textIndent: "10px",
                                     // backgroundColor: state.isDisabled && "#d8d4d4",
-                                    width: "300px"
                                 }),
                                 singleValue: (baseStyles, state) => ({
                                     ...baseStyles,

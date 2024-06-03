@@ -17,11 +17,15 @@ export default function FormBooking(props) {
 
     const [step, setStep] = useState(0);
     const [selectState, setSelectState] = useState({
+        touristDestination: {
+            selectedState: "",
+            states: [],
+        },
         touristTransportation: {
             selectedState: "",
             states: [],
         },
-        touristDestination: {
+        unitTransportation: {
             selectedState: "",
             states: [],
         },
@@ -30,6 +34,7 @@ export default function FormBooking(props) {
             states: [],
         },
     });
+    const [selectedData, setSelectedData] = useState([]);
 
     const inputRefFullName = useRef(null);
     const inputRefNik = useRef(null);
@@ -49,7 +54,7 @@ export default function FormBooking(props) {
         initialValues: {
             touristDestination: "", 
             touristTransportation: "", 
-            touristLading: "", 
+            unitTransportation: "", 
             fullName: "", 
             nik: "", 
             email: "", 
@@ -86,7 +91,15 @@ export default function FormBooking(props) {
 
     useEffect(() => {
         if(selectState.touristTransportation.selectedState) {
-            formik.setFieldValue("touristLading", selectState.touristTransportation.selectedState.muatan)
+            const max = selectState.touristTransportation.selectedState.stok;
+            const unitTransportation = Array.from({ length: max }, (_, i) => ({ value: i + 1, label: (i + 1).toString() }));
+            setSelectState((prev) => ({
+                ...prev,
+                unitTransportation: {
+                    ...prev["unitTransportation"],
+                    states: unitTransportation,
+                },
+            }));
         }
     }, [selectState.touristTransportation.selectedState]);
 
@@ -99,6 +112,26 @@ export default function FormBooking(props) {
             formik.setFieldValue("biaya", inputRefBiaya.current?.value);
         }
     }, [step]);
+
+    useEffect(() => {
+        if(selectState.length !== 0) {
+            setSelectState((prev) => ({
+                ...prev,
+                touristDestination: {
+                  ...prev["touristDestination"],
+                  selectedState: "",
+                },
+                touristTransportation: {
+                  ...prev["touristTransportation"],
+                  selectedState: "",
+                },
+                unitTransportation: {
+                  ...prev["unitTransportation"],
+                  selectedState: "",
+                },
+            }));
+        }
+    }, [selectedData]);
 
     const getTouristDestination = async () => {
         try {
@@ -166,6 +199,22 @@ export default function FormBooking(props) {
         }
     };
 
+    const handleSelectedData = () => {
+        setSelectedData((prev) => ([
+            ...prev, 
+            {
+                no: prev.length, 
+                tujuan: selectState.touristDestination.selectedState.label,
+                transportasi: selectState.touristTransportation.selectedState.label, 
+                unit: selectState.unitTransportation.selectedState.label
+            }
+        ]));
+    };
+
+    const handleDelete = (id) => {
+        setSelectedData(prev => prev.filter(item => item.no !== id));
+    };
+
     const handleChangeSelectState = (name, state) => {
         setSelectState((prev) => ({
           ...prev,
@@ -218,7 +267,7 @@ export default function FormBooking(props) {
                 </Box>
 
                 <Box className={classes.containerFormBooking}>
-                    <Box sx={{ width: "100%", paddingTop: "32px" }}>
+                    <Box sx={{ width: "100%", paddingTop: "16px" }}>
                         <Stepper activeStep={step} alternativeLabel>
                             {stepDone.map((label) => (
                                 <Step key={label}>
@@ -243,7 +292,7 @@ export default function FormBooking(props) {
                         </Stepper>
                     </Box>
 
-                    <Box sx={{ paddingTop: "32px" }}>
+                    <Box sx={{ paddingTop: "16px" }}>
                         {step === 0 ? (
                             <>
                                 {sectionTouristDestination(
@@ -254,7 +303,10 @@ export default function FormBooking(props) {
                                     handleChangeSelectState, 
                                     hoveredOption, 
                                     handleMouseOver, 
-                                    handleMouseLeave 
+                                    handleMouseLeave, 
+                                    handleSelectedData, 
+                                    selectedData, 
+                                    handleDelete
                                 )}
                             </>
                         ) : step === 1 ? (

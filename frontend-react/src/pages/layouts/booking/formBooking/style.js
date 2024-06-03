@@ -74,7 +74,6 @@ export const useFormBookingStyles = makeStyles({
         padding: "16px", 
         boxSizing: "border-box", 
         width: "72%", 
-        height: "500px", 
         borderRadius: "8px", 
         backgroundColor: "#fff", 
         // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"
@@ -99,7 +98,7 @@ export const useFormBookingStyles = makeStyles({
 
     boxPrevOrNext: {
         paddingLeft: "5%", 
-        paddingTop: "48px", 
+        paddingTop: "24px", 
         display: "flex", 
         justifyContent: "space-between" 
     },

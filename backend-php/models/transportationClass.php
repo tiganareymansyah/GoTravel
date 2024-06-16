@@ -21,6 +21,8 @@
                     value,
                     nama_transportasi_wisata,
                     muatan,
+                    stok,
+                    harga,
                     created_at
 
                 ) VALUES (
@@ -28,6 +30,8 @@
                     :value,
                     :nama_transportasi_wisata,
                     :muatan,
+                    :stok,
+                    :harga,
                     NOW()
                 )";
 
@@ -38,6 +42,8 @@
                 $stmt->bindValue(":value", $params['value']);
                 $stmt->bindValue(":nama_transportasi_wisata", $params['nama_transportasi_wisata']);
                 $stmt->bindValue(":muatan", $params['muatan']);
+                $stmt->bindValue(":stok", $params['stok']);
+                $stmt->bindValue(":harga", $params['harga']);
                 $stmt->execute();
 
                 if ($stmt->rowCount() > 0) return true;
@@ -48,7 +54,7 @@
         }
 
         public function getOptionTransportation($params) {
-            $query = "SELECT value, nama_transportasi_wisata AS label, muatan, stok FROM tm_tourist_transportation";
+            $query = "SELECT value, nama_transportasi_wisata AS label, muatan, stok, harga FROM tm_tourist_transportation";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();

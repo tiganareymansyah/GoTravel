@@ -4,22 +4,18 @@ import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach2.jpg";
 
 export const sectionTouristPayment = (
-    props, 
     classes, 
     formik, 
     handleNext, 
     handlePrev, 
     selectState, 
-    handleChangeSelectState, 
-    inputRefBiaya 
+    handleChangeSelectState 
 ) => {
-    console.log(props);
-
     const styles = {
         label: {
-            fontWeight: "700",
+            fontWeight: "bold",
             fontSize: "18px",
-            letterSpacing: "1px"
+            fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"
         },
 
         textField: {
@@ -58,24 +54,45 @@ export const sectionTouristPayment = (
         },
     };
 
+    function formatToCurrency(price, currency) {
+        const numericPrice = Number(price);
+      
+        if (isNaN(numericPrice)) {
+            return "Invalid Price";
+        }
+      
+        if (currency) {
+            const formattedPrice = new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency,
+                currencyDisplay: "narrowSymbol",
+            }).format(numericPrice);
+      
+            const spaceSeparatedFormattedPrice = formattedPrice.replace(/\s+/g, " ");
+      
+            return spaceSeparatedFormattedPrice;
+        }
+      
+        return "";
+    };
+
     return (
         <Box className={classes.containerParent}>
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Biaya</Typography>
+                        <Typography variant="span" className="form-label" sx={styles.label}>Total Keseluruhan</Typography>
                         <TextField 
                             id="biaya"
                             name="biaya"
                             variant="outlined"
-                            defaultValue={"Rp.1.000.000,-"}
+                            value={formatToCurrency(formik?.values?.total, "IDR")}
                             InputProps={{
                                 classes: {
                                     disabled: classes.disabled,
                                     input: classes.inputUppercase,
                                 },
                             }}
-                            inputRef={inputRefBiaya}
                             sx={styles.textField}
                             disabled
                         />

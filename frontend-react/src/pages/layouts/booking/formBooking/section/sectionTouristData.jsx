@@ -15,9 +15,9 @@ export const sectionTouristData = (
 ) => {
     const styles = {
         label: {
-            fontWeight: "700",
+            fontWeight: "bold",
             fontSize: "18px",
-            letterSpacing: "1px" 
+            fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"
         },
 
         textField: {

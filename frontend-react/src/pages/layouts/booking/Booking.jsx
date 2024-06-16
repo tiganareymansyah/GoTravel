@@ -11,6 +11,7 @@ export default function Booking(props) {
 
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useBookingStyles({ isMobile });
+    
     const navigate = useNavigate();
 
     const styles = {
@@ -100,9 +101,7 @@ export default function Booking(props) {
                                 </Typography>
                             </Box>
                         )}
-
                     </Box>
-
                 </Box>
             </Box>
         </>

@@ -2,6 +2,7 @@ import {
     Box, 
     Button, 
     Divider, 
+    InputAdornment, 
     Paper, 
     Table, 
     TableBody, 
@@ -9,6 +10,7 @@ import {
     TableContainer, 
     TableHead, 
     TableRow, 
+    TextField, 
     Typography 
 } from "@mui/material";
 import { ArrowForward, Delete, Save } from "@mui/icons-material";
@@ -18,21 +20,23 @@ import KarikaturBeach from "../../../../../media/karikatur_beach.jpg";
 export const sectionTouristDestination = (
     isMobile, 
     classes, 
+    formik, 
     handleNext, 
     selectState, 
     handleChangeSelectState, 
     hoveredOption, 
     handleMouseOver, 
     handleMouseLeave, 
-    handleSelectedData, 
-    selectedData, 
-    handleDelete 
+    inputRefDurasi, 
+    handleListData, 
+    listData, 
+    handleListDelete 
 ) => {
     const styles = {
         label: {
-            fontWeight: "700",
+            fontWeight: "bold",
             fontSize: "18px",
-            letterSpacing: "1px"
+            fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif"
         },
 
         textField: {
@@ -83,7 +87,7 @@ export const sectionTouristDestination = (
         <Box className={classes.containerParent}>
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
-                    {selectedData?.length > 0 ? (
+                    {listData?.length > 0 ? (
                         <>
                             <Typography 
                                 variant="body1" 
@@ -98,8 +102,8 @@ export const sectionTouristDestination = (
                             <Box 
                                 className={classes.boxTouristData} 
                                 sx={{ 
-                                    height: selectedData.length >= 3 && "30vh", 
-                                    // overflowY: selectedData.length >= 3 && "scroll" 
+                                    height: listData.length >= 3 && "30vh", 
+                                    // overflowY: listData.length >= 3 && "scroll" 
                                 }}
                             >
                                 <TableContainer component={Paper} sx={{ maxHeight: "100%" }}>
@@ -110,24 +114,30 @@ export const sectionTouristDestination = (
                                                 <TableCell align="center" style={styles.tableCell}>Tujuan</TableCell>
                                                 <TableCell align="center" style={styles.tableCell}>Transportasi</TableCell>
                                                 <TableCell align="center" style={styles.tableCell}>Unit</TableCell>
+                                                <TableCell align="center" style={styles.tableCell}>Durasi</TableCell>
+                                                <TableCell align="center" style={styles.tableCell}>Satuan</TableCell>
+                                                <TableCell align="center" style={styles.tableCell}>Total</TableCell>
                                                 <TableCell align="center" style={styles.tableCell}>Aksi</TableCell>
                                             </TableRow>
                                         </TableHead>
 
                                         <TableBody>
-                                            {selectedData?.map((row, index) => (
+                                            {listData?.map((row, index) => (
                                                 <TableRow
                                                     key={index}
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
-                                                    <TableCell component="th" scope="row">{row.no + 1}.</TableCell>
+                                                    <TableCell component="th" scope="row">{index + 1}.</TableCell>
                                                     <TableCell align="center">{row.tujuan}</TableCell>
                                                     <TableCell align="center">{row.transportasi}</TableCell>
                                                     <TableCell align="center">{row.unit}</TableCell>
+                                                    <TableCell align="center">{row.durasi} hari</TableCell>
+                                                    <TableCell align="center">{row.satuan}</TableCell>
+                                                    <TableCell align="center">{row.total}</TableCell>
                                                     <TableCell align="center">
                                                         <Delete 
                                                             sx={{ cursor: "pointer" }} 
-                                                            onClick={() => handleDelete(index)}
+                                                            onClick={() => handleListDelete(index)}
                                                         />
                                                     </TableCell>
                                                 </TableRow>
@@ -291,45 +301,67 @@ export const sectionTouristDestination = (
                         />
                     </Box>
 
-                    {selectState.touristTransportation.selectedState !== "" && (
-                        <Box className={classes.boxTouristData}>
-                            <Typography variant="span" className="form-label" sx={styles.label}>Mau Berapa Transportasi</Typography>
-                            <Select 
-                                value={selectState.unitTransportation.selectedState}
-                                options={selectState.unitTransportation.states}
-                                onChange={(state) => {
-                                    handleChangeSelectState("unitTransportation", state);
-                                }}
-                                styles={{
-                                    container: (baseStyles, state) => ({
-                                        ...baseStyles,
-                                        fontSize: 20,
-                                        width: "47%",
-                                    }),
-                                    control: (baseStyles, state) => ({
-                                        ...baseStyles,
-                                        textIndent: "10px",
-                                    }),
-                                    singleValue: (baseStyles, state) => ({
-                                        ...baseStyles,
-                                        color: "#000000",
-                                    }),
-                                }}
-                                className="form-input"
-                            />
-                        </Box>
+                    {selectState.touristDestination.selectedState !== "" && 
+                    selectState.touristTransportation.selectedState !== "" && (
+                        <>
+                            <Box className={classes.boxTouristData}>
+                                <Typography variant="span" className="form-label" sx={styles.label}>Satuan Transportasi Wisata</Typography>
+                                <Select 
+                                    value={selectState.unitTransportation.selectedState}
+                                    options={selectState.unitTransportation.states}
+                                    onChange={(state) => {
+                                        handleChangeSelectState("unitTransportation", state);
+                                    }}
+                                    styles={{
+                                        container: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            fontSize: 20,
+                                            width: "47%",
+                                        }),
+                                        control: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            textIndent: "10px",
+                                        }),
+                                        singleValue: (baseStyles, state) => ({
+                                            ...baseStyles,
+                                            color: "#000000",
+                                        }),
+                                    }}
+                                    className="form-input"
+                                />
+                            </Box>
+
+                            <Box className={classes.boxTouristData}>
+                                <Typography variant="span" className="form-label" sx={styles.label}>Lama Wisata</Typography>
+                                <TextField 
+                                    id="lamaWisata"
+                                    name="lamaWisata"
+                                    placeholder="Input dalam jumlah hari"
+                                    type="number"
+                                    inputRef={inputRefDurasi}
+                                    defaultValue={formik?.values?.durasi}
+                                    onBlur={() => formik.setFieldValue("durasi", parseInt(inputRefDurasi.current?.value))}
+                                    inputProps={{ min: 1 }}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">Hari</InputAdornment>,
+                                    }}
+                                    required
+                                    sx={styles.textField}
+                                />
+                            </Box>
+                        </>
                     )}
 
                     <Box className={classes.boxPrevOrNext}>
                         <Button
                             sx={styles.buttonSave}
                             endIcon={<Save />}
-                            onClick={handleSelectedData}
+                            onClick={handleListData}
                         >
                             Simpan
                         </Button>
 
-                        {selectedData?.length > 0 && (
+                        {listData?.length > 0 && (
                             <Button
                                 sx={styles.buttonNext}
                                 endIcon={<ArrowForward />}

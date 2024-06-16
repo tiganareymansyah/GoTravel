@@ -12,6 +12,8 @@ import { useFormik } from "formik";
 import { apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation } from "../../../../api/api";
 
 export default function FormBooking(props) {
+    console.log(props);
+
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useFormBookingStyles({ isMobile });
 
@@ -34,14 +36,16 @@ export default function FormBooking(props) {
             states: [],
         },
     });
-    const [selectedData, setSelectedData] = useState([]);
+    const [listData, setListData] = useState([]);
 
+    const inputRefDurasi = useRef(null);
     const inputRefFullName = useRef(null);
     const inputRefNik = useRef(null);
     const inputRefEmail = useRef(null);
     const inputRefNomorHp = useRef(null);
     const inputRefAlamat = useRef(null);
-    const inputRefBiaya = useRef(null);
+
+    let total = 0;
     
     const navigate = useNavigate();
     const stepDone = [
@@ -55,12 +59,14 @@ export default function FormBooking(props) {
             touristDestination: "", 
             touristTransportation: "", 
             unitTransportation: "", 
+            durasi: "", 
+            listData: listData, 
             fullName: "", 
             nik: "", 
             email: "", 
             nomorHp: "", 
             alamat: "", 
-            biaya: "", 
+            total: "", 
             paymentMethod: "", 
         },
     
@@ -109,12 +115,16 @@ export default function FormBooking(props) {
             getTouristTransportation();
         } else if(step === 2) {
             getPaymentMethod();
-            formik.setFieldValue("biaya", inputRefBiaya.current?.value);
+            
+            for(let a = 0; a < formik.values.listData.length; a++) {
+                total+=formik.values.listData[a].total;
+                formik.setFieldValue("total", total);
+            };
         }
     }, [step]);
 
     useEffect(() => {
-        if(selectState.length !== 0) {
+        if(listData.length !== 0) {
             setSelectState((prev) => ({
                 ...prev,
                 touristDestination: {
@@ -130,8 +140,9 @@ export default function FormBooking(props) {
                   selectedState: "",
                 },
             }));
+            formik.setFieldValue("durasi", "");
         }
-    }, [selectedData]);
+    }, [listData]);
 
     const getTouristDestination = async () => {
         try {
@@ -199,20 +210,33 @@ export default function FormBooking(props) {
         }
     };
 
-    const handleSelectedData = () => {
-        setSelectedData((prev) => ([
+    const handleListData = () => {
+        let hitungDurasi = (selectState.touristTransportation.selectedState.harga / 2) * formik.values.durasi;
+        let totalHarga;
+
+        if(formik.values.durasi === 1) {
+            totalHarga = selectState.touristTransportation.selectedState.harga * 
+            formik.values.unitTransportation;
+        } else {
+            totalHarga = selectState.touristTransportation.selectedState.harga * 
+            formik.values.unitTransportation + hitungDurasi;
+        }
+
+        setListData((prev) => ([
             ...prev, 
             {
-                no: prev.length, 
                 tujuan: selectState.touristDestination.selectedState.label,
                 transportasi: selectState.touristTransportation.selectedState.label, 
-                unit: selectState.unitTransportation.selectedState.label
+                unit: parseInt(selectState.unitTransportation.selectedState.label),
+                durasi: formik.values.durasi,
+                satuan: selectState.touristTransportation.selectedState.harga,
+                total: totalHarga
             }
         ]));
     };
 
-    const handleDelete = (id) => {
-        setSelectedData(prev => prev.filter(item => item.no !== id));
+    const handleListDelete = (index) => {
+        setListData(prev => prev.filter((_, i) => i !== index));
     };
 
     const handleChangeSelectState = (name, state) => {
@@ -228,7 +252,12 @@ export default function FormBooking(props) {
     };
 
     const handleNext = () => {
-        setStep(step + 1);
+        if(step === 0) {
+            formik.setFieldValue("listData", listData);
+            setStep(step + 1);
+        } else {
+            setStep(step + 1);
+        }
     };
 
     const handlePrev = () => {
@@ -298,15 +327,17 @@ export default function FormBooking(props) {
                                 {sectionTouristDestination(
                                     isMobile, 
                                     classes, 
+                                    formik, 
                                     handleNext, 
                                     selectState, 
                                     handleChangeSelectState, 
                                     hoveredOption, 
                                     handleMouseOver, 
                                     handleMouseLeave, 
-                                    handleSelectedData, 
-                                    selectedData, 
-                                    handleDelete
+                                    inputRefDurasi, 
+                                    handleListData, 
+                                    listData, 
+                                    handleListDelete
                                 )}
                             </>
                         ) : step === 1 ? (
@@ -326,14 +357,12 @@ export default function FormBooking(props) {
                         ) : step === 2 ? (
                             <>
                                 {sectionTouristPayment(
-                                    props, 
                                     classes, 
                                     formik, 
                                     handleNext, 
                                     handlePrev, 
                                     selectState, 
-                                    handleChangeSelectState, 
-                                    inputRefBiaya 
+                                    handleChangeSelectState 
                                 )}
                             </>
                         ) : (

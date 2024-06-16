@@ -7,8 +7,6 @@ import FormBooking from "./layouts/booking/formBooking/FormBooking";
 
 export default function GoTravelIndex(props) {
     const pathname = useLocation().pathname;
-    
-    console.log(pathname);
 
     const contohData = {
         nama: "Tigana Reymansyah",
@@ -29,7 +27,7 @@ export default function GoTravelIndex(props) {
             ) : pathname === "/contact" ? (
                 <Contact userLogin={props.userLogin} />
             ) : pathname === "/booking/form-booking" ? (
-                <FormBooking userLogin={props.userLogin} />
+                <FormBooking userLogin={props.userLogin} dataRequest={contohData} />
             ) : ( 
                 console.log("Not Found")
             )}

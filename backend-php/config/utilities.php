@@ -35,5 +35,14 @@
 
             return $token;
         }
+
+        public static function OTP()
+        {
+            if (function_exists('com_create_otp') === true) {
+                return trim(com_create_otp(), '{}');
+            }
+
+            return sprintf('%06d', mt_rand(0, 999999));
+        }
     }
 ?>

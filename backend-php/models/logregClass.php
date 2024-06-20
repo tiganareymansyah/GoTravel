@@ -1,6 +1,7 @@
 <?php
     include_once __DIR__ . "/../config/connectDb.php";
     include_once __DIR__ . "/../config/utilities.php";
+    include_once __DIR__ . "/../config/config.php";
 
     class LogregClass {
         private $connection;
@@ -20,11 +21,24 @@
 
                 $stmtSelect = $this->connection->prepare($querySelect);
                 $stmtSelect->execute();
-                $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+                $cekEmail = $stmtSelect->fetchAll(PDO::FETCH_ASSOC);
 
-                if($cekEmail['email'] === $params['email']) {
+                $emailExists = false;
+                foreach ($cekEmail as $row) {
+                    if ($row['email'] === $params['email']) {
+                        $emailExists = true;
+                        break;
+                    }
+                }
+
+                if($emailExists) {
                     return "data found";
                 } else {
+                    $kode_otp = Utilities::OTP();
+
+                    $instanceEmail = new Email();
+                    $sendEmail = $instanceEmail->sendEmail($params, $kode_otp);
+
                     $query = "INSERT INTO login_user (
                         id_user,
                         fullname,
@@ -32,6 +46,7 @@
                         gender,
                         email,
                         password,
+                        kode_otp,
                         created_at
     
                     ) VALUES (
@@ -41,6 +56,7 @@
                         :gender,
                         :email,
                         :password,
+                        :kode_otp,
                         NOW()
                     )";
     
@@ -48,11 +64,12 @@
     
                     $stmt = $this->connection->prepare($query);
                     $stmt->bindValue(":id_user", $id_user);
-                    $stmt->bindValue(":fullname", $params['fullname']);
+                    $stmt->bindValue(":fullname", strtolower($params['fullname']));
                     $stmt->bindValue(":tbt", $params['tbt']);
                     $stmt->bindValue(":gender", strtoupper($params['gender']));
                     $stmt->bindValue(":email", $params['email']);
                     $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
+                    $stmt->bindValue(":kode_otp", $kode_otp);
                     $stmt->execute();
     
                     if ($stmt->rowCount() > 0) return true;

@@ -23,6 +23,7 @@ import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import logoGoTravel from "../../../media/logo_gotravel1.png";
 
 export default function Login() {
   const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -191,7 +192,8 @@ export default function Login() {
         <Box className={classes.containerRoot}>
           <Box className={classes.containerNavbarLogin}>
             <Box className={classes.navbarIcon}>
-              <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p>
+              {/* <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p> */}
+              <img src={logoGoTravel} width={70} height={70} style={{ paddingBottom: "16px" }} />
               <p style={styles.judulNavbarLogin}>
                 Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
               </p>
@@ -204,7 +206,10 @@ export default function Login() {
                   sx={{ 
                     color: "#fff", 
                     cursor: "pointer",
-                    paddingRight: "32px" 
+                    paddingRight: "32px", 
+                    "&:hover": {
+                      color: `${orange[100]}`
+                    }
                   }} 
                   onClick={(e) => {
                     e.preventDefault();

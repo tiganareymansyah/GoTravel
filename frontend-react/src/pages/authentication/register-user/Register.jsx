@@ -30,6 +30,8 @@ import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import InputMask from "react-input-mask";
 import "react-datepicker/dist/react-datepicker.css";
+import logoGoTravel from "../../../media/logo_gotravel1.png";
+import Alert from "../../../components/Alert/Alert.jsx";
 
 export default function Register() {
     const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -116,6 +118,10 @@ export default function Register() {
     };
 
     const [showPassword, setShowPassword] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
 
     const inputRefFullName = useRef(null);
     const inputRefEmail = useRef(null);
@@ -145,21 +151,42 @@ export default function Register() {
         },
     });
 
+    const handleAlert = (open, severity, title, message) => {
+        setOpenAlert(open);
+        setSeverity(severity);
+        setTitle(title);
+        setMessage(message);
+    }
+    
+    const handleCloseAlert = () => {
+        setOpenAlert(false);
+        if(severity === "successNoReload") {
+            location.href = "/";
+        } else {
+            navigate("/");
+        }
+    }
+
     const handleRegister = async (data) => {
         try {
             const result = await apiRegisterAccount({
                 body: JSON.stringify(data)
             });
 
-            const { status, message } = result;
+            const { code, status, message } = result;
 
             if (status === "success") {
-                alert("Register Berhasil");
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Sukses",
+                    message
+                );
             } else {
                 console.log(message);
             }
         } catch (err) {
-            throw err
+            console.log(err);
         }
     }
     
@@ -186,7 +213,8 @@ export default function Register() {
                 <Box className={classes.containerRoot}>
                     <Box className={classes.containerNavbarRegister}>
                         <Box className={classes.navbarIcon}>
-                            <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p>
+                            {/* <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p> */}
+                            <img src={logoGoTravel} width={70} height={70} style={{ paddingBottom: "16px" }} />
                             <p style={styles.judulNavbarRegister}>
                                 Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
                             </p>
@@ -394,6 +422,16 @@ export default function Register() {
                     </Box>
                 </Box>
             </Box>
+
+            {openAlert && (
+                <Alert
+                    open={openAlert}
+                    close={handleCloseAlert}
+                    severity={severity}
+                    title={title}
+                    message={message}
+                />    
+            )}
         </>    
     )
 }

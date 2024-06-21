@@ -16,6 +16,7 @@ import { orange } from "@mui/material/colors";
 import { useNavbarStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import logoGoTravel from "../../media/logo_gotravel1.png";
 
 export default function Navbar() {
   const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -105,7 +106,8 @@ export default function Navbar() {
     <Box className={classes.root}>
       <Box className={classes.containerBar}>
         <Box className={classes.boxIcon}>
-          <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p>
+          {/* <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p> */}
+          <img src={logoGoTravel} width={70} height={70} style={{ paddingBottom: "16px" }} />
           <p className={classes.textIcon}>
             Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
           </p>

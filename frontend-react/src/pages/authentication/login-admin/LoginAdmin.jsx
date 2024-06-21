@@ -20,6 +20,7 @@ import { useMediaQuery } from "react-responsive";
 import MoveContent from "../../../components/MoveContent/MoveContent.jsx";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import logoGoTravel from "../../../media/logo_gotravel1.png";
 
 export default function LoginAdmin() {
   const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -178,9 +179,8 @@ export default function LoginAdmin() {
         <Box className={classes.containerRoot}>
           <Box className={classes.containerNavbarLoginAdmin}>
             <Box className={classes.navbarIcon}>
-              <p>
-                <AirportShuttle fontSize="large" sx={{ color: "#fff" }} />
-              </p>
+              {/* <p><AirportShuttle fontSize="large" sx={{ color: "#fff" }} /></p> */}
+              <img src={logoGoTravel} width={70} height={70} style={{ paddingBottom: "16px" }} />
               <p style={styles.judulNavbarLoginAdmin}>
                 Go<Box sx={{ color: `${orange[100]}` }}>Travel</Box>
               </p>

@@ -2,41 +2,25 @@ import { makeStyles } from "@mui/styles";
 
 export const useAlertStyles = makeStyles({
     rowContainer: {
+        paddingTop: "32px",
         display: "flex",
         flexDirection: "column",
-        gap: "20px",
+        gap: "16px",
         justifyContent: "center",
         alignItems: "center",
         width: props => props.isMobile ? "150px" : "250px"
     },
 
+    dialogTitle: {
+        position: "relative"
+    },
+
     iconClose : {
+        cursor: "pointer",
         position: "absolute",
-        right: 8,
-        top: 8,
-        color: "white",
-        borderRadius: "8px",
-        backgroundColor: "#aaa",
-        padding: "5px",
-        "&:hover": {
-            backgroundColor: "#white",
-        },
-    },
-
-    iconSuccess: {
-        fontSize: "150px",
-        color: "white",
-        backgroundColor: "#A5DD9B",
-        padding: 5,
-        borderRadius: "50%",
-    },
-
-    iconError: {
-        fontSize: "150px",
-        color: "white",
-        backgroundColor: "#D24545",
-        padding: 5,
-        borderRadius: "50%",
+        right: "0px",
+        top: "0px",
+        color: "#000"
     },
 
     textTitle: {
@@ -47,9 +31,10 @@ export const useAlertStyles = makeStyles({
     },
 
     textMessage: {
+        textAlign: "center",
         fontFamily: "sans-serif",
         fontSize: "16px",
-        color: props => props.isMobile ? "red" : "blue"
+        fontWeight: "bold"
     },
 
     textRedirect: {

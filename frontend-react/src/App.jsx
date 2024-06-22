@@ -4,9 +4,12 @@ import Login from './pages/authentication/login-user/Login.jsx';
 import Register from './pages/authentication/register-user/Register.jsx';
 import LoginAdmin from './pages/authentication/login-admin/LoginAdmin.jsx';
 import GoTravelIndex from "./pages/index.jsx";
+import Loader from "./components/Loader/Loader.jsx";
 
 export default function App() {
   const [userLogin, setUserLogin] = useState(localStorage.getItem("userLogin") ? JSON.parse(localStorage.getItem("userLogin")) : null);
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,18 +48,23 @@ export default function App() {
     return () => clearInterval(intervalId);
   }, [userLogin]);
 
+  const doLoad = () => {
+    setLoading((prev) => !prev);
+  };
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/admin" element={<LoginAdmin />} />
+        <Route path="/" element={<Login doLoad={doLoad} />} />
+        <Route path="/register" element={<Register doLoad={doLoad} />} />
+        <Route path="/admin" element={<LoginAdmin doLoad={doLoad} />} />
         <Route path="/dashboard" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/booking" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/about" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/contact" element={<GoTravelIndex userLogin={userLogin} />} />
         <Route path="/booking/form-booking" element={<GoTravelIndex userLogin={userLogin} />} />
       </Routes>
+      <Loader open={loading} />
     </>
   );
 }

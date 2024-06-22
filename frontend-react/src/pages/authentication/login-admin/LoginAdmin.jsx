@@ -22,7 +22,7 @@ import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import logoGoTravel from "../../../media/logo_gotravel1.png";
 
-export default function LoginAdmin() {
+export default function LoginAdmin(props) {
   const isMobile = useMediaQuery({ maxWidth: 991 });
   const classes = useLoginAdminStyles({ isMobile });
 
@@ -136,7 +136,7 @@ export default function LoginAdmin() {
 
   const handleCloseAlert = () => {
     setOpenAlert(false);
-    if(severity === "successNoReload") {
+    if(severity === "success") {
       location.href = "/booking";
     } else {
       navigate("/admin");
@@ -144,12 +144,13 @@ export default function LoginAdmin() {
   };
 
   const handleLoginAdmin = async (params) => {
+    props.doLoad();
     try {
       const result = await apiLoginAdminAccount({
         body: JSON.stringify(params),
       });
 
-      const { status, message, data } = result;
+      const { code, status, message, data } = result;
 
       if (status === "success") {
         Promise.all([
@@ -160,12 +161,21 @@ export default function LoginAdmin() {
           ),
         ]);
 
-        handleAlert(true, "successNoReload", "Sukses", message);
-      } else {
-        handleAlert(true, "error", "Gagal", message);
+        handleAlert(
+          true, 
+          "success", 
+          "Success", 
+          message
+        );
+        props.doLoad();
       }
     } catch (err) {
-      console.log(err);
+      handleAlert(
+        true,
+        "error",
+        "Error",
+        err.response.data.message
+      );
     }
   };
 

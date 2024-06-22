@@ -25,7 +25,7 @@ import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import logoGoTravel from "../../../media/logo_gotravel1.png";
 
-export default function Login() {
+export default function Login(props) {
   const isMobile = useMediaQuery({ maxWidth: 991 });
   const classes = useLoginStyles({ isMobile });
 
@@ -142,7 +142,7 @@ export default function Login() {
 
   const handleCloseAlert = () => {
     setOpenAlert(false);
-    if(severity === "successNoReload") {
+    if(severity === "success") {
       location.href = "/booking";
     } else {
       navigate("/");
@@ -150,12 +150,13 @@ export default function Login() {
   }
 
   const handleLoginUser = async (params) => {
+    props.doLoad();
     try {
       const result = await apiLoginUserAccount({
         body: JSON.stringify(params)
       });
 
-      const { status, message, data } = result;
+      const { code, status, message, data } = result;
 
       if(status === "success") {
         Promise.all([
@@ -165,20 +166,20 @@ export default function Login() {
         
         handleAlert(
           true,
-          "successNoReload",
-          "Sukses",
+          "success",
+          "Success",
           message
         );
-      } else {
-        handleAlert(
-          true,
-          "error",
-          "Gagal",
-          message
-        );
+        props.doLoad();
       }
     } catch (err) {
-      console.log(err);
+      handleAlert(
+        true,
+        "error",
+        "Error",
+        "Email atau sandi anda salah"
+      );
+      props.doLoad();
     }
   };
 

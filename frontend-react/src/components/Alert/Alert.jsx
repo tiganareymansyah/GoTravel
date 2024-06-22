@@ -50,17 +50,34 @@ export default function Alert({ open, close, severity, title, message }) {
                 },
             }}
         >
-            <DialogTitle>
-                <IconButton aria-label="close" onClick={close} className={classes.iconClose}>
-                    <Close />
-                </IconButton>
+            <DialogTitle className={classes.dialogTitle}>
+                <Close 
+                    onClick={close} 
+                    className={classes.iconClose} 
+                    sx={{
+                        backgroundColor: "#bbb",
+                        padding: "4px",
+                        borderRadius: "16px",
+                        "&:hover": {
+                            backgroundColor: "#aaa"
+                        }
+                    }}
+                />
             </DialogTitle>
   
             <DialogContent>
                 <Box className={classes.rowContainer}>
                     {severity === "success" && (
                         <>
-                            <Check className={classes.iconSuccess} />
+                            <Check 
+                                sx={{
+                                    fontSize: 100,
+                                    color: "white",
+                                    backgroundColor: "#A5DD9B",
+                                    padding: 5,
+                                    borderRadius: "50%",
+                                }}
+                            />
                             <p className={classes.textTitle}>{title}</p>
                             <p className={classes.textMessage}>{message}</p>
                             <p className={classes.textRedirect}>Redirect dalam : {redirectCount}</p>
@@ -69,7 +86,15 @@ export default function Alert({ open, close, severity, title, message }) {
 
                     {severity === "successNoReload" && (
                         <>
-                            <Check className={classes.iconSuccess} />
+                            <Check 
+                                sx={{
+                                    fontSize: 100,
+                                    color: "white",
+                                    backgroundColor: "#A5DD9B",
+                                    padding: 5,
+                                    borderRadius: "50%",
+                                }}
+                            />
                             <p className={classes.textTitle}>{title}</p>
                             <p className={classes.textMessage}>{message}</p>
                         </>
@@ -77,7 +102,15 @@ export default function Alert({ open, close, severity, title, message }) {
 
                     {severity === "error" && (
                         <>
-                            <Close className={classes.iconError} />
+                            <Close 
+                                sx={{
+                                    fontSize: 100,
+                                    color: "white",
+                                    backgroundColor: "#b81414",
+                                    padding: 3,
+                                    borderRadius: "50%",
+                                }}
+                            />
                             <p className={classes.textTitle}>{title}</p>
                             <p className={classes.textMessage}>{message}</p>
                         </>

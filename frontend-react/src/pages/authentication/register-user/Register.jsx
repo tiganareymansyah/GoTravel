@@ -32,8 +32,10 @@ import InputMask from "react-input-mask";
 import "react-datepicker/dist/react-datepicker.css";
 import logoGoTravel from "../../../media/logo_gotravel1.png";
 import Alert from "../../../components/Alert/Alert.jsx";
+import FormOtp from "../../../components/FormOtp/FormOtp.jsx";
+import { formatDateYYYYMMDD } from "../../../services/utils.js";
 
-export default function Register() {
+export default function Register(props) {
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useRegisterStyles({ isMobile });
 
@@ -122,6 +124,7 @@ export default function Register() {
     const [severity, setSeverity] = useState("");
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [openDialogOTP, setOpenDialogOTP] = useState(false);
 
     const inputRefFullName = useRef(null);
     const inputRefEmail = useRef(null);
@@ -147,7 +150,15 @@ export default function Register() {
         },
     
         onSubmit: async (values) => {
-          handleRegister(values);
+            let body = {
+                fullname: values.fullname,
+                tbt: formatDateYYYYMMDD(values.tbt),
+                gender: values.gender,
+                email: values.email,
+                password: values.password,
+            }
+            
+            handleRegister(body);
         },
     });
 
@@ -162,12 +173,15 @@ export default function Register() {
         setOpenAlert(false);
         if(severity === "successNoReload") {
             location.href = "/";
+        } else if(severity === "error") {
+            navigate("/register");
         } else {
             navigate("/");
         }
     }
 
     const handleRegister = async (data) => {
+        props.doLoad();
         try {
             const result = await apiRegisterAccount({
                 body: JSON.stringify(data)
@@ -176,17 +190,19 @@ export default function Register() {
             const { code, status, message } = result;
 
             if (status === "success") {
-                handleAlert(
-                    true,
-                    "successNoReload",
-                    "Sukses",
-                    message
-                );
-            } else {
-                console.log(message);
+                setOpenDialogOTP(true);
+                props.doLoad();
             }
         } catch (err) {
-            console.log(err);
+            if (err.response && err.response.data && err.response.data.message) {
+                handleAlert(
+                    true,
+                    "error",
+                    "Error",
+                    err.response.data.message
+                );
+                props.doLoad();
+            }
         }
     }
     
@@ -204,6 +220,10 @@ export default function Register() {
     };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleCloseDialogOTP = () => {
+        setOpenDialogOTP(false);
+    }
 
     console.log(formik.values);
 
@@ -431,6 +451,14 @@ export default function Register() {
                     title={title}
                     message={message}
                 />    
+            )}
+
+            {openDialogOTP && (
+                <FormOtp
+                    props={props}
+                    email={formik.values.email}
+                    handleClose={handleCloseDialogOTP}
+                />
             )}
         </>    
     )

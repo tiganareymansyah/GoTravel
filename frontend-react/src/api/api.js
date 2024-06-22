@@ -56,6 +56,23 @@ export async function apiLoginAdminAccount({ body }) {
     }
 }
 
+export async function apiValidationOtp({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/user/otp",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function apiGetTouristTransportation() {
     try {
         const response = await axios({

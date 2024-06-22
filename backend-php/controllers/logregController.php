@@ -154,5 +154,26 @@
                 );
             }
         }
+
+        public function ValidationOtp($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->validationOtp($params);
+
+            if ($logregResult == false) {
+                http_response_code(401);
+                return array(
+                    "code" => 401,
+                    "status" => "failed",
+                    "message" => "Otp yang anda inputkan salah"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200,
+                    "status" => "success",
+                    "message" => "Otp yang anda inputkan benar"
+                );
+            }
+        } 
     }
 ?>

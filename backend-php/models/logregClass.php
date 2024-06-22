@@ -17,22 +17,56 @@
 
         public function registerUser($params) {
             try {
-                $querySelect = "SELECT email FROM login_user";
+                $querySelect = "SELECT * FROM login_user";
 
                 $stmtSelect = $this->connection->prepare($querySelect);
                 $stmtSelect->execute();
                 $cekEmail = $stmtSelect->fetchAll(PDO::FETCH_ASSOC);
 
                 $emailExists = false;
+                $is_success = 0;
                 foreach ($cekEmail as $row) {
                     if ($row['email'] === $params['email']) {
                         $emailExists = true;
+                        $is_success = $row['is_success'];
                         break;
                     }
                 }
 
                 if($emailExists) {
-                    return "data found";
+                    if($is_success === 1) {
+                        return "data found";
+                    } else {
+                        $kode_otp = Utilities::OTP();
+
+                        $instanceEmail = new Email();
+                        $sendEmail = $instanceEmail->sendEmail($params, $kode_otp);
+
+                        $queryUpdate = "UPDATE login_user SET 
+                            id_user = :id_user, 
+                            fullname = :fullname, 
+                            tbt = :tbt, 
+                            gender = :gender, 
+                            password = :password, 
+                            kode_otp = :kode_otp 
+                            WHERE email = :email
+                        ";
+        
+                        $id_user = Utilities::generateGUID();;
+
+                        $stmt = $this->connection->prepare($queryUpdate);
+                        $stmt->bindValue(":id_user", $id_user);
+                        $stmt->bindValue(":fullname", strtolower($params['fullname']));
+                        $stmt->bindValue(":tbt", $params['tbt']);
+                        $stmt->bindValue(":gender", strtoupper($params['gender']));
+                        $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
+                        $stmt->bindValue(":kode_otp", $kode_otp);
+                        $stmt->bindValue(":email", $params['email']);
+                        $stmt->execute();
+        
+                        if ($stmt->rowCount() > 0) return true;
+                        else return false;
+                    }
                 } else {
                     $kode_otp = Utilities::OTP();
 
@@ -47,6 +81,7 @@
                         email,
                         password,
                         kode_otp,
+                        is_success,
                         created_at
     
                     ) VALUES (
@@ -57,6 +92,7 @@
                         :email,
                         :password,
                         :kode_otp,
+                        :is_success,
                         NOW()
                     )";
     
@@ -70,6 +106,7 @@
                     $stmt->bindValue(":email", $params['email']);
                     $stmt->bindValue(":password", password_hash($params['password'], PASSWORD_DEFAULT));
                     $stmt->bindValue(":kode_otp", $kode_otp);
+                    $stmt->bindValue(":is_success", 0);
                     $stmt->execute();
     
                     if ($stmt->rowCount() > 0) return true;
@@ -229,6 +266,45 @@
                     } else {
                         return false;
                     }
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        public function validationOtp($params) {
+            try {
+                $querySelect = "SELECT * FROM login_user";
+
+                $stmtSelect = $this->connection->prepare($querySelect);
+                $stmtSelect->execute();
+                $cekEmail = $stmtSelect->fetchAll(PDO::FETCH_ASSOC);
+
+                $emailTrue = false;
+                foreach ($cekEmail as $row) {
+                    if ($row['email'] === $params['email'] && 
+                    $row['kode_otp'] === $params['kode_otp']) {
+                        $emailTrue = true;
+                        break;
+                    }
+                }
+
+                if($emailTrue) {
+                    $queryUpdate = "UPDATE login_user SET 
+                        is_success = :is_success 
+                        WHERE email = :email
+                    ";
+
+                    $id_user = Utilities::generateGUID();;
+
+                    $stmt = $this->connection->prepare($queryUpdate);
+                    $stmt->bindValue(":is_success", 1);
+                    $stmt->bindValue(":email", $params['email']);
+                    $stmt->execute();
+
+                    return true;
                 } else {
                     return false;
                 }

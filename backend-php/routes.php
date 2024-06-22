@@ -23,6 +23,11 @@
                 $data = $logregController->LoginUser($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] == "otp") {
+                $logregController = new LogregController();
+                $data = $logregController->ValidationOtp($jsonParams);
+                
+                $result = $data;
             } else {
                 throw new Exception('Invalid Endpoint');
             }

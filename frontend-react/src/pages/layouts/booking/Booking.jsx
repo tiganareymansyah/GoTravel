@@ -1,10 +1,11 @@
-import { Box, Button, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Button, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { Add } from '@mui/icons-material';
 import Navbar from "../../../components/navbar/Navbar";
 import { useMediaQuery } from "react-responsive";
 import { useBookingStyles } from "./style";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
+import { capitalizeWords, formatDateToCustomString } from "../../../services/utils";
 
 export default function Booking(props) {
     console.log(props);
@@ -48,8 +49,6 @@ export default function Booking(props) {
         },
     };
 
-    let data = "ada";
-
     return (
         <>
             <Box className={classes.bookingBackground}>
@@ -69,18 +68,80 @@ export default function Booking(props) {
                             </Button>
                         </Box>
 
-                        {data === "ada" ? (
+                        {props?.dataBooking?.length > 0 ? (
                             <>
                                 <Box className={classes.setCard}>
-                                    <Box className={classes.boxCard}>
-                                        Data 1
-                                    </Box>
-                                    <Box className={classes.boxCard}>
-                                        Data 2
-                                    </Box>
-                                    <Box className={classes.boxCard}>
-                                        Data 3
-                                    </Box>
+                                    {props?.dataBooking?.map((data) => (
+                                        <Box className={classes.boxCard}>
+                                            <Box className={classes.cardHeader}>
+                                                <Typography>{data.kode_booking}</Typography>
+                                                <Typography
+                                                    sx={{
+                                                        backgroundColor: "grey",
+                                                        color: "white",
+                                                        padding: "5px",
+                                                        borderRadius: "5px",
+                                                    }}
+                                                >
+                                                    {capitalizeWords("Belum Bayar")}
+                                                </Typography>
+                                            </Box>
+
+                                            <Divider
+                                                flexItem
+                                                sx={{ 
+                                                    width: "90%", 
+                                                    margin: "auto", 
+                                                    paddingTop: "8px" 
+                                                }}
+                                            />
+
+                                            <Box className={classes.cardBody}>
+                                                <Typography>
+                                                    {capitalizeWords(data.nama_lengkap)}
+                                                </Typography>
+                                                <Typography>
+                                                    {capitalizeWords(data.alamat)}
+                                                </Typography>
+                                                {/* <Box>
+                                                    <Chip
+                                                        label="Pembayaran"
+                                                        sx={{
+                                                            marginLeft: "8px",
+                                                            marginTop: "16px",
+                                                        }}
+                                                    />
+                                                </Box> */}
+                                                <Typography
+                                                    sx={{
+                                                        fontFamily: "Nunito Sans",
+                                                        marginTop: "20px",
+                                                        textDecoration: "underline #00f",
+                                                        color: "blue",
+                                                    }}
+                                                >
+                                                    {capitalizeWords("pembayaran")}
+                                                </Typography>
+                                                <Box
+                                                    sx={{
+                                                    textTransform: "capitalize",
+                                                    padding: "10px",
+                                                    marginTop: "100px",
+                                                    width: "100%",
+                                                    textAlign: "end",
+                                                    boxSizing: "border-box",
+                                                    }}
+                                                >
+                                                    <Typography>
+                                                        Tanggal Pembookingan
+                                                    </Typography>
+                                                    <Typography sx={{ paddingTop: "16px" }}>
+                                                        {formatDateToCustomString(data.created_at)}
+                                                    </Typography>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    ))}
                                 </Box>
                                 <Stack spacing={2} sx={styles.stackPagination}>
                                     <Pagination 

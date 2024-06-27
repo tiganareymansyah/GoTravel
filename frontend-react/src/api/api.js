@@ -120,3 +120,36 @@ export async function apiGetPaymentMethod() {
         throw error;
     }
 }
+
+export async function apiRequestDataBooking({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/request/add-data-booking",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiGetDataBooking() {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + "/request/get-data-booking",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

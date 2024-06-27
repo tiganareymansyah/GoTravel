@@ -9,7 +9,7 @@ import { sectionTouristDestination } from "./section/sectionTouristDestination";
 import { sectionTouristData } from "./section/sectionTouristData";
 import { sectionTouristPayment } from "./section/sectionTouristPayment";
 import { useFormik } from "formik";
-import { apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation } from "../../../../api/api";
+import { apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiRequestDataBooking } from "../../../../api/api";
 
 export default function FormBooking(props) {
     console.log(props);
@@ -36,6 +36,7 @@ export default function FormBooking(props) {
             states: [],
         },
     });
+    const [hoveredOption, setHoveredOption] = useState(null);
     const [listData, setListData] = useState([]);
 
     const inputRefDurasi = useRef(null);
@@ -144,6 +145,30 @@ export default function FormBooking(props) {
         }
     }, [listData]);
 
+    const handleNext = () => {
+        if(step === 0) {
+            formik.setFieldValue("listData", listData);
+            setStep(step + 1);
+        } else if (step === 1) {
+            handleRequestDataBooking();
+            location.href = "/booking";
+        } else {
+            setStep(step + 1);
+        }
+    };
+
+    const handlePrev = () => {
+        step === 0 ? setStep(0) : setStep(step - 1);
+    };
+
+    const handleMouseOver = (option) => {
+        setHoveredOption(option);
+    };
+
+    const handleMouseLeave = () => {
+        setHoveredOption(null);
+    };
+
     const getTouristDestination = async () => {
         try {
             const record = await apiGetTouristDestination();
@@ -251,27 +276,32 @@ export default function FormBooking(props) {
         formik.setFieldValue(name, state.value);
     };
 
-    const handleNext = () => {
-        if(step === 0) {
-            formik.setFieldValue("listData", listData);
-            setStep(step + 1);
-        } else {
-            setStep(step + 1);
+    const handleRequestDataBooking = async () => {
+        props.doLoad();
+        try {
+            let payload = {
+                data_perjalanan: formik.values.listData,
+                nama_lengkap: formik.values.fullName,
+                nik: formik.values.nik,
+                email: formik.values.email,
+                nomor_hp: formik.values.nomorHp,
+                alamat: formik.values.alamat
+            }
+
+            const result = await apiRequestDataBooking({
+                body: JSON.stringify(payload)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                window.alert("Berhasil");
+                props.doLoad();
+            }
+        } catch (err) {
+            console.log(err);
+            props.doLoad();
         }
-    };
-
-    const handlePrev = () => {
-        step === 0 ? setStep(0) : setStep(step - 1);
-    };
-
-    const [hoveredOption, setHoveredOption] = useState(null);
-
-    const handleMouseOver = (option) => {
-        setHoveredOption(option);
-    };
-
-    const handleMouseLeave = () => {
-        setHoveredOption(null);
     };
 
     console.log(formik.values);

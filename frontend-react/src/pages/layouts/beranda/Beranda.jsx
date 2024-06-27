@@ -13,7 +13,7 @@ export default function Beranda(props) {
         <>
             <Box className={classes.berandaBackground}>
                 <Navbar />
-                <Box>Home</Box>
+                <Box>Dashboard</Box>
             </Box>
         </>
     )

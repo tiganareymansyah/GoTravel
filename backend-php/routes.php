@@ -91,6 +91,21 @@
                 
                 $result = $data;
             }
+        } else if($paths[3] === "request") {
+            include_once __DIR__ . '/controllers/dataBookingController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "add-data-booking") {
+                $dataBookingController = new DataBookingController();
+                $data = $dataBookingController->AddDataBooking($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "get-data-booking") {
+                $dataBookingController = new DataBookingController();
+                $data = $dataBookingController->GetDataBooking($jsonParams);
+                
+                $result = $data;
+            }
         } else {
             throw new Exception('Invalid Route');
         }

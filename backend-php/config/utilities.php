@@ -44,5 +44,44 @@
 
             return sprintf('%06d', mt_rand(0, 999999));
         }
+
+        public static function generateBookingCode($lastCode) {
+            // $datePart = substr($lastBookingCode, 0, 6);
+            // $counterPart = substr($lastBookingCode, 6);
+        
+            // $currentDate = date('ymd');
+            
+            // if ($datePart !== $currentDate) {
+            //     $newCounterPart = str_pad('0', 10, '0', STR_PAD_LEFT);
+            // } else {
+            //     $newCounterPart = str_pad((int)$counterPart + 1, 10, '0', STR_PAD_LEFT);
+            // }
+        
+            // $newBookingCode = $currentDate . $newCounterPart;
+        
+            // return $newBookingCode;
+
+            // Extract date and counter parts
+            $datePart = substr($lastCode, 0, 6);
+            $counterPart = substr($lastCode, 6);
+
+            // Get current date in the same format
+            $currentDate = date('ymd');
+
+            // Check if the date part is different from the current date
+            if ($datePart !== $currentDate) {
+                // If date is different, reset counter to 0000000000
+                $newCounterPart = str_pad('0', 10, '0', STR_PAD_LEFT);
+            } else {
+                // If date is the same, increment the counter
+                $newCounterPart = str_pad((int)$counterPart + 1, 10, '0', STR_PAD_LEFT);
+            }
+
+            // Combine the date part and the new counter part
+            $newCode = $currentDate . $newCounterPart;
+
+            return $newCode;
+
+        }
     }
 ?>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box, Button, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { Add } from '@mui/icons-material';
 import Navbar from "../../../components/navbar/Navbar";
@@ -12,7 +13,9 @@ export default function Booking(props) {
 
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useBookingStyles({ isMobile });
-    
+
+    const [page, setPage] = useState(1);
+
     const navigate = useNavigate();
 
     const styles = {
@@ -49,6 +52,13 @@ export default function Booking(props) {
         },
     };
 
+    const handleChangePage = (event, value) => {
+        setPage(value);
+    };
+
+    const totalPages = Math.ceil(props?.dataBooking?.length / 3);
+    const dataBooking = props?.dataBooking?.slice((page - 1) * 3, page * 3);
+
     return (
         <>
             <Box className={classes.bookingBackground}>
@@ -68,10 +78,10 @@ export default function Booking(props) {
                             </Button>
                         </Box>
 
-                        {props?.dataBooking?.length > 0 ? (
+                        {dataBooking?.length > 0 ? (
                             <>
                                 <Box className={classes.setCard}>
-                                    {props?.dataBooking?.map((data) => (
+                                    {dataBooking?.map((data) => (
                                         <Box className={classes.boxCard}>
                                             <Box className={classes.cardHeader}>
                                                 <Typography>{data.kode_booking}</Typography>
@@ -145,7 +155,9 @@ export default function Booking(props) {
                                 </Box>
                                 <Stack spacing={2} sx={styles.stackPagination}>
                                     <Pagination 
-                                        count={10} 
+                                        count={totalPages} 
+                                        page={page} 
+                                        onChange={handleChangePage} 
                                         variant="outlined" 
                                         sx={styles.pagination}
                                     />

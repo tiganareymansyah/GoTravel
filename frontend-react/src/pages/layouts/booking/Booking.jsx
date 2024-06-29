@@ -48,6 +48,11 @@ export default function Booking(props) {
                     backgroundColor: "#fff", 
                     borderColor: "#fff", 
                 },
+                "&:hover": {
+                    color: orange[100], 
+                    backgroundColor: "#0000", 
+                    border: "none" 
+                }
             }
         },
     };

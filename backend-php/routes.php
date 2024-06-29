@@ -90,6 +90,11 @@
                 $data = $paymentMethodController->GetOptionPaymentMethod($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] === "get-kode-payment") {
+                $paymentMethodController = new PaymentMethodController();
+                $data = $paymentMethodController->GetKodePayment();
+                
+                $result = $data;
             }
         } else if($paths[3] === "request") {
             include_once __DIR__ . '/controllers/dataBookingController.php';

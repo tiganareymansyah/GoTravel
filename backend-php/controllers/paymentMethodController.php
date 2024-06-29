@@ -54,5 +54,27 @@
                 );
             }
         }
+
+        public function GetKodePayment() {
+            $paymentMethodClass = new PaymentMethodClass();
+            $paymentMethodResult = $paymentMethodClass->getKodePayment();
+
+            if ($paymentMethodResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Pembuatan kode pembayaran gagal"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Pembuatan kode pembayaran berhasil",
+                    "data" => $paymentMethodResult
+                );
+            }
+        }
     }
 ?>

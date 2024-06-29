@@ -61,8 +61,42 @@
                 $stmt->bindValue(":alamat", $params['alamat']);
                 $stmt->execute();
 
-                if ($stmt->rowCount() > 0) return true;
-                else return false;
+                if ($stmt->rowCount() > 0) {
+                    $total = 0;
+                    foreach ($params['data_perjalanan'] as $index => $perjalanan) {
+                        $total += $perjalanan['total'];
+                    }
+
+                    $query1 = "INSERT INTO payment (
+                        id,
+                        kode_pembayaran,
+                        kode_booking,
+                        metode_pembayaran,
+                        total_bayar,
+                        created_at
+    
+                    ) VALUES (
+                        :id,
+                        :kode_pembayaran,
+                        $kode_booking,
+                        :metode_pembayaran,
+                        $total,
+                        NOW()
+                    )";
+
+                    $id_payment = Utilities::generateGUID();
+    
+                    $stmt1 = $this->connection->prepare($query1);
+                    $stmt1->bindValue(":id", $id_payment);
+                    $stmt1->bindValue(":kode_pembayaran", $params['kode_pembayaran']);
+                    $stmt1->bindValue(":metode_pembayaran", $params['metode_pembayaran']);
+                    $stmt1->execute();
+
+                    if ($stmt1->rowCount() > 0) return true;
+                    else return false;
+                } else {
+                    return false;
+                }
             } catch (Exception $e) {
                 throw $e;
             }

@@ -9,7 +9,8 @@ import { sectionTouristDestination } from "./section/sectionTouristDestination";
 import { sectionTouristData } from "./section/sectionTouristData";
 import { sectionTouristPayment } from "./section/sectionTouristPayment";
 import { useFormik } from "formik";
-import { apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiRequestDataBooking } from "../../../../api/api";
+import { apiGetKodePembayaran, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiRequestDataBooking } from "../../../../api/api";
+import Alert from "../../../../components/Alert/Alert";
 
 export default function FormBooking(props) {
     console.log(props);
@@ -38,6 +39,11 @@ export default function FormBooking(props) {
     });
     const [hoveredOption, setHoveredOption] = useState(null);
     const [listData, setListData] = useState([]);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
+    const [kodePembayaran, setKodePembayaran] = useState("");
 
     const inputRefDurasi = useRef(null);
     const inputRefFullName = useRef(null);
@@ -145,13 +151,47 @@ export default function FormBooking(props) {
         }
     }, [listData]);
 
+    const handleAlert = (open, severity, title, message) => {
+        setOpenAlert(open);
+        setSeverity(severity);
+        setTitle(title);
+        setMessage(message);
+    }
+    
+    const handleCloseAlert = async (cek) => {
+        if(cek === "lanjut") {
+            props.doLoad();
+            try {
+                const result = await apiGetKodePembayaran();
+
+                const { code, status, message, data } = result;
+
+                if(status === "success") {
+                    setKodePembayaran(data);
+                    setStep(step + 1);
+                    setOpenAlert(false);
+                    props.doLoad();
+                }
+            } catch (err) {
+                console.log(err);
+                props.doLoad();
+            }
+        } else {
+            setOpenAlert(false);
+        }
+    }
+
     const handleNext = () => {
         if(step === 0) {
             formik.setFieldValue("listData", listData);
             setStep(step + 1);
         } else if (step === 1) {
-            handleRequestDataBooking();
-            location.href = "/booking";
+            handleAlert(
+                true,
+                "choose",
+                "Peringatan",
+                "Pastikan data yang diisi semua sudah sesuai dengan keinginan anda, sebelum lanjut ke tahap pembayaran."
+            );
         } else {
             setStep(step + 1);
         }
@@ -285,7 +325,9 @@ export default function FormBooking(props) {
                 nik: formik.values.nik,
                 email: formik.values.email,
                 nomor_hp: formik.values.nomorHp,
-                alamat: formik.values.alamat
+                alamat: formik.values.alamat,
+                kode_pembayaran: kodePembayaran,
+                metode_pembayaran: formik.values.paymentMethod
             }
 
             const result = await apiRequestDataBooking({
@@ -389,10 +431,10 @@ export default function FormBooking(props) {
                                 {sectionTouristPayment(
                                     classes, 
                                     formik, 
-                                    handleNext, 
-                                    handlePrev, 
+                                    handleRequestDataBooking, 
                                     selectState, 
-                                    handleChangeSelectState 
+                                    handleChangeSelectState, 
+                                    kodePembayaran 
                                 )}
                             </>
                         ) : (
@@ -405,6 +447,16 @@ export default function FormBooking(props) {
                     <footer style={styles.footer}>&copy; 2024. Tigana Reymansyah</footer>
                 </Box>
             </Box>
+
+            {openAlert && (
+                <Alert 
+                    open={openAlert}
+                    close={handleCloseAlert}
+                    severity={severity}
+                    title={title}
+                    message={message}
+                />
+            )}
         </>
     );
 };

@@ -2,13 +2,13 @@ import { makeStyles } from "@mui/styles";
 
 export const useAlertStyles = makeStyles({
     rowContainer: {
-        paddingTop: "32px",
+        paddingTop: "16px",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
         justifyContent: "center",
         alignItems: "center",
-        width: props => props.isMobile ? "150px" : "250px"
+        width: props => props.isMobile ? "150px" : "300px"
     },
 
     dialogTitle: {
@@ -23,22 +23,9 @@ export const useAlertStyles = makeStyles({
         color: "#000"
     },
 
-    textTitle: {
-        fontFamily: "sans-serif",
-        fontSize: "24px",
-        fontWeight: "bold",
-        textTransform: "uppercase",
-    },
-
-    textMessage: {
-        textAlign: "center",
-        fontFamily: "sans-serif",
-        fontSize: "16px",
-        fontWeight: "bold"
-    },
-
-    textRedirect: {
-        fontFamily: "sans-serif",
-        fontSize: "12px",
-    },
+    boxButton: {
+        paddingTop: "24px",
+        display: "flex",
+        gap: "128px"
+    }
 });

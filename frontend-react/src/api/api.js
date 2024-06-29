@@ -121,6 +121,22 @@ export async function apiGetPaymentMethod() {
     }
 }
 
+export async function apiGetKodePembayaran() {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/paymeth/get-kode-payment",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function apiRequestDataBooking({ body }) {
     try {
         const response = await axios({

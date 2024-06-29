@@ -53,5 +53,11 @@
             if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
             else return false;
         }
+
+        public function getKodePayment() {
+            $kode_pembayaran = Utilities::generatePaymentCode();
+
+            return $kode_pembayaran ?? false;
+        }
     }
 ?>

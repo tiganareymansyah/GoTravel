@@ -83,5 +83,9 @@
             return $newCode;
 
         }
+
+        public static function generatePaymentCode() {
+            return str_pad(mt_rand(0, 999999), 6, '0', STR_PAD_LEFT);
+        }
     }
 ?>

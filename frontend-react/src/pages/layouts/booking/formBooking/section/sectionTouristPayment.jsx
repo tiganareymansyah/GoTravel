@@ -6,10 +6,10 @@ import KarikaturBeach from "../../../../../media/karikatur_beach2.jpg";
 export const sectionTouristPayment = (
     classes, 
     formik, 
-    handleNext, 
-    handlePrev, 
+    handleRequestDataBooking, 
     selectState, 
-    handleChangeSelectState 
+    handleChangeSelectState, 
+    kodePembayaran 
 ) => {
     const styles = {
         label: {
@@ -81,6 +81,24 @@ export const sectionTouristPayment = (
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
                     <Box className={classes.boxTouristData}>
+                        <Typography variant="span" className="form-label" sx={styles.label}>Kode Pembayaran</Typography>
+                        <TextField 
+                            id="kodePembayaran"
+                            name="kodePembayaran"
+                            variant="outlined"
+                            value={kodePembayaran}
+                            InputProps={{
+                                classes: {
+                                    disabled: classes.disabled,
+                                    input: classes.inputUppercase,
+                                },
+                            }}
+                            sx={styles.textField}
+                            disabled
+                        />
+                    </Box>
+
+                    <Box className={classes.boxTouristData}>
                         <Typography variant="span" className="form-label" sx={styles.label}>Total Keseluruhan</Typography>
                         <TextField 
                             id="biaya"
@@ -127,20 +145,13 @@ export const sectionTouristPayment = (
                     </Box>
 
                     <Box className={classes.boxPrevOrNext}>
-                        <Button
-                            sx={styles.buttonPrev}
-                            startIcon={<ArrowBack />}
-                            onClick={handlePrev}
-                        >
-                            Kembali
-                        </Button>
-
+                        <Box />
                         <Button
                             sx={styles.buttonNext}
                             endIcon={<ArrowForward />}
-                            onClick={handleNext}
+                            onClick={handleRequestDataBooking}
                         >
-                            Lanjut
+                            Submit
                         </Button>
                     </Box>
                 </Box>

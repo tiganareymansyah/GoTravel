@@ -51,7 +51,7 @@ export default function Booking(props) {
                 "&:hover": {
                     color: orange[100], 
                     backgroundColor: "#0000", 
-                    border: "none" 
+                    borderColor: orange[100] 
                 }
             }
         },
@@ -63,6 +63,10 @@ export default function Booking(props) {
 
     const totalPages = Math.ceil(props?.dataBooking?.length / 3);
     const dataBooking = props?.dataBooking?.slice((page - 1) * 3, page * 3);
+
+    const handleRequestByKodeBooking = (data) => {
+        console.log(data);
+    };
 
     return (
         <>
@@ -87,7 +91,10 @@ export default function Booking(props) {
                             <>
                                 <Box className={classes.setCard}>
                                     {dataBooking?.map((data) => (
-                                        <Box className={classes.boxCard}>
+                                        <Box 
+                                            className={classes.boxCard}
+                                            onClick={() => handleRequestByKodeBooking(data)}
+                                        >
                                             <Box className={classes.cardHeader}>
                                                 <Typography>{data.kode_booking}</Typography>
                                                 <Typography

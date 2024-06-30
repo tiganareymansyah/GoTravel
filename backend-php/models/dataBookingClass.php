@@ -1,6 +1,7 @@
 <?php
     include_once __DIR__ . "/../config/connectDb.php";
     include_once __DIR__ . "/../config/utilities.php";
+    include_once __DIR__ . "/../config/config.php";
 
     class DataBookingClass {
         private $connection;
@@ -63,43 +64,116 @@
 
                 if ($stmt->rowCount() > 0) {
                     $total = 0;
+
                     foreach ($params['data_perjalanan'] as $index => $perjalanan) {
                         $total += $perjalanan['total'];
                     }
 
-                    $query1 = "INSERT INTO payment (
-                        id,
-                        kode_pembayaran,
-                        kode_booking,
-                        metode_pembayaran,
-                        total_bayar,
-                        created_at
-    
-                    ) VALUES (
-                        :id,
-                        :kode_pembayaran,
-                        $kode_booking,
-                        :metode_pembayaran,
-                        $total,
-                        NOW()
-                    )";
+                    foreach ($params['data_perjalanan'] as $index => $data) {
+                        $getDuration = $data['durasi'] * 86400;
+                        $duration = $getDuration;
+                        $mulai_booking = date('Y-m-d H:i:s');
+                        $akhir_booking = date('Y-m-d H:i:s', strtotime($mulai_booking) + $duration);
+                        $id_transportasi = $data['transportasi'];
 
-                    $id_payment = Utilities::generateGUID();
-    
-                    $stmt1 = $this->connection->prepare($query1);
-                    $stmt1->bindValue(":id", $id_payment);
-                    $stmt1->bindValue(":kode_pembayaran", $params['kode_pembayaran']);
-                    $stmt1->bindValue(":metode_pembayaran", $params['metode_pembayaran']);
-                    $stmt1->execute();
+                        $updateStok = $this->checkStokTransportation($data['transportasi']);
 
-                    if ($stmt1->rowCount() > 0) return true;
-                    else return false;
+                        if($updateStok) {
+                            $query1 = "INSERT INTO payment (
+                                id,
+                                kode_pembayaran,
+                                kode_booking,
+                                metode_pembayaran,
+                                total_bayar,
+                                id_transportasi,
+                                mulai_booking,
+                                akhir_booking,
+                                created_at
+            
+                            ) VALUES (
+                                :id,
+                                :kode_pembayaran,
+                                $kode_booking,
+                                :metode_pembayaran,
+                                $total,
+                                :id_transportasi,
+                                :mulai_booking,
+                                :akhir_booking,
+                                NOW()
+                            )";
+        
+                            $id_payment = Utilities::generateGUID();
+            
+                            $stmt1 = $this->connection->prepare($query1);
+                            $stmt1->bindValue(":id", $id_payment);
+                            $stmt1->bindValue(":kode_pembayaran", $params['kode_pembayaran']);
+                            $stmt1->bindValue(":metode_pembayaran", $params['metode_pembayaran']);
+                            $stmt1->bindValue(":id_transportasi", $id_transportasi);
+                            $stmt1->bindValue(":mulai_booking", $mulai_booking);
+                            $stmt1->bindValue(":akhir_booking", $akhir_booking);
+                            $stmt1->execute();
+    
+                            if ($stmt1->rowCount() <= 0) {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+
+                    $this->handleSendEmailSuccessBooking($params);
+                    return true;
                 } else {
                     return false;
                 }
             } catch (Exception $e) {
                 throw $e;
             }
+        }
+
+        public function checkStokTransportation($id) {
+            $queryCheckId = "SELECT stok FROM tm_tourist_transportation WHERE id = :id";
+
+            $stmt = $this->connection->prepare($queryCheckId);
+            $stmt->bindValue(":id", $id);
+            $stmt->execute();
+
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $stokNow = $row['stok'] - 1;
+
+            $queryUpdate = "UPDATE tm_tourist_transportation SET 
+                stok = :stok
+                WHERE id = :id
+            ";
+
+            $stmt1 = $this->connection->prepare($queryUpdate);
+            $stmt1->bindValue(":stok", $stokNow);
+            $stmt1->bindValue(":id", $id);
+            $stmt1->execute();
+
+            if($stmt1->rowCount() > 0) return true;
+            else return false;
+        }
+
+        public function handleSendEmailSuccessBooking($data) {
+            $query = "SELECT db.*, 
+                p.*,
+                tmtt.*
+                FROM data_booking db
+                LEFT JOIN payment p ON db.kode_booking = p.kode_booking 
+                LEFT JOIN tm_tourist_transportation tmtt ON p.id_transportasi = tmtt.id 
+                WHERE db.nik = :nik
+            ";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":nik", $data['nik']);
+            $stmt->execute();
+
+            $params = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $instanceEmail = new Email();
+            $sendEmailSuccessBooking = $instanceEmail->sendEmailSuccessBooking($params);
         }
 
         public function getDataBooking($params) {

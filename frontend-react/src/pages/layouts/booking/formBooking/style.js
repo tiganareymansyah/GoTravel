@@ -7,14 +7,16 @@ export const useFormBookingStyles = makeStyles({
         backgroundSize: "cover", 
         backgroundRepeat: "no-repeat", 
         backgroundPosition: "center", 
-        minHeight: "100vh" 
+        minHeight: "110vh" 
     },
 
     containerNavbarFormBooking: {
         backgroundColor: "#0005",
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        position: "sticky",
+        top: 0
     },
 
     buttonBack: {

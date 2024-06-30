@@ -54,7 +54,10 @@
         }
 
         public function getOptionTransportation($params) {
-            $query = "SELECT value, nama_transportasi_wisata AS label, muatan, stok, harga FROM tm_tourist_transportation";
+            $query = "SELECT id AS value, nama_transportasi_wisata AS label, muatan, stok, harga 
+                FROM tm_tourist_transportation 
+                ORDER BY harga ASC
+            ";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();

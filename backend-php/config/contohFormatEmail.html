@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .divParent {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                height: 100vh;
+                font-family: sans-serif;
+            }
+            .divHeader {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 2px;
+            }
+            .divContent {
+                width: 50%;
+                display: flex;
+                align-self: center;
+            }
+            .divSalam {
+                text-align: right;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="divParent">
+            <div class="divHeader">
+                <img 
+                    src="../../frontend-react/src/media/logo_gotravel1.png" 
+                    width="96px"
+                    style="padding-bottom: 32px"
+                >
+                <div style="text-align: center; font-style: italic;">
+                    <strong>
+                        <span style="font-size: 24px">GoTravel</span>
+                    </strong>
+                </div>
+            </div>
+            <h3 style="text-align: center"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
+            <div class="divContent">
+                <div>
+                    <p style="text-transform: capitalize;">Halo, tigana reymansyah sihombing</p>
+                    <p style="text-indent: 32px;">
+                        Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
+                        aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
+                        Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
+                        ataupun pulang berlibur nanti.
+                    </p><br />
+                    <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
+                    <p>Kode Booking : 2407010000000000</p>
+                    <p>Kode Pembayaran : 129012</p>
+                    <p style="text-transform: capitalize;">Nama Lengkap : tigana reymansyah sihombing</p>
+                    <p>Alamat : BTN Sitio-tio Hilir AMD Kalangan</p>
+                    <p>Email : fauziakbar5202@gmail.com</p>
+                    <p>Tanggal Pembayaran : 2024-07-01 00:00:42</p>
+                    <p>Biaya : 850000</p>
+                    <div class="divSalam">
+                        <p style="margin-top: 64px;">Salam Hangat,</p>
+                        <p style="font-style: italic;">GoTravel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

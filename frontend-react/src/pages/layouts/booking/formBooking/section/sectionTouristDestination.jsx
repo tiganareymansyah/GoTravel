@@ -122,26 +122,32 @@ export const sectionTouristDestination = (
                                         </TableHead>
 
                                         <TableBody>
-                                            {listData?.map((row, index) => (
-                                                <TableRow
-                                                    key={index}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell component="th" scope="row">{index + 1}.</TableCell>
-                                                    <TableCell align="center">{row.tujuan}</TableCell>
-                                                    <TableCell align="center">{row.transportasi}</TableCell>
-                                                    <TableCell align="center">{row.unit}</TableCell>
-                                                    <TableCell align="center">{row.durasi} hari</TableCell>
-                                                    <TableCell align="center">{row.satuan}</TableCell>
-                                                    <TableCell align="center">{row.total}</TableCell>
-                                                    <TableCell align="center">
-                                                        <Delete 
-                                                            sx={{ cursor: "pointer" }} 
-                                                            onClick={() => handleListDelete(index)}
-                                                        />
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
+                                            {listData?.map((row, index) => {
+                                                const matchedItem = selectState?.touristTransportation?.states?.find((f) => 
+                                                    f.value === row.transportasi
+                                                );
+                                                
+                                                return (
+                                                    <TableRow
+                                                        key={index}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell component="th" scope="row">{index + 1}.</TableCell>
+                                                        <TableCell align="center">{row.tujuan}</TableCell>
+                                                        <TableCell align="center">{matchedItem ? matchedItem.label : "Tidak ditemukan"}</TableCell>
+                                                        <TableCell align="center">{row.unit}</TableCell>
+                                                        <TableCell align="center">{row.durasi} hari</TableCell>
+                                                        <TableCell align="center">{row.satuan}</TableCell>
+                                                        <TableCell align="center">{row.total}</TableCell>
+                                                        <TableCell align="center">
+                                                            <Delete 
+                                                                sx={{ cursor: "pointer" }} 
+                                                                onClick={() => handleListDelete(index)}
+                                                            />
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
@@ -183,7 +189,9 @@ export const sectionTouristDestination = (
                             value={selectState.touristTransportation.selectedState}
                             options={selectState.touristTransportation.states}
                             onChange={(state) => {
-                                handleChangeSelectState("touristTransportation", state);
+                                if (state.stok > 0) {
+                                    handleChangeSelectState("touristTransportation", state);
+                                }
                             }}
                             styles={{
                                 container: (baseStyles, state) => ({
@@ -202,71 +210,28 @@ export const sectionTouristDestination = (
                             }}
                             className="form-input"
                             components={{
-                                Option: ({ innerProps, label, data }) => (
-                                    <>
-                                        {isMobile ? (
-                                            <Box
-                                                {...innerProps}
-                                                sx={{
-                                                    padding: 1.5,
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        background: "#f0f0f0",
-                                                    },
-                                                }}
-                                            >
-                                                <div>{label}</div>
-                                                <div>
-                                                    <Divider sx={{ height: 2 }} />
-                                                    <Typography
-                                                        sx={{
-                                                            paddingLeft: "32px", 
-                                                            marginTop: "10px", 
-                                                            fontSize: "11px", 
-                                                            letterSpacing: "1px", 
-                                                            fontStyle: "italic",
-                                                            color: "#f00"  
-                                                        }}
-                                                        variant="body1"
-                                                    >
-                                                        Transportasi yang tersisa {data.stok} lagi
-                                                    </Typography>
+                                Option: ({ innerProps, label, data }) => {
+                                    const isDisabled = data.stok === 0;
 
-                                                    <Typography
-                                                        sx={{
-                                                            paddingLeft: "70px", 
-                                                            marginTop: "10px", 
-                                                            fontSize: "11px", 
-                                                            letterSpacing: "1px", 
-                                                            fontStyle: "italic",
-                                                            color: "#f00"  
-                                                        }}
-                                                        variant="body1"
-                                                    >
-                                                        Muatan {data.muatan} orang
-                                                    </Typography>
-                                                </div>
-                                            </Box>
-                                        ) : (
-                                            <Box
-                                                {...innerProps}
-                                                sx={{
-                                                    padding: 1.5,
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        background: "#f0f0f0",
-                                                    },
-                                                }}
-                                                onMouseOver={() => handleMouseOver(data)}
-                                                onMouseLeave={handleMouseLeave}
-                                            >
-                                                <div>{label}</div>
-                                                {hoveredOption === data && (
-                                                    <div>
+                                    return (
+                                        <>
+                                            {isMobile ? (
+                                                <Box
+                                                    {...innerProps}
+                                                    sx={{
+                                                        padding: 1.5,
+                                                        opacity: isDisabled ? 0.5 : 1,
+                                                        "&:hover": {
+                                                            background: isDisabled ? 'inherit' : '#f0f0f0',
+                                                        },
+                                                    }}
+                                                >
+                                                    <Box>{label}</Box>
+                                                    <Box>
                                                         <Divider sx={{ height: 2 }} />
                                                         <Typography
                                                             sx={{
-                                                                paddingLeft: "32px", 
+                                                                textAlign: "center", 
                                                                 marginTop: "10px", 
                                                                 fontSize: "11px", 
                                                                 letterSpacing: "1px", 
@@ -275,12 +240,15 @@ export const sectionTouristDestination = (
                                                             }}
                                                             variant="body1"
                                                         >
-                                                            Transportasi yang tersisa {data.stok} lagi
+                                                            {!isDisabled 
+                                                                ? `Transportasi yang tersisa ${data.stok} lagi`
+                                                                : "Transportasi tidak tersedia"
+                                                            }
                                                         </Typography>
-                    
+
                                                         <Typography
                                                             sx={{
-                                                                paddingLeft: "70px", 
+                                                                textAlign: "center", 
                                                                 marginTop: "10px", 
                                                                 fontSize: "11px", 
                                                                 letterSpacing: "1px", 
@@ -291,12 +259,63 @@ export const sectionTouristDestination = (
                                                         >
                                                             Muatan {data.muatan} orang
                                                         </Typography>
-                                                    </div>
-                                                )}
-                                            </Box>
-                                        )}
-                                    </>
-                                ),
+                                                    </Box>
+                                                </Box>
+                                            ) : (
+                                                <Box
+                                                    {...innerProps}
+                                                    sx={{
+                                                        padding: 1.5,
+                                                        cursor: isDisabled ? 'not-allowed' : 'pointer',
+                                                        opacity: isDisabled ? 0.5 : 1,
+                                                        "&:hover": {
+                                                            background: isDisabled ? 'inherit' : '#f0f0f0',
+                                                        },
+                                                    }}
+                                                    onMouseOver={() => handleMouseOver(data)}
+                                                    onMouseLeave={handleMouseLeave}
+                                                >
+                                                    <Box>{label}</Box>
+                                                    {hoveredOption === data && (
+                                                        <Box>
+                                                            <Divider sx={{ height: 2 }} />
+                                                            <Typography
+                                                                sx={{
+                                                                    textAlign: "center", 
+                                                                    marginTop: "10px", 
+                                                                    fontSize: "11px", 
+                                                                    letterSpacing: "1px", 
+                                                                    fontStyle: "italic",
+                                                                    color: "#f00"  
+                                                                }}
+                                                                variant="body1"
+                                                            >
+                                                                {!isDisabled 
+                                                                    ? `Transportasi yang tersisa ${data.stok} lagi`
+                                                                    : "Transportasi tidak tersedia"
+                                                                }
+                                                            </Typography>
+                        
+                                                            <Typography
+                                                                sx={{
+                                                                    textAlign: "center", 
+                                                                    marginTop: "10px", 
+                                                                    fontSize: "11px", 
+                                                                    letterSpacing: "1px", 
+                                                                    fontStyle: "italic",
+                                                                    color: "#f00"  
+                                                                }}
+                                                                variant="body1"
+                                                            >
+                                                                Muatan {data.muatan} orang
+                                                            </Typography>
+                                                        </Box>
+                                                    )}
+                                                </Box>
+                                            )}
+                                        </>
+                                    );
+                                },
                             }}
                         />
                     </Box>

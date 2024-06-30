@@ -291,7 +291,7 @@ export default function FormBooking(props) {
             ...prev, 
             {
                 tujuan: selectState.touristDestination.selectedState.label,
-                transportasi: selectState.touristTransportation.selectedState.label, 
+                transportasi: selectState.touristTransportation.selectedState.value, 
                 unit: parseInt(selectState.unitTransportation.selectedState.label),
                 durasi: formik.values.durasi,
                 satuan: selectState.touristTransportation.selectedState.harga,

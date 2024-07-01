@@ -62,39 +62,12 @@
                         <meta charset="utf-8" />
                         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                         <meta name="viewport" content="width=device-width, initial-scale=1" />
-                        <style>
-                            body {
-                                margin: 0;
-                                padding: 0;
-                            }
-                            .divParent {
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: center;
-                                height: 100vh;
-                                font-family: sans-serif;
-                            }
-                            .divHeader {
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                gap: 2px;
-                            }
-                            .divContent {
-                                width: 50%;
-                                display: flex;
-                                align-self: center;
-                            }
-                            .divSalam {
-                                text-align: right;
-                            }
-                        </style>
                     </head>
-                    <body>
-                        <div class="divParent">
-                            <div class="divHeader">
+                    <body style="margin: 0; padding: 0;">
+                        <div style="display: flex; flex-direction: column; justify-content: center; height: 100vh; font-family: sans-serif;">
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 2px;">
                                 <img 
-                                    src="../../frontend-react/src/media/logo_gotravel1.png" 
+                                    src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" 
                                     width="96px"
                                     style="padding-bottom: 32px"
                                 >
@@ -105,10 +78,10 @@
                                 </div>
                             </div>
                             <h3 style="text-align: center"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
-                            <div class="divContent">
+                            <div style="width: 50%; display: flex; align-self: center;">
                                 <div>
                                     <p style="text-transform: capitalize;">Halo, ' . $params['nama_lengkap'] . '</p>
-                                    <p style="text-indent: 32px;">
+                                    <p style="text-indent: 32px; text-align: justify;">
                                         Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
                                         aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
                                         Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
@@ -122,7 +95,7 @@
                                     <p>Email : ' . $params['email'] . '</p>
                                     <p>Tanggal Pembayaran : ' . $params['mulai_booking'] . '</p>
                                     <p>Biaya : ' . $params['total_bayar'] . '</p>
-                                    <div class="divSalam">
+                                    <div style="text-align: right;">
                                         <p style="margin-top: 64px;">Salam Hangat,</p>
                                         <p style="font-style: italic;">GoTravel</p>
                                     </div>

@@ -156,7 +156,14 @@ export const sectionTouristDestination = (
                     ) : null}
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Tujuan Wisata</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Tujuan Wisata
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <Select 
                             value={selectState.touristDestination.selectedState}
                             options={selectState.touristDestination.states}
@@ -184,7 +191,14 @@ export const sectionTouristDestination = (
                     </Box>
                     
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Transportasi Wisata</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Transportasi Wisata
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <Select 
                             value={selectState.touristTransportation.selectedState}
                             options={selectState.touristTransportation.states}
@@ -324,7 +338,14 @@ export const sectionTouristDestination = (
                     selectState.touristTransportation.selectedState !== "" && (
                         <>
                             <Box className={classes.boxTouristData}>
-                                <Typography variant="span" className="form-label" sx={styles.label}>Satuan Transportasi Wisata</Typography>
+                                <Typography 
+                                    variant="span" 
+                                    className="form-label" 
+                                    sx={styles.label}
+                                >
+                                    Satuan Transportasi Wisata
+                                    <span style={{ color: "red" }}>&nbsp;*</span>
+                                </Typography>
                                 <Select 
                                     value={selectState.unitTransportation.selectedState}
                                     options={selectState.unitTransportation.states}
@@ -351,7 +372,14 @@ export const sectionTouristDestination = (
                             </Box>
 
                             <Box className={classes.boxTouristData}>
-                                <Typography variant="span" className="form-label" sx={styles.label}>Lama Wisata</Typography>
+                                <Typography 
+                                    variant="span" 
+                                    className="form-label" 
+                                    sx={styles.label}
+                                >
+                                    Lama Wisata
+                                    <span style={{ color: "red" }}>&nbsp;*</span>
+                                </Typography>
                                 <TextField 
                                     id="lamaWisata"
                                     name="lamaWisata"

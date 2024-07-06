@@ -117,7 +117,13 @@ export const sectionTouristPayment = (
                     </Box>
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Metode Pembayaran</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Metode Pembayaran
+                        </Typography>
                         <Select 
                             value={selectState.paymentMethod.selectedState}
                             options={selectState.paymentMethod.states}

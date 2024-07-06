@@ -194,6 +194,22 @@ export default function Alert({ open, close, severity, title, message }) {
                             </Box>
                         </>
                     )}
+
+                    {severity === "warning" && (
+                        <>
+                            <PriorityHigh 
+                                sx={{
+                                    fontSize: 100,
+                                    color: "white",
+                                    backgroundColor: "#FFC700",
+                                    padding: 3,
+                                    borderRadius: "50%",
+                                }}
+                            />
+                            <Typography sx={styles.textTitle}>{title}</Typography>
+                            <Typography sx={styles.textMessage}>{message}</Typography>
+                        </>
+                    )}
                 </Box>
             </DialogContent>
         </Dialog>

@@ -16,7 +16,8 @@ export const useFormBookingStyles = makeStyles({
         justifyContent: "space-between",
         alignItems: "center",
         position: "sticky",
-        top: 0
+        top: 0,
+        zIndex: 1
     },
 
     buttonBack: {

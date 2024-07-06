@@ -147,7 +147,23 @@ export default function FormBooking(props) {
                   selectedState: "",
                 },
             }));
+
             formik.setFieldValue("durasi", "");
+
+            const updatedStates = selectState.touristTransportation.states.map(option => {
+                const matchedData = listData.find(data => data.transportasi === option.value);
+                if (matchedData) {
+                    return { ...option, stok: option.stok - matchedData.unit };
+                }
+                return option;
+            });
+            setSelectState(prevState => ({
+                ...prevState,
+                touristTransportation: {
+                    ...prevState.touristTransportation,
+                    states: updatedStates
+                }
+            }));
         }
     }, [listData]);
 
@@ -176,6 +192,8 @@ export default function FormBooking(props) {
                 console.log(err);
                 props.doLoad();
             }
+        } else if(severity === "successNoReload") {
+            location.href = "/booking";
         } else {
             setOpenAlert(false);
         }
@@ -186,12 +204,25 @@ export default function FormBooking(props) {
             formik.setFieldValue("listData", listData);
             setStep(step + 1);
         } else if (step === 1) {
-            handleAlert(
-                true,
-                "choose",
-                "Peringatan",
-                "Pastikan data yang diisi semua sudah sesuai dengan keinginan anda, sebelum lanjut ke tahap pembayaran."
-            );
+            if(formik.values.fullName === "" ||
+            formik.values.nik === "" ||
+            formik.values.email === "" ||
+            formik.values.nomorHp === "" ||
+            formik.values.alamat === "") {
+                handleAlert(
+                    true,
+                    "warning",
+                    "Pemberitahuan",
+                    "Form tidak boleh kosong"
+                );
+            } else {
+                handleAlert(
+                    true,
+                    "choose",
+                    "Peringatan",
+                    "Pastikan data yang diisi semua sudah sesuai dengan keinginan anda, sebelum lanjut ke tahap pembayaran."
+                );
+            }
         } else {
             setStep(step + 1);
         }
@@ -317,6 +348,17 @@ export default function FormBooking(props) {
     };
 
     const handleRequestDataBooking = async () => {
+        if(formik.values.paymentMethod === "") {
+            handleAlert(
+                true,
+                "warning",
+                "Pemberitahuan",
+                "Form tidak boleh kosong"
+            );
+            
+            return false;
+        }
+
         props.doLoad();
         try {
             let payload = {
@@ -337,7 +379,12 @@ export default function FormBooking(props) {
             const { code, status, message, data } = result;
 
             if(status === "success") {
-                window.alert("Berhasil");
+                handleAlert(
+                    true, 
+                    "successNoReload", 
+                    "Sukses", 
+                    "Data anda sudah terkirim"
+                );
                 props.doLoad();
             }
         } catch (err) {
@@ -348,6 +395,7 @@ export default function FormBooking(props) {
 
     console.log(formik.values);
     console.log(selectState);
+    console.log(listData);
 
     return (
         <>

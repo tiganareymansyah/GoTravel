@@ -54,7 +54,14 @@ export const sectionTouristData = (
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Nama Lengkap KTP</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Nama Lengkap KTP
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="namaLengkap"
                             name="namaLengkap"
@@ -69,7 +76,14 @@ export const sectionTouristData = (
                     </Box>
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>NIK</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            NIK
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="nik"
                             name="nik"
@@ -84,7 +98,14 @@ export const sectionTouristData = (
                     </Box>
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Email</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Email
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="email"
                             name="email"
@@ -99,7 +120,14 @@ export const sectionTouristData = (
                     </Box>
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Nomor HP</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Nomor HP
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="nomorHp"
                             name="nomorHp"
@@ -114,7 +142,14 @@ export const sectionTouristData = (
                     </Box>
                     
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Alamat</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Alamat
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="alamat"
                             name="alamat"

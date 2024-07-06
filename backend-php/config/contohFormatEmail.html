@@ -4,70 +4,38 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-            .divParent {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                height: 100vh;
-                font-family: sans-serif;
-            }
-            .divHeader {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 2px;
-            }
-            .divContent {
-                width: 50%;
-                display: flex;
-                align-self: center;
-            }
-            .divSalam {
-                text-align: right;
-            }
-        </style>
+        <title>Booking Confirmation</title>
     </head>
-    <body>
-        <div class="divParent">
-            <div class="divHeader">
-                <img 
-                    src="../../frontend-react/src/media/logo_gotravel1.png" 
-                    width="96px"
-                    style="padding-bottom: 32px"
-                >
+    <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <div style="text-align: center;">
+                <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
                 <div style="text-align: center; font-style: italic;">
                     <strong>
                         <span style="font-size: 24px">GoTravel</span>
                     </strong>
                 </div>
             </div>
-            <h3 style="text-align: center"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
-            <div class="divContent">
-                <div>
-                    <p style="text-transform: capitalize;">Halo, tigana reymansyah sihombing</p>
-                    <p style="text-indent: 32px; text-align: justify;">
-                        Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
-                        aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
-                        Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
-                        ataupun pulang berlibur nanti.
-                    </p><br />
-                    <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
-                    <p>Kode Booking : 2407010000000000</p>
-                    <p>Kode Pembayaran : 129012</p>
-                    <p style="text-transform: capitalize;">Nama Lengkap : tigana reymansyah sihombing</p>
-                    <p>Alamat : BTN Sitio-tio Hilir AMD Kalangan</p>
-                    <p>Email : fauziakbar5202@gmail.com</p>
-                    <p>Tanggal Pembayaran : 2024-07-01 00:00:42</p>
-                    <p>Biaya : 850000</p>
-                    <div class="divSalam">
-                        <p style="margin-top: 64px;">Salam Hangat,</p>
-                        <p style="font-style: italic;">GoTravel</p>
-                    </div>
+            <h3 style="text-align: center;"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
+            <div style="margin: 20px 0;">
+                <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                <p style="text-indent: 32px; text-align: justify;">
+                    Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
+                    aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
+                    Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
+                    ataupun pulang berlibur nanti.
+                </p><br />
+                <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
+                <p>Kode Booking : ' . htmlspecialchars($params['kode_booking']) . '</p>
+                <p>Kode Pembayaran : ' . htmlspecialchars($params['kode_pembayaran']) . '</p>
+                <p style="text-transform: capitalize;">Nama Lengkap : ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                <p>Alamat : ' . htmlspecialchars($params['alamat']) . '</p>
+                <p>Email : ' . htmlspecialchars($params['email']) . '</p>
+                <p>Tanggal Pembayaran : ' . htmlspecialchars($params['mulai_booking']) . '</p>
+                <p>Biaya : ' . htmlspecialchars($params['total_bayar']) . '</p>
+                <div style="text-align: right; margin-top: 64px;">
+                    <p>Salam Hangat,</p>
+                    <p style="font-style: italic;">GoTravel</p>
                 </div>
             </div>
         </div>

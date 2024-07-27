@@ -137,7 +137,7 @@ export default function LoginAdmin(props) {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "success") {
-      location.href = "/list-data-booking";
+      location.href = "/kelola-admin";
     } else {
       navigate("/admin");
     }

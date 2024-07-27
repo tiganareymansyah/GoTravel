@@ -45,7 +45,8 @@
         }
 
         public function getOptionDestination($params) {
-            $query = "SELECT value, nama_tujuan_wisata AS label FROM tm_tourist_destination";
+            // $query = "SELECT value, nama_tujuan_wisata AS label FROM tm_tourist_destination";
+            $query = "SELECT * FROM tm_tourist_destination";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();

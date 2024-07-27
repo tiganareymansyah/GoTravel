@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
 import {
   Box,
@@ -33,6 +33,10 @@ import logoGoTravel from "../../../media/logo_gotravel1.png";
 import { useMediaQuery } from "react-responsive";
 import { useAdminStyles } from "./style";
 import { useNavigate } from "react-router-dom";
+import { listDataBooking } from "./section/listDataBooking";
+import { kelolaDestinasi } from "./section/kelolaDestinasi";
+import { apiGetTouristDestination, apiGetTouristTransportation } from "../../../api/api";
+import { kelolaTransportasi } from "./section/kelolaTransportasi";
 
 const drawerWidth = 240;
 
@@ -96,9 +100,27 @@ export default function Admin(props) {
     },
   };
 
+  const [open, setOpen] = useState(false);
+  const [section, setSection] = useState("/list-data-booking");
+  const [dataDestinasi, setDataDestinasi] = useState([]);
+  const [dataTransportasi, setDataTransportasi] = useState([]);
+  const [pageDestinasi, setPageDestinasi] = useState(1);
+  const [pageTransportasi, setPageTransportasi] = useState(1);
+
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
+  let itemPerPagesDestinasi = 5;
+  let itemPerPagesTransportasi = 5;
+
+  useEffect(() => {
+    if(section === "/list-data-booking") {
+      console.log("Aja");
+    } else if(section === "/kelola-destinasi") {
+      handleGetDataDestinasi();
+    } else if(section === "/kelola-transportasi") {
+      handleGetDataTransportasi();
+    }
+  }, [section]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -140,6 +162,46 @@ export default function Admin(props) {
     localStorage.removeItem("tokenTimestamp");
     navigate("/admin");
   };
+
+  const handleGetDataDestinasi = async () => {
+    try {
+      const result = await apiGetTouristDestination();
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataDestinasi(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleGetDataTransportasi = async () => {
+    try {
+      const result = await apiGetTouristTransportation();
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataTransportasi(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangePageDestinasi = (event, value) => {
+    setPageDestinasi(value);
+  };
+  const totalPagesDestinasi = Math.ceil(dataDestinasi?.length / itemPerPagesDestinasi);
+  const dataMapDestinasi = dataDestinasi?.slice((pageDestinasi - 1) * itemPerPagesDestinasi, pageDestinasi * itemPerPagesDestinasi);
+
+  const handleChangePageTransportasi = (event, value) => {
+    setPageTransportasi(value);
+  };
+  const totalPagesTransportasi = Math.ceil(dataTransportasi?.length / itemPerPagesTransportasi);
+  const dataMapTransportasi = dataTransportasi?.slice((pageTransportasi - 1) * itemPerPagesTransportasi, pageTransportasi * itemPerPagesTransportasi);
 
   return (
     <Box 
@@ -279,6 +341,7 @@ export default function Admin(props) {
                       width: '60%',
                     }
                   }}
+                  onClick={() => setSection(menu.to)}
                 >
                   <ListItemIcon sx={{ color: "#fff" }}>
                     {index === 0 ? (
@@ -321,36 +384,32 @@ export default function Admin(props) {
         </Drawer>
 
         <Main open={open} sx={{ paddingTop: "100px" }}>
-          <Typography paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-            dolor purus non enim praesent elementum facilisis leo vel. Risus at
-            ultrices mi tempus imperdiet. Semper risus in hendrerit gravida
-            rutrum quisque non tellus. Convallis convallis tellus id interdum
-            velit laoreet id donec ultrices. Odio morbi quis commodo odio aenean
-            sed adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-            integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-            eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-            quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-            vivamus at augue. At augue eget arcu dictum varius duis at
-            consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-            donec massa sapien faucibus et molestie ac.
-          </Typography>
-          <Typography paragraph>
-            Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-            ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-            elementum integer enim neque volutpat ac tincidunt. Ornare
-            suspendisse sed nisi lacus sed viverra tellus. Purus sit amet
-            volutpat consequat mauris. Elementum eu facilisis sed odio morbi.
-            Euismod lacinia at quis risus sed vulputate odio. Morbi tincidunt
-            ornare massa eget egestas purus viverra accumsan in. In hendrerit
-            gravida rutrum quisque non tellus orci ac. Pellentesque nec nam
-            aliquam sem et tortor. Habitant morbi tristique senectus et.
-            Adipiscing elit duis tristique sollicitudin nibh sit. Ornare aenean
-            euismod elementum nisi quis eleifend. Commodo viverra maecenas
-            accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam
-            ultrices sagittis orci a.
-          </Typography>
+          {section === "/list-data-booking" ? (
+            listDataBooking(
+              classes, 
+              props 
+            )
+          ) : section === "/kelola-destinasi" ? (
+            kelolaDestinasi(
+              classes, 
+              props, 
+              pageDestinasi, 
+              itemPerPagesDestinasi, 
+              handleChangePageDestinasi, 
+              totalPagesDestinasi, 
+              dataMapDestinasi 
+            )
+          ) : section === "/kelola-transportasi" ? (
+            kelolaTransportasi(
+              classes, 
+              props, 
+              pageTransportasi, 
+              itemPerPagesTransportasi, 
+              handleChangePageTransportasi, 
+              totalPagesTransportasi, 
+              dataMapTransportasi 
+            )
+          ) : null}
         </Main>
       </Box>
     </Box>

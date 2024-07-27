@@ -252,14 +252,20 @@ export default function FormBooking(props) {
         try {
             const record = await apiGetTouristDestination();
 
-            const { status, data } = record;
+            const { code, status, message, data } = record;
 
             if(status === "success") {
+                const dataMapped = data?.map((item) => ({
+                    ...item,
+                    label: item.nama_tujuan_wisata,
+                    value: item.value
+                }));
+
                 setSelectState((prev) => ({
                     ...prev,
                     touristDestination: {
                         ...prev["touristDestination"],
-                        states: data,
+                        states: dataMapped,
                     },
                 }));
             } else {
@@ -274,14 +280,20 @@ export default function FormBooking(props) {
         try {
             const record = await apiGetTouristTransportation();
 
-            const { status, data } = record;
+            const { code, status, message, data } = record;
 
             if(status === "success") {
+                const dataMapped = data?.map((item) => ({
+                    ...item,
+                    label: item.nama_transportasi_wisata,
+                    value: item.id
+                }));
+
                 setSelectState((prev) => ({
                     ...prev,
                     touristTransportation: {
                         ...prev["touristTransportation"],
-                        states: data,
+                        states: dataMapped,
                     },
                 }));
             } else {
@@ -296,14 +308,20 @@ export default function FormBooking(props) {
         try {
             const record = await apiGetPaymentMethod();
 
-            const { status, data } = record;
+            const { code, status, message, data } = record;
 
             if(status === "success") {
+                const dataMapped = data?.map((item) => ({
+                    ...item,
+                    label: item.nama_payment_method,
+                    value: item.value
+                }));
+
                 setSelectState((prev) => ({
                     ...prev,
                     paymentMethod: {
                         ...prev["paymentMethod"],
-                        states: data,
+                        states: dataMapped,
                     },
                 }));
             } else {

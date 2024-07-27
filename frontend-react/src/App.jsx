@@ -25,7 +25,7 @@ export default function App() {
       navigate("/");
     } else {
       if(userLogin.role === "admin") {
-        navigate("/list-data-booking");
+        navigate("/kelola-admin");
       } else {
         navigate("/booking");
       }
@@ -124,7 +124,7 @@ export default function App() {
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
-          path="/list-data-booking"
+          path="/kelola-admin"
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
       </Routes>

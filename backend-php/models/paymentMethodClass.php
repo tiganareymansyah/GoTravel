@@ -45,7 +45,7 @@
         }
 
         public function getOptionPaymentMethod($params) {
-            $query = "SELECT value, nama_payment_method AS label FROM tm_payment_method";
+            $query = "SELECT * FROM tm_payment_method";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();

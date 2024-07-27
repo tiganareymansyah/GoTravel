@@ -151,12 +151,20 @@ export default function FormBooking(props) {
             formik.setFieldValue("durasi", "");
 
             const updatedStates = selectState.touristTransportation.states.map(option => {
-                const matchedData = listData.find(data => data.transportasi === option.value);
-                if (matchedData) {
-                    return { ...option, stok: option.stok - matchedData.unit };
+                const matchedData = listData.find(data => 
+                    data.transportasi === option.value
+                );
+                
+                if(matchedData) {
+                    return { 
+                        ...option, 
+                        stok: option.stok - matchedData.unit
+                    };
                 }
+                
                 return option;
             });
+            
             setSelectState(prevState => ({
                 ...prevState,
                 touristTransportation: {

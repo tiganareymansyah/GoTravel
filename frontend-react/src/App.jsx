@@ -24,7 +24,11 @@ export default function App() {
     if (!userLogin) {
       navigate("/");
     } else {
-      navigate("/booking");
+      if(userLogin.role === "admin") {
+        navigate("/list-data-booking");
+      } else {
+        navigate("/booking");
+      }
     }
   }, [userLogin]);
 
@@ -117,6 +121,10 @@ export default function App() {
         />
         <Route
           path="/booking/form-booking"
+          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+        />
+        <Route
+          path="/list-data-booking"
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
       </Routes>

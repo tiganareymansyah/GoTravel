@@ -137,7 +137,7 @@ export default function LoginAdmin(props) {
   const handleCloseAlert = () => {
     setOpenAlert(false);
     if(severity === "success") {
-      location.href = "/booking";
+      location.href = "/list-data-booking";
     } else {
       navigate("/admin");
     }
@@ -176,6 +176,7 @@ export default function LoginAdmin(props) {
         "Error",
         err.response.data.message
       );
+      props.doLoad();
     }
   };
 

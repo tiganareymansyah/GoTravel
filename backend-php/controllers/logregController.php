@@ -72,6 +72,7 @@
                     "message" => "Email atau password anda salah"
                 );
             } else {
+                $logregResult['role'] = "user";
                 http_response_code(200); // Success
                 return array(
                     "code" => 200, 
@@ -145,6 +146,7 @@
                     "message" => "Email atau password anda salah"
                 );
             } else {
+                $logregResult['role'] = "admin";
                 http_response_code(200);
                 return array(
                     "code" => 200, 

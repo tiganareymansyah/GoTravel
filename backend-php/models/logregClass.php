@@ -189,7 +189,7 @@
                 $stmtSelect->execute();
                 $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
 
-                if($cekEmail['email'] === $params['email']) {
+                if($cekEmail && $cekEmail['email'] === $params['email']) {
                     return "data found";
                 } else {
                     $query = "INSERT INTO login_admin (

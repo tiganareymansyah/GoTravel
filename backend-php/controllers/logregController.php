@@ -177,5 +177,27 @@
                 );
             }
         } 
+
+        public function GetAkunAdmin($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->getAkunAdmin($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Tidak ditemukan"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "data ditemukan",
+                    "data" => $logregResult
+                );
+            }
+        }
     }
 ?>

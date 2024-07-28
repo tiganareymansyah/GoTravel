@@ -35,8 +35,11 @@ import { useAdminStyles } from "./style";
 import { useNavigate } from "react-router-dom";
 import { listDataBooking } from "./section/listDataBooking";
 import { kelolaDestinasi } from "./section/kelolaDestinasi";
-import { apiGetTouristDestination, apiGetTouristTransportation } from "../../../api/api";
+import { apiGetAdminAccount, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation } from "../../../api/api";
 import { kelolaTransportasi } from "./section/kelolaTransportasi";
+import { kelolaMetodePembayaran } from "./section/kelolaMetodePembayaran";
+import { kelolaInformasiDanLayanan } from "./section/kelolaInformasiDanLayanan";
+import { registerPegawaiBaru } from "./section/registerPegawaiBaru";
 
 const drawerWidth = 240;
 
@@ -103,22 +106,34 @@ export default function Admin(props) {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState("/list-data-booking");
   const [dataDestinasi, setDataDestinasi] = useState([]);
-  const [dataTransportasi, setDataTransportasi] = useState([]);
   const [pageDestinasi, setPageDestinasi] = useState(1);
+  const [dataTransportasi, setDataTransportasi] = useState([]);
   const [pageTransportasi, setPageTransportasi] = useState(1);
+  const [dataMetodePembayaran, setDataMetodePembayaran] = useState([]);
+  const [pageMetodePembayaran, setPageMetodePembayaran] = useState(1);
+  const [dataRegisterPegawaiBaru, setDataRegisterPegawaiBaru] = useState([]);
+  const [pageRegisterPegawaiBaru, setPageRegisterPegawaiBaru] = useState(1);
 
   const theme = useTheme();
   const navigate = useNavigate();
   let itemPerPagesDestinasi = 5;
   let itemPerPagesTransportasi = 5;
+  let itemPerPagesMetodePembayaran = 5;
+  let itemPerPagesRegisterPegawaiBaru = 5;
 
   useEffect(() => {
     if(section === "/list-data-booking") {
-      console.log("Aja");
+      console.log("list data booking");
     } else if(section === "/kelola-destinasi") {
       handleGetDataDestinasi();
     } else if(section === "/kelola-transportasi") {
       handleGetDataTransportasi();
+    } else if(section === "/kelola-metode-pembayaran") {
+      handleGetDataMetodePembayaran();
+    } else if(section === "/kelola-informasi-dan-layanan") {
+      console.log("kelola informasi & layanan");
+    } else if(section === "/register-pegawai-baru") {
+      handleGetDataRegisterPegawaiBaru();
     }
   }, [section]);
 
@@ -149,7 +164,7 @@ export default function Admin(props) {
     },
     {
       name: "Kelola Informasi & Layanan",
-      to: "/kelola-informasi-layanan"
+      to: "/kelola-informasi-dan-layanan"
     },
     {
       name: "Register Pegawai Baru",
@@ -191,6 +206,34 @@ export default function Admin(props) {
     }
   };
 
+  const handleGetDataMetodePembayaran = async () => {
+    try {
+      const result = await apiGetPaymentMethod();
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataMetodePembayaran(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleGetDataRegisterPegawaiBaru = async () => {
+    try {
+      const result = await apiGetAdminAccount();
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataRegisterPegawaiBaru(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleChangePageDestinasi = (event, value) => {
     setPageDestinasi(value);
   };
@@ -202,6 +245,18 @@ export default function Admin(props) {
   };
   const totalPagesTransportasi = Math.ceil(dataTransportasi?.length / itemPerPagesTransportasi);
   const dataMapTransportasi = dataTransportasi?.slice((pageTransportasi - 1) * itemPerPagesTransportasi, pageTransportasi * itemPerPagesTransportasi);
+
+  const handleChangePageMetodePembayaran = (event, value) => {
+    setPageMetodePembayaran(value);
+  };
+  const totalPagesMetodePembayaran = Math.ceil(dataMetodePembayaran?.length / itemPerPagesMetodePembayaran);
+  const dataMapMetodePembayaran = dataMetodePembayaran?.slice((pageMetodePembayaran - 1) * itemPerPagesMetodePembayaran, pageMetodePembayaran * itemPerPagesMetodePembayaran);
+
+  const handleChangePageRegisterPegawaiBaru = (event, value) => {
+    setPageRegisterPegawaiBaru(value);
+  };
+  const totalPagesRegisterPegawaiBaru = Math.ceil(dataRegisterPegawaiBaru?.length / itemPerPagesRegisterPegawaiBaru);
+  const dataMapRegisterPegawaiBaru = dataRegisterPegawaiBaru?.slice((pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru, pageRegisterPegawaiBaru * itemPerPagesRegisterPegawaiBaru);
 
   return (
     <Box 
@@ -408,6 +463,31 @@ export default function Admin(props) {
               handleChangePageTransportasi, 
               totalPagesTransportasi, 
               dataMapTransportasi 
+            )
+          ) : section === "/kelola-metode-pembayaran" ? (
+            kelolaMetodePembayaran(
+              classes, 
+              props, 
+              pageMetodePembayaran, 
+              itemPerPagesMetodePembayaran, 
+              handleChangePageMetodePembayaran, 
+              totalPagesMetodePembayaran, 
+              dataMapMetodePembayaran 
+            )
+          ) : section === "/kelola-informasi-dan-layanan" ? (
+            kelolaInformasiDanLayanan(
+              classes, 
+              props 
+            )
+          ) : section === "/register-pegawai-baru" ? (
+            registerPegawaiBaru(
+              classes, 
+              props, 
+              pageRegisterPegawaiBaru, 
+              itemPerPagesRegisterPegawaiBaru, 
+              handleChangePageRegisterPegawaiBaru, 
+              totalPagesRegisterPegawaiBaru, 
+              dataMapRegisterPegawaiBaru 
             )
           ) : null}
         </Main>

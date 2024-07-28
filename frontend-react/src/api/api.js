@@ -169,19 +169,3 @@ export async function apiGetDataBooking() {
         throw error;
     }
 }
-
-export async function apiGetAdminAccount() {
-    try {
-        const response = await axios({
-            method: "GET",
-            url: ApiUrl + "/admin/get-akun-admin",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
-            },
-        });
-
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-}

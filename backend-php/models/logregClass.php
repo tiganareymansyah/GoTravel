@@ -312,5 +312,15 @@
                 throw $e;
             }
         }
+
+        public function getAkunAdmin($params) {
+            $query = "SELECT * FROM login_admin";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            else return false;
+        }
     }
 ?>

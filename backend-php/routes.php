@@ -45,6 +45,11 @@
                 $data = $logregController->LoginAdmin($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] == "get-akun-admin") {
+                $logregController = new LogregController();
+                $data = $logregController->GetAkunAdmin($jsonParams);
+                
+                $result = $data;
             }
         } else if($paths[3] === "transportation") {
             include_once __DIR__ . '/controllers/transportationController.php';

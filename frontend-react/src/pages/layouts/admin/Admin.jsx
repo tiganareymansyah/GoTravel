@@ -33,13 +33,12 @@ import logoGoTravel from "../../../media/logo_gotravel1.png";
 import { useMediaQuery } from "react-responsive";
 import { useAdminStyles } from "./style";
 import { useNavigate } from "react-router-dom";
-import { listDataBooking } from "./section/listDataBooking";
-import { kelolaDestinasi } from "./section/kelolaDestinasi";
-import { apiGetAdminAccount, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation } from "../../../api/api";
-import { kelolaTransportasi } from "./section/kelolaTransportasi";
-import { kelolaMetodePembayaran } from "./section/kelolaMetodePembayaran";
-import { kelolaInformasiDanLayanan } from "./section/kelolaInformasiDanLayanan";
-import { registerPegawaiBaru } from "./section/registerPegawaiBaru";
+import ListDataBooking from "./listDataBooking/ListDataBooking";
+import KelolaDestinasi from "./kelolaDestinasi/KelolaDestinasi";
+import KelolaTransportasi from "./kelolaTransportasi/KelolaTransportasi";
+import KelolaMetodePembayaran from "./kelolaMetodePembayaran/KelolaMetodePembayaran";
+import KelolaInformasiDanLayanan from "./kelolaInformasiDanLayanan/KelolaInformasiDanLayanan";
+import RegisterPegawaiBaru from "./registerPegawaiBaru/RegisterPegawaiBaru";
 
 const drawerWidth = 240;
 
@@ -105,37 +104,9 @@ export default function Admin(props) {
 
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState("/list-data-booking");
-  const [dataDestinasi, setDataDestinasi] = useState([]);
-  const [pageDestinasi, setPageDestinasi] = useState(1);
-  const [dataTransportasi, setDataTransportasi] = useState([]);
-  const [pageTransportasi, setPageTransportasi] = useState(1);
-  const [dataMetodePembayaran, setDataMetodePembayaran] = useState([]);
-  const [pageMetodePembayaran, setPageMetodePembayaran] = useState(1);
-  const [dataRegisterPegawaiBaru, setDataRegisterPegawaiBaru] = useState([]);
-  const [pageRegisterPegawaiBaru, setPageRegisterPegawaiBaru] = useState(1);
 
   const theme = useTheme();
   const navigate = useNavigate();
-  let itemPerPagesDestinasi = 5;
-  let itemPerPagesTransportasi = 5;
-  let itemPerPagesMetodePembayaran = 5;
-  let itemPerPagesRegisterPegawaiBaru = 5;
-
-  useEffect(() => {
-    if(section === "/list-data-booking") {
-      console.log("list data booking");
-    } else if(section === "/kelola-destinasi") {
-      handleGetDataDestinasi();
-    } else if(section === "/kelola-transportasi") {
-      handleGetDataTransportasi();
-    } else if(section === "/kelola-metode-pembayaran") {
-      handleGetDataMetodePembayaran();
-    } else if(section === "/kelola-informasi-dan-layanan") {
-      console.log("kelola informasi & layanan");
-    } else if(section === "/register-pegawai-baru") {
-      handleGetDataRegisterPegawaiBaru();
-    }
-  }, [section]);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -177,86 +148,6 @@ export default function Admin(props) {
     localStorage.removeItem("tokenTimestamp");
     navigate("/admin");
   };
-
-  const handleGetDataDestinasi = async () => {
-    try {
-      const result = await apiGetTouristDestination();
-
-      const { code, status, message, data } = result;
-
-      if(status === "success") {
-        setDataDestinasi(data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleGetDataTransportasi = async () => {
-    try {
-      const result = await apiGetTouristTransportation();
-
-      const { code, status, message, data } = result;
-
-      if(status === "success") {
-        setDataTransportasi(data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleGetDataMetodePembayaran = async () => {
-    try {
-      const result = await apiGetPaymentMethod();
-
-      const { code, status, message, data } = result;
-
-      if(status === "success") {
-        setDataMetodePembayaran(data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleGetDataRegisterPegawaiBaru = async () => {
-    try {
-      const result = await apiGetAdminAccount();
-
-      const { code, status, message, data } = result;
-
-      if(status === "success") {
-        setDataRegisterPegawaiBaru(data);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleChangePageDestinasi = (event, value) => {
-    setPageDestinasi(value);
-  };
-  const totalPagesDestinasi = Math.ceil(dataDestinasi?.length / itemPerPagesDestinasi);
-  const dataMapDestinasi = dataDestinasi?.slice((pageDestinasi - 1) * itemPerPagesDestinasi, pageDestinasi * itemPerPagesDestinasi);
-
-  const handleChangePageTransportasi = (event, value) => {
-    setPageTransportasi(value);
-  };
-  const totalPagesTransportasi = Math.ceil(dataTransportasi?.length / itemPerPagesTransportasi);
-  const dataMapTransportasi = dataTransportasi?.slice((pageTransportasi - 1) * itemPerPagesTransportasi, pageTransportasi * itemPerPagesTransportasi);
-
-  const handleChangePageMetodePembayaran = (event, value) => {
-    setPageMetodePembayaran(value);
-  };
-  const totalPagesMetodePembayaran = Math.ceil(dataMetodePembayaran?.length / itemPerPagesMetodePembayaran);
-  const dataMapMetodePembayaran = dataMetodePembayaran?.slice((pageMetodePembayaran - 1) * itemPerPagesMetodePembayaran, pageMetodePembayaran * itemPerPagesMetodePembayaran);
-
-  const handleChangePageRegisterPegawaiBaru = (event, value) => {
-    setPageRegisterPegawaiBaru(value);
-  };
-  const totalPagesRegisterPegawaiBaru = Math.ceil(dataRegisterPegawaiBaru?.length / itemPerPagesRegisterPegawaiBaru);
-  const dataMapRegisterPegawaiBaru = dataRegisterPegawaiBaru?.slice((pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru, pageRegisterPegawaiBaru * itemPerPagesRegisterPegawaiBaru);
 
   return (
     <Box 
@@ -440,55 +331,29 @@ export default function Admin(props) {
 
         <Main open={open} sx={{ paddingTop: "100px" }}>
           {section === "/list-data-booking" ? (
-            listDataBooking(
-              classes, 
-              props 
-            )
+            <ListDataBooking
+              props={props}
+            />
           ) : section === "/kelola-destinasi" ? (
-            kelolaDestinasi(
-              classes, 
-              props, 
-              pageDestinasi, 
-              itemPerPagesDestinasi, 
-              handleChangePageDestinasi, 
-              totalPagesDestinasi, 
-              dataMapDestinasi 
-            )
+            <KelolaDestinasi
+              props={props}
+            />
           ) : section === "/kelola-transportasi" ? (
-            kelolaTransportasi(
-              classes, 
-              props, 
-              pageTransportasi, 
-              itemPerPagesTransportasi, 
-              handleChangePageTransportasi, 
-              totalPagesTransportasi, 
-              dataMapTransportasi 
-            )
+            <KelolaTransportasi
+              props={props}
+            />
           ) : section === "/kelola-metode-pembayaran" ? (
-            kelolaMetodePembayaran(
-              classes, 
-              props, 
-              pageMetodePembayaran, 
-              itemPerPagesMetodePembayaran, 
-              handleChangePageMetodePembayaran, 
-              totalPagesMetodePembayaran, 
-              dataMapMetodePembayaran 
-            )
+            <KelolaMetodePembayaran
+              props={props}
+            />
           ) : section === "/kelola-informasi-dan-layanan" ? (
-            kelolaInformasiDanLayanan(
-              classes, 
-              props 
-            )
+            <KelolaInformasiDanLayanan
+              props={props}
+            />
           ) : section === "/register-pegawai-baru" ? (
-            registerPegawaiBaru(
-              classes, 
-              props, 
-              pageRegisterPegawaiBaru, 
-              itemPerPagesRegisterPegawaiBaru, 
-              handleChangePageRegisterPegawaiBaru, 
-              totalPagesRegisterPegawaiBaru, 
-              dataMapRegisterPegawaiBaru 
-            )
+            <RegisterPegawaiBaru
+              props={props}
+            />
           ) : null}
         </Main>
       </Box>

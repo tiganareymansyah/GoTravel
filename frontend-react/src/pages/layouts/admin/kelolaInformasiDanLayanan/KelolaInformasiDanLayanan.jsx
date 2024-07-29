@@ -1,14 +1,13 @@
 import { Box } from "@mui/material";
 
-export const listDataBooking = (
-    classes, 
+export default function KelolaInformasiDanLayanan ({
     props 
-) => {
+}) {
     console.log(props);
 
     const style = {};
 
     return (
-        <Box>List Data Booking</Box>
+        <Box>Kelola Informasi & Layanan</Box>
     );
 };

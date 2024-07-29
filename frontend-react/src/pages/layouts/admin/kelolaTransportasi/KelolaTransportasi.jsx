@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
     Box, 
     Button, 
@@ -19,16 +19,11 @@ import {
     Edit 
 } from "@mui/icons-material";
 import { orange } from "@mui/material/colors";
+import { apiGetTouristTransportation } from "../../../../api/api";
 
-export const registerPegawaiBaru = (
-    classes, 
-    props, 
-    pageRegisterPegawaiBaru, 
-    itemPerPagesRegisterPegawaiBaru, 
-    handleChangePageRegisterPegawaiBaru, 
-    totalPagesRegisterPegawaiBaru, 
-    dataMapRegisterPegawaiBaru 
-) => {
+export default function KelolaTransportasi ({
+    props
+}) {
     console.log(props);
 
     const styles = {
@@ -94,10 +89,40 @@ export const registerPegawaiBaru = (
         },
     };
 
+    const [dataTransportasi, setDataTransportasi] = useState([]);
+    const [pageTransportasi, setPageTransportasi] = useState(1);
+
+    let itemPerPagesTransportasi = 5;
+
+    useEffect(() => {
+        handleGetDataTransportasi();
+    }, []);
+
+    const handleGetDataTransportasi = async () => {
+        try {
+          const result = await apiGetTouristTransportation();
+    
+          const { code, status, message, data } = result;
+    
+          if(status === "success") {
+            setDataTransportasi(data);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+    };
+
+    const handleChangePageTransportasi = (event, value) => {
+        setPageTransportasi(value);
+    };
+
+    const totalPagesTransportasi = Math.ceil(dataTransportasi?.length / itemPerPagesTransportasi);
+    const dataMapTransportasi = dataTransportasi?.slice((pageTransportasi - 1) * itemPerPagesTransportasi, pageTransportasi * itemPerPagesTransportasi);
+
     return (
         <Box sx={{ marginLeft: "10vw", marginRight: "10vw", marginTop: "5vw", marginBottom: "5vw" }}>
             <Box sx={{ marginBottom: "10px", display: "flex", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>Register Pegawai Baru</Typography>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>Kelola Transportasi</Typography>
                 <Button
                     sx={styles.buttonAdd}
                     startIcon={<AddCircle />}
@@ -112,23 +137,24 @@ export const registerPegawaiBaru = (
                     <TableHead>
                         <TableRow>
                             <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Lengkap</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Tanggal Lahir</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Jenis Kelamin</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
-                            {/* <TableCell sx={{ fontWeight: "bold" }} align="center">Password</TableCell> */}
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Value</TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Transportasi</TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Muatan</TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Stok</TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Harga</TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
 
                     <TableBody>
-                        {dataMapRegisterPegawaiBaru?.map((data, index) => (
+                        {dataMapTransportasi?.map((data, index) => (
                             <TableRow key={index}>
-                                <TableCell align="center">{(pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru + index + 1}.</TableCell>
-                                <TableCell align="center">{data.fullname}</TableCell>
-                                <TableCell align="center">{data.tbt}</TableCell>
-                                <TableCell align="center">{data.gender === "L" ? "Laki-laki" : "Perempuan"}</TableCell>
-                                <TableCell align="center">{data.email}</TableCell>
-                                {/* <TableCell align="center">{data.password}</TableCell> */}
+                                <TableCell align="center">{(pageTransportasi - 1) * itemPerPagesTransportasi + index + 1}.</TableCell>
+                                <TableCell align="center">{data.value}</TableCell>
+                                <TableCell align="center">{data.nama_transportasi_wisata}</TableCell>
+                                <TableCell align="center">{data.muatan}</TableCell>
+                                <TableCell align="center">{data.stok}</TableCell>
+                                <TableCell align="center">{data.harga}</TableCell>
                                 <TableCell sx={{ display: "flex", justifyContent: "center", }}>
                                     <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
                                         <Button 
@@ -154,9 +180,9 @@ export const registerPegawaiBaru = (
             </TableContainer>
             <Stack spacing={2} sx={styles.stackPagination}>
                 <Pagination 
-                    count={totalPagesRegisterPegawaiBaru} 
-                    page={pageRegisterPegawaiBaru} 
-                    onChange={handleChangePageRegisterPegawaiBaru} 
+                    count={totalPagesTransportasi} 
+                    page={pageTransportasi} 
+                    onChange={handleChangePageTransportasi} 
                     variant="outlined" 
                     sx={styles.pagination}
                 />

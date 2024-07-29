@@ -1,4 +1,4 @@
-// import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
     Box, 
     Button, 
@@ -19,16 +19,11 @@ import {
     Edit 
 } from "@mui/icons-material";
 import { orange } from "@mui/material/colors";
+import { apiGetPaymentMethod } from "../../../../api/api";
 
-export const kelolaMetodePembayaran = (
-    classes, 
-    props, 
-    pageMetodePembayaran, 
-    itemPerPagesMetodePembayaran, 
-    handleChangePageMetodePembayaran, 
-    totalPagesMetodePembayaran, 
-    dataMapMetodePembayaran 
-) => {
+export default function KelolaMetodePembayaran ({
+    props
+}) {
     console.log(props);
 
     const styles = {
@@ -93,6 +88,36 @@ export const kelolaMetodePembayaran = (
             }
         },
     };
+
+    const [dataMetodePembayaran, setDataMetodePembayaran] = useState([]);
+    const [pageMetodePembayaran, setPageMetodePembayaran] = useState(1);
+
+    let itemPerPagesMetodePembayaran = 5;
+
+    useEffect(() => {
+        handleGetDataMetodePembayaran();
+    }, []);
+
+    const handleGetDataMetodePembayaran = async () => {
+        try {
+          const result = await apiGetPaymentMethod();
+    
+          const { code, status, message, data } = result;
+    
+          if(status === "success") {
+            setDataMetodePembayaran(data);
+          }
+        } catch (err) {
+          console.log(err);
+        }
+    };
+
+    const handleChangePageMetodePembayaran = (event, value) => {
+        setPageMetodePembayaran(value);
+    };
+    
+    const totalPagesMetodePembayaran = Math.ceil(dataMetodePembayaran?.length / itemPerPagesMetodePembayaran);
+    const dataMapMetodePembayaran = dataMetodePembayaran?.slice((pageMetodePembayaran - 1) * itemPerPagesMetodePembayaran, pageMetodePembayaran * itemPerPagesMetodePembayaran);
 
     return (
         <Box sx={{ marginLeft: "10vw", marginRight: "10vw", marginTop: "5vw", marginBottom: "5vw" }}>

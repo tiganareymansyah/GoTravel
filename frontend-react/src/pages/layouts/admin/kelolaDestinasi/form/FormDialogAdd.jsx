@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
     Box,
     Button,
@@ -54,54 +53,37 @@ function BootstrapDialogTitle(props) {
 
 export default function FormDialogAdd({
   openDialog,
-  setOpenDialog
+  addDestinasi,
+  handleChange,
+  handleCloseAdd,
+  handleAddDestinasi
 }) {
-    const [dataAdd, setDataAdd] = useState({
-        valueDestinasi: "",
-        namaDestinasi: ""
-    });
-
-    const handleChange = (name, value) => {
-        setDataAdd((prev) => ({
-            ...prev,
-            [name]: value
-        }));
-    };
-
-    const handleClose = () => {
-        setOpenDialog(false);
-    };
-
-    const handleEditDataDestinasi = (e) => {
-        e.preventDefault();
-        console.log(dataAdd);
-    };
-
+    
     return (
         <>
             <BootstrapDialog
-                onClose={handleClose}
+                onClose={handleCloseAdd}
                 aria-labelledby="customized-dialog-title"
                 open={openDialog}
                 PaperProps={{ style: { width: "500px", padding: "20px" } }}
             >
                 <BootstrapDialogTitle
                     id="customized-dialog-title"
-                    onClose={handleClose}
+                    onClose={handleCloseAdd}
                 >
                     Tambah Destinasi
                 </BootstrapDialogTitle>
 
                 <DialogContent dividers>
                     <Box>
-                        <form onSubmit={(e) => handleEditDataDestinasi(e)}>
+                        <form onSubmit={(e) => handleAddDestinasi(e)}>
                             <TextField
                                 label="Value Destinasi"
                                 name="valueDestinasi"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={dataAdd.valueDestinasi}
+                                value={addDestinasi.valueDestinasi}
                                 onChange={(e) => handleChange("valueDestinasi", e.target.value)}
                             />
 
@@ -111,7 +93,7 @@ export default function FormDialogAdd({
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={dataAdd.namaDestinasi}
+                                value={addDestinasi.namaDestinasi}
                                 onChange={(e) => handleChange("namaDestinasi", e.target.value)}
                             />
 

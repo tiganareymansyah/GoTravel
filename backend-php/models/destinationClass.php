@@ -54,5 +54,33 @@
             if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
             else return false;
         }
+
+        public function editDestination($params) {
+            $queryUpdate = "UPDATE tm_tourist_destination SET 
+                value = :value, 
+                nama_tujuan_wisata = :nama_tujuan_wisata 
+                WHERE id = :id
+            ";
+
+            $stmt = $this->connection->prepare($queryUpdate);
+            $stmt->bindValue(":value", $params['value']);
+            $stmt->bindValue(":nama_tujuan_wisata", $params['nama_tujuan_wisata']);
+            $stmt->bindValue(":id", $params['id']);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
+
+        public function deleteDestination($params) {
+            $query = "DELETE FROM tm_tourist_destination WHERE id = :id";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
     }
 ?>

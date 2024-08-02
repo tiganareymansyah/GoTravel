@@ -80,6 +80,18 @@
                 $data = $destinationController->GetOptionDestination($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] === "edit") {
+                $destinationController = new DestinationController();
+                $data = $destinationController->EditDestination($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $destinationController = new DestinationController();
+                $data = $destinationController->DeleteDestination($urlParams);
+                
+                $result = $data;
             }
         } else if($paths[3] === "paymeth") {
             include_once __DIR__ . '/controllers/paymentMethodController.php';

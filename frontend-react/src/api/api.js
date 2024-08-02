@@ -185,3 +185,53 @@ export async function apiGetAdminAccount() {
         throw error;
     }
 }
+
+export async function apiAddDestinasi({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/destination/insert",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiEditDestinasi({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/destination/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteDestinasi(urlParams) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + `/destination/delete?id=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

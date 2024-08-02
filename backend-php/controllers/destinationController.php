@@ -54,5 +54,47 @@
                 );
             }
         }
+
+        public function EditDestination($params) {
+            $destinationClass = new DestinationClass();
+            $destinationResult = $destinationClass->editDestination($params);
+
+            if ($destinationResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal ubah data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data destinasi berhasil diedit"
+                );
+            }
+        }
+
+        public function DeleteDestination($params) {
+            $destinationClass = new DestinationClass();
+            $destinationResult = $destinationClass->deleteDestination($params);
+
+            if ($destinationResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data destinasi berhasil dihapus"
+                );
+            }
+        }
     }
 ?>

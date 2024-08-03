@@ -142,6 +142,7 @@ export default function RegisterPegawaiBaru ({
                             <TableCell sx={{ fontWeight: "bold" }} align="center">Jenis Kelamin</TableCell>
                             <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
                             {/* <TableCell sx={{ fontWeight: "bold" }} align="center">Password</TableCell> */}
+                            <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
 

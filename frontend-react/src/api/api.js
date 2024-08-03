@@ -235,3 +235,53 @@ export async function apiDeleteDestinasi(urlParams) {
         throw error;
     }
 }
+
+export async function apiAddMetodePembayaran({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/paymeth/insert",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiEditMetodePembayaran({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/paymeth/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteMetodePembayaran(urlParams) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + `/paymeth/delete?id=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

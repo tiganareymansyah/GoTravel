@@ -28,7 +28,7 @@
                 return array(
                     "code" => 201, 
                     "status" => "success",
-                    "message" => "Data payment method berhasil ditambahkan",
+                    "message" => "Data metode pembayaran berhasil ditambahkan",
                 );
             }
         }
@@ -73,6 +73,48 @@
                     "status" => "success",
                     "message" => "Pembuatan kode pembayaran berhasil",
                     "data" => $paymentMethodResult
+                );
+            }
+        }
+
+        public function EditPaymentMethod($params) {
+            $paymentMethodClass = new PaymentMethodClass();
+            $paymentMethodResult = $paymentMethodClass->editPaymentMethod($params);
+
+            if ($paymentMethodResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal ubah data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data metode pembayaran berhasil diedit"
+                );
+            }
+        }
+
+        public function DeletePaymentMethod($params) {
+            $paymentMethodClass = new PaymentMethodClass();
+            $paymentMethodResult = $paymentMethodClass->deletePaymentMethod($params);
+
+            if ($paymentMethodResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data metode pembayaran berhasil dihapus"
                 );
             }
         }

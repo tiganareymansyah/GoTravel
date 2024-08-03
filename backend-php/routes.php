@@ -112,6 +112,18 @@
                 $data = $paymentMethodController->GetKodePayment();
                 
                 $result = $data;
+            } else if($paths[4] === "edit") {
+                $paymentMethodController = new PaymentMethodController();
+                $data = $paymentMethodController->EditPaymentMethod($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $paymentMethodController = new PaymentMethodController();
+                $data = $paymentMethodController->DeletePaymentMethod($urlParams);
+                
+                $result = $data;
             }
         } else if($paths[3] === "request") {
             include_once __DIR__ . '/controllers/dataBookingController.php';

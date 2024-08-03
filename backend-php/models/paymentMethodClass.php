@@ -59,5 +59,33 @@
 
             return $kode_pembayaran ?? false;
         }
+
+        public function editPaymentMethod($params) {
+            $queryUpdate = "UPDATE tm_payment_method SET 
+                value = :value, 
+                nama_payment_method = :nama_payment_method 
+                WHERE id = :id
+            ";
+
+            $stmt = $this->connection->prepare($queryUpdate);
+            $stmt->bindValue(":value", $params['value']);
+            $stmt->bindValue(":nama_payment_method", $params['nama_payment_method']);
+            $stmt->bindValue(":id", $params['id']);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
+
+        public function deletePaymentMethod($params) {
+            $query = "DELETE FROM tm_payment_method WHERE id = :id";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
     }
 ?>

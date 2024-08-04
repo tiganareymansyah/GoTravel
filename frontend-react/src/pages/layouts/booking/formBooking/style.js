@@ -7,7 +7,7 @@ export const useFormBookingStyles = makeStyles({
         backgroundSize: "cover", 
         backgroundRepeat: "no-repeat", 
         backgroundPosition: "center", 
-        minHeight: "110vh" 
+        minHeight: "100vh" 
     },
 
     containerNavbarFormBooking: {
@@ -77,6 +77,8 @@ export const useFormBookingStyles = makeStyles({
         padding: "16px", 
         boxSizing: "border-box", 
         width: "72%", 
+        height: "70vh",
+        overflowY: "scroll",
         borderRadius: "8px", 
         backgroundColor: "#fff", 
         // boxShadow: "8px 8px 0 rgba(0, 0, 0, 0.5)"

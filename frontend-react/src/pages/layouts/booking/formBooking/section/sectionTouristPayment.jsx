@@ -2,6 +2,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach2.jpg";
+import QRCode from "react-qr-code";
+import logoQris from "../../../../../media/logo_qris.png"
 
 export const sectionTouristPayment = (
     classes, 
@@ -149,6 +151,47 @@ export const sectionTouristPayment = (
                             className="form-input"
                         />
                     </Box>
+
+                    {selectState.paymentMethod.selectedState.value === "qris" && (
+                        <Box sx={{ paddingTop: "16px" }}>
+                            <Box className={classes.boxTouristData}>
+                                <img 
+                                    src={logoQris} 
+                                    width={200} 
+                                    // style={{
+                                    //     display: "flex",
+                                    //     margin: "auto"
+                                    // }} 
+                                />
+                            </Box>
+
+                            <Typography 
+                                variant="h5" 
+                                sx={{
+                                    textAlign: "center", 
+                                    fontWeight: "bold", 
+                                    paddingBottom: "16px"
+                                }}
+                            >
+                                GoTravel
+                            </Typography>
+
+                            <QRCode 
+                                size={200} 
+                                value={`
+                                    Total Bayar: ${formatToCurrency(formik?.values?.total, "IDR")} 
+                                    No Rek BRI: 382701037299536 
+                                    Atas Nama: GoTravel
+                                `} 
+                                style={{
+                                    display: "flex",
+                                    margin: "auto",
+                                    paddingBottom: "32px"
+                                }}
+                                className={`form-input`} 
+                            />
+                        </Box>
+                    )}
 
                     <Box className={classes.boxPrevOrNext}>
                         <Box />

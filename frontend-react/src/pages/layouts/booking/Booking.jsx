@@ -68,6 +68,8 @@ export default function Booking(props) {
         console.log(data);
     };
 
+    console.log(dataBooking);
+
     return (
         <>
             <Box className={classes.bookingBackground}>
@@ -99,13 +101,16 @@ export default function Booking(props) {
                                                 <Typography>{data.kode_booking}</Typography>
                                                 <Typography
                                                     sx={{
-                                                        backgroundColor: "grey",
+                                                        backgroundColor: data.is_bayar === 1 ? "green" : "grey",
                                                         color: "white",
                                                         padding: "5px",
                                                         borderRadius: "5px",
                                                     }}
                                                 >
-                                                    {capitalizeWords("Belum Bayar")}
+                                                    {data.is_bayar === 1 
+                                                        ? capitalizeWords("Sudah Bayar")
+                                                        : capitalizeWords("Belum Bayar")
+                                                    }
                                                 </Typography>
                                             </Box>
 
@@ -125,25 +130,39 @@ export default function Booking(props) {
                                                 <Typography>
                                                     {capitalizeWords(data.alamat)}
                                                 </Typography>
-                                                {/* <Box>
-                                                    <Chip
-                                                        label="Pembayaran"
+                                                {data.is_bayar === 0 ? (
+                                                    <Box>
+                                                        <Chip
+                                                            label="Silahkan datang ke lokasi"
+                                                            sx={{
+                                                                marginLeft: "8px",
+                                                                marginTop: "16px",
+                                                            }}
+                                                        />
+
+                                                        <Typography
+                                                            sx={{
+                                                                fontFamily: "Nunito Sans",
+                                                                marginTop: "20px",
+                                                                textDecoration: "underline #00f",
+                                                                color: "blue",
+                                                            }}
+                                                        >
+                                                            {capitalizeWords("pembayaran")}
+                                                        </Typography>
+                                                    </Box>
+                                                ) : (
+                                                    <Typography
                                                         sx={{
-                                                            marginLeft: "8px",
-                                                            marginTop: "16px",
+                                                            fontFamily: "Nunito Sans",
+                                                            marginTop: "20px",
+                                                            textDecoration: "underline #00f",
+                                                            color: "blue",
                                                         }}
-                                                    />
-                                                </Box> */}
-                                                <Typography
-                                                    sx={{
-                                                        fontFamily: "Nunito Sans",
-                                                        marginTop: "20px",
-                                                        textDecoration: "underline #00f",
-                                                        color: "blue",
-                                                    }}
-                                                >
-                                                    {capitalizeWords("pembayaran")}
-                                                </Typography>
+                                                    >
+                                                        {capitalizeWords("Aktif")}
+                                                    </Typography>
+                                                )}
                                                 <Box
                                                     sx={{
                                                     textTransform: "capitalize",

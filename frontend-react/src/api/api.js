@@ -335,3 +335,53 @@ export async function apiDeleteTransportasi(urlParams) {
         throw error;
     }
 }
+
+export async function apiAddRegisterPegawaiBaru({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/admin/register",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiEditRegisterPegawaiBaru({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/admin/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteRegisterPegawaiBaru(urlParams) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + `/admin/delete?id=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

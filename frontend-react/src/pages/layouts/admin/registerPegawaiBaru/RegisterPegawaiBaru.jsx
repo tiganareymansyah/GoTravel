@@ -19,12 +19,20 @@ import {
     Edit 
 } from "@mui/icons-material";
 import { orange } from "@mui/material/colors";
-import { apiGetAdminAccount } from "../../../../api/api";
+import { apiAddRegisterPegawaiBaru, apiDeleteRegisterPegawaiBaru, apiEditRegisterPegawaiBaru, apiGetAdminAccount } from "../../../../api/api";
+import { useMediaQuery } from "react-responsive";
+import { useRegisterPegawaiBaruStyles } from "./style";
+import FormDialogAdd from "./form/FormDialogAdd";
+import FormDialogEdit from "./form/FormDialogEdit";
+import Alert from "../../../../components/Alert/Alert";
 
 export default function RegisterPegawaiBaru ({
     props
 }) {
     console.log(props);
+
+    const isMobile = useMediaQuery({ maxWidth: 991 });
+    const classes = useRegisterPegawaiBaruStyles({ isMobile });
 
     const styles = {
         buttonAdd: {
@@ -91,12 +99,39 @@ export default function RegisterPegawaiBaru ({
 
     const [dataRegisterPegawaiBaru, setDataRegisterPegawaiBaru] = useState([]);
     const [pageRegisterPegawaiBaru, setPageRegisterPegawaiBaru] = useState(1);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [editDataRegisterPegawaiBaru, setEditDataRegisterPegawaiBaru] = useState();
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [payloadRegisterPegawaiBaru, setPayloadRegisterPegawaiBaru] = useState({
+        id: "",
+        namaLengkap: "",
+        dob: "",
+        jenisKelamin: "",
+        email: ""
+    });
+    const [openAlert, setOpenAlert] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
 
     let itemPerPagesRegisterPegawaiBaru = 5;
 
     useEffect(() => {
         handleGetDataRegisterPegawaiBaru();
     }, []);
+
+    useEffect(() => {
+        if(openEditDialog) {
+            setPayloadRegisterPegawaiBaru((prev) => ({
+                ...prev,
+                id: editDataRegisterPegawaiBaru.id,
+                namaLengkap: editDataRegisterPegawaiBaru.fullname,
+                dob: editDataRegisterPegawaiBaru.tbt,
+                jenisKelamin: editDataRegisterPegawaiBaru.gender,
+                email: editDataRegisterPegawaiBaru.email
+            }));
+        }
+    }, [openEditDialog]);
 
     const handleGetDataRegisterPegawaiBaru = async () => {
         try {
@@ -119,74 +154,234 @@ export default function RegisterPegawaiBaru ({
     const totalPagesRegisterPegawaiBaru = Math.ceil(dataRegisterPegawaiBaru?.length / itemPerPagesRegisterPegawaiBaru);
     const dataMapRegisterPegawaiBaru = dataRegisterPegawaiBaru?.slice((pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru, pageRegisterPegawaiBaru * itemPerPagesRegisterPegawaiBaru);
 
+    const handleAlert = (open, severity, title, message) => {
+        setOpenAlert(open);
+        setSeverity(severity);
+        setTitle(title);
+        setMessage(message);
+    };
+
+    const handleCloseAlert = () => {
+        setOpenAlert(false);
+        if(severity === "successNoReload") {
+            location.href = "/kelola-admin";
+        }
+    }
+
+    const handleAdd = () => {
+        setOpenDialog(true);
+        setPayloadRegisterPegawaiBaru((prev) => ({
+            ...prev,
+            namaLengkap: "",
+            dob: "",
+            jenisKelamin: "",
+            email: ""
+        }));
+    };
+
+    const handleChange = (name, value) => {
+        setPayloadRegisterPegawaiBaru((prev) => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleCloseAdd = () => {
+        setOpenDialog(false);
+    };
+
+    const handleAddRegisterPegawaiBaru = async (e) => {
+        e.preventDefault();
+        props.doLoad();
+        try {
+            let dataAdd = {
+                fullname: payloadRegisterPegawaiBaru.namaLengkap,
+                tbt: payloadRegisterPegawaiBaru.dob,
+                gender: payloadRegisterPegawaiBaru.jenisKelamin,
+                email: payloadRegisterPegawaiBaru.email
+            };
+
+            const result = await apiAddRegisterPegawaiBaru({
+                body: JSON.stringify(dataAdd)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+                props.doLoad();
+            }
+        } catch (err) {
+            console.log(err);
+            props.doLoad();
+        }
+    };
+
+    const handleEdit = (data) => {
+        setEditDataRegisterPegawaiBaru(data);
+        setOpenEditDialog(true);
+    };
+
+    const handleCloseEdit = () => {
+        setOpenEditDialog(false);
+    };
+
+    const handleEditRegisterPegawaiBaru = async (e) => {
+        e.preventDefault();
+        try {
+            let dataEdit = {
+                id: payloadRegisterPegawaiBaru.id,
+                fullname: payloadRegisterPegawaiBaru.namaLengkap,
+                tbt: payloadRegisterPegawaiBaru.dob,
+                gender: payloadRegisterPegawaiBaru.jenisKelamin,
+                email: payloadRegisterPegawaiBaru.email
+            };
+
+            const result = await apiEditRegisterPegawaiBaru({
+                body: JSON.stringify(dataEdit)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const handleDeleteRegisterPegawaiBaru = async (id) => {
+        try {
+            let urlParams = id;
+
+            const result = await apiDeleteRegisterPegawaiBaru(urlParams);
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
-        <Box sx={{ marginLeft: "10vw", marginRight: "10vw", marginTop: "5vw", marginBottom: "5vw" }}>
-            <Box sx={{ marginBottom: "10px", display: "flex", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>Register Pegawai Baru</Typography>
-                <Button
-                    sx={styles.buttonAdd}
-                    startIcon={<AddCircle />}
-                    // onClick={}
-                >
-                    Tambah
-                </Button>
+        <>
+            <Box className={classes.containerParent}>
+                <Box className={classes.containerChild}>
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>Register Pegawai Baru</Typography>
+                    <Button
+                        sx={styles.buttonAdd}
+                        startIcon={<AddCircle />}
+                        // onClick={handleAdd}
+                    >
+                        Tambah
+                    </Button>
+                </Box>
+
+                <TableContainer component={Paper} className={classes.tableContainer}>
+                    <Table sx={{ minWidth: 650 }} size='small' aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Lengkap</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Tanggal Lahir</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Jenis Kelamin</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
+                                {/* <TableCell sx={{ fontWeight: "bold" }} align="center">Password</TableCell> */}
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+
+                        <TableBody>
+                            {dataMapRegisterPegawaiBaru?.map((data, index) => (
+                                <TableRow key={index}>
+                                    <TableCell align="center">{(pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru + index + 1}.</TableCell>
+                                    <TableCell align="center">{data.fullname}</TableCell>
+                                    <TableCell align="center">{data.tbt}</TableCell>
+                                    <TableCell align="center">{data.gender === "L" ? "Laki-laki" : "Perempuan"}</TableCell>
+                                    <TableCell align="center">{data.email}</TableCell>
+                                    {/* <TableCell align="center">{data.password}</TableCell> */}
+                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                                            <Button 
+                                                sx={styles.buttonEdit}
+                                                startIcon={<Edit />}
+                                                // onClick={() => handleEdit(data)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                sx={styles.buttonDelete}
+                                                startIcon={<DeleteForever />}
+                                                // onClick={() => handleDeleteRegisterPegawaiBaru(data.id)}
+                                            >
+                                                Hapus
+                                            </Button>
+                                        </Box>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Stack spacing={2} sx={styles.stackPagination}>
+                    <Pagination 
+                        count={totalPagesRegisterPegawaiBaru} 
+                        page={pageRegisterPegawaiBaru} 
+                        onChange={handleChangePageRegisterPegawaiBaru} 
+                        variant="outlined" 
+                        sx={styles.pagination}
+                    />
+                </Stack>
             </Box>
 
-            <TableContainer component={Paper} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Table sx={{ minWidth: 650 }} size='small' aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Lengkap</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Tanggal Lahir</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Jenis Kelamin</TableCell>
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
-                            {/* <TableCell sx={{ fontWeight: "bold" }} align="center">Password</TableCell> */}
-                            <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
-                        </TableRow>
-                    </TableHead>
-
-                    <TableBody>
-                        {dataMapRegisterPegawaiBaru?.map((data, index) => (
-                            <TableRow key={index}>
-                                <TableCell align="center">{(pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru + index + 1}.</TableCell>
-                                <TableCell align="center">{data.fullname}</TableCell>
-                                <TableCell align="center">{data.tbt}</TableCell>
-                                <TableCell align="center">{data.gender === "L" ? "Laki-laki" : "Perempuan"}</TableCell>
-                                <TableCell align="center">{data.email}</TableCell>
-                                {/* <TableCell align="center">{data.password}</TableCell> */}
-                                <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                    <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                                        <Button 
-                                            sx={styles.buttonEdit}
-                                            startIcon={<Edit />}
-                                            // onClick={}
-                                        >
-                                            Edit
-                                        </Button>
-                                        <Button
-                                            sx={styles.buttonDelete}
-                                            startIcon={<DeleteForever />}
-                                            // onClick={}
-                                        >
-                                            Hapus
-                                        </Button>
-                                    </Box>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <Stack spacing={2} sx={styles.stackPagination}>
-                <Pagination 
-                    count={totalPagesRegisterPegawaiBaru} 
-                    page={pageRegisterPegawaiBaru} 
-                    onChange={handleChangePageRegisterPegawaiBaru} 
-                    variant="outlined" 
-                    sx={styles.pagination}
+            {openDialog && (
+                <FormDialogAdd
+                    openDialog={openDialog}
+                    payloadRegisterPegawaiBaru={payloadRegisterPegawaiBaru}
+                    handleChange={handleChange}
+                    handleCloseAdd={handleCloseAdd}
+                    handleAddRegisterPegawaiBaru={handleAddRegisterPegawaiBaru}
                 />
-            </Stack>
-        </Box>
+            )}
+
+            {openEditDialog && (
+                <FormDialogEdit
+                    openEditDialog={openEditDialog}
+                    payloadRegisterPegawaiBaru={payloadRegisterPegawaiBaru}
+                    handleChange={handleChange}
+                    handleCloseEdit={handleCloseEdit}
+                    handleEditRegisterPegawaiBaru={handleEditRegisterPegawaiBaru}
+                />
+            )}
+
+            {openAlert && (
+                <Alert
+                    open={openAlert}
+                    close={handleCloseAlert}
+                    severity={severity}
+                    title={title}
+                    message={message}
+                />
+            )}
+        </>
     );
 };

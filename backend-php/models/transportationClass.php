@@ -62,5 +62,39 @@
             if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
             else return false;
         }
+
+        public function editTransportation($params) {
+            $queryUpdate = "UPDATE tm_tourist_transportation SET 
+                value = :value, 
+                nama_transportasi_wisata = :nama_transportasi_wisata, 
+                muatan = :muatan, 
+                stok = :stok, 
+                harga = :harga 
+                WHERE id = :id
+            ";
+
+            $stmt = $this->connection->prepare($queryUpdate);
+            $stmt->bindValue(":value", $params['value']);
+            $stmt->bindValue(":nama_transportasi_wisata", $params['nama_transportasi_wisata']);
+            $stmt->bindValue(":muatan", $params['muatan']);
+            $stmt->bindValue(":stok", $params['stok']);
+            $stmt->bindValue(":harga", $params['harga']);
+            $stmt->bindValue(":id", $params['id']);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
+
+        public function deleteTransportation($params) {
+            $query = "DELETE FROM tm_tourist_transportation WHERE id = :id";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
     }
 ?>

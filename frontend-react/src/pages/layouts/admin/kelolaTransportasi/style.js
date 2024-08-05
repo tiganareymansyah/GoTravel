@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-export const useKelolaDestinasiStyles = makeStyles({
+export const useKelolaTranportasiStyles = makeStyles({
     containerParent: {
         marginLeft: "10vw", 
         marginRight: "10vw", 

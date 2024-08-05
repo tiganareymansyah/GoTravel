@@ -55,5 +55,47 @@
                 );
             }
         }
+
+        public function EditTransportation($params) {
+            $transportationClass = new TransportationClass();
+            $transportationResult = $transportationClass->editTransportation($params);
+
+            if ($transportationResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal ubah data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data transportasi berhasil diedit"
+                );
+            }
+        }
+
+        public function DeleteTransportation($params) {
+            $transportationClass = new TransportationClass();
+            $transportationResult = $transportationClass->deleteTransportation($params);
+
+            if ($transportationResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data transportasi berhasil dihapus"
+                );
+            }
+        }
     }
 ?>

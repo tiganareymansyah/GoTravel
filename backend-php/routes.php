@@ -65,6 +65,18 @@
                 $data = $transportationController->GetOptionTransportation($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] === "edit") {
+                $transportationController = new TransportationController();
+                $data = $transportationController->EditTransportation($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $transportationController = new TransportationController();
+                $data = $transportationController->DeleteTransportation($urlParams);
+                
+                $result = $data;
             }
         } else if($paths[3] === "destination") {
             include_once __DIR__ . '/controllers/destinationController.php';

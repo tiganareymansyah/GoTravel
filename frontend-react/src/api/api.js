@@ -285,3 +285,53 @@ export async function apiDeleteMetodePembayaran(urlParams) {
         throw error;
     }
 }
+
+export async function apiAddTransportasi({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/transportation/insert",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiEditTransportasi({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/transportation/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteTransportasi(urlParams) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + `/transportation/delete?id=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -1,17 +1,14 @@
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    styled,
-    TextField
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  styled,
+  TextField,
 } from "@mui/material";
-import { 
-    Close, 
-    Send 
-} from "@mui/icons-material";
+import { Close, Save, Send } from "@mui/icons-material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -56,72 +53,72 @@ export default function FormDialogAdd({
   addDestinasi,
   handleChange,
   handleCloseAdd,
-  handleAddDestinasi
+  handleAddDestinasi,
 }) {
-    
-    return (
-        <>
-            <BootstrapDialog
-                onClose={handleCloseAdd}
-                aria-labelledby="customized-dialog-title"
-                open={openDialog}
-                PaperProps={{ style: { width: "500px", padding: "20px" } }}
-            >
-                <BootstrapDialogTitle
-                    id="customized-dialog-title"
-                    onClose={handleCloseAdd}
+  return (
+    <>
+      <BootstrapDialog
+        onClose={handleCloseAdd}
+        aria-labelledby="customized-dialog-title"
+        open={openDialog}
+        PaperProps={{ style: { width: "500px", padding: "20px" } }}
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleCloseAdd}
+        >
+          Tambah Destinasi
+        </BootstrapDialogTitle>
+
+        <DialogContent dividers>
+          <Box>
+            <form onSubmit={(e) => handleAddDestinasi(e)}>
+              <TextField
+                label="Value Destinasi"
+                name="valueDestinasi"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={addDestinasi.valueDestinasi}
+                onChange={(e) => handleChange("valueDestinasi", e.target.value)}
+              />
+
+              <TextField
+                label="Nama Destinasi"
+                name="namaDestinasi"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={addDestinasi.namaDestinasi}
+                onChange={(e) => handleChange("namaDestinasi", e.target.value)}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "end",
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: "#18345c",
+                    color: "white",
+                    fontWeight: "bold",
+                    marginTop: "5px",
+                    width: "30%"
+                  }}
+                  startIcon={<Save />}
                 >
-                    Tambah Destinasi
-                </BootstrapDialogTitle>
-
-                <DialogContent dividers>
-                    <Box>
-                        <form onSubmit={(e) => handleAddDestinasi(e)}>
-                            <TextField
-                                label="Value Destinasi"
-                                name="valueDestinasi"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={addDestinasi.valueDestinasi}
-                                onChange={(e) => handleChange("valueDestinasi", e.target.value)}
-                            />
-
-                            <TextField
-                                label="Nama Destinasi"
-                                name="namaDestinasi"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={addDestinasi.namaDestinasi}
-                                onChange={(e) => handleChange("namaDestinasi", e.target.value)}
-                            />
-
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "end",
-                                }}
-                            >
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    sx={{
-                                        background: "#18345c",
-                                        color: "white",
-                                        fontWeight: "bold",
-                                        marginTop: "5px",
-                                    }}
-                                    startIcon={<Send />}
-                                >
-                                    Submit
-                                </Button>
-                            </Box>
-                        </form>
-                    </Box>
-                </DialogContent>
-            </BootstrapDialog>
-        </>
-    );
+                  Save
+                </Button>
+              </Box>
+            </form>
+          </Box>
+        </DialogContent>
+      </BootstrapDialog>
+    </>
+  );
 }

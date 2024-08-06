@@ -25,6 +25,7 @@ import { useRegisterPegawaiBaruStyles } from "./style";
 import FormDialogAdd from "./form/FormDialogAdd";
 import FormDialogEdit from "./form/FormDialogEdit";
 import Alert from "../../../../components/Alert/Alert";
+import { formatDateYYYYMMDD } from "../../../../services/utils";
 
 export default function RegisterPegawaiBaru ({
     props
@@ -107,12 +108,14 @@ export default function RegisterPegawaiBaru ({
         namaLengkap: "",
         dob: "",
         jenisKelamin: "",
-        email: ""
+        email: "",
+        password: ""
     });
     const [openAlert, setOpenAlert] = useState(false);
     const [severity, setSeverity] = useState("");
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [boolChangePassword, setBoolChangePassword] = useState(false);
 
     let itemPerPagesRegisterPegawaiBaru = 5;
 
@@ -124,7 +127,7 @@ export default function RegisterPegawaiBaru ({
         if(openEditDialog) {
             setPayloadRegisterPegawaiBaru((prev) => ({
                 ...prev,
-                id: editDataRegisterPegawaiBaru.id,
+                id: editDataRegisterPegawaiBaru.id_admin,
                 namaLengkap: editDataRegisterPegawaiBaru.fullname,
                 dob: editDataRegisterPegawaiBaru.tbt,
                 jenisKelamin: editDataRegisterPegawaiBaru.gender,
@@ -196,9 +199,10 @@ export default function RegisterPegawaiBaru ({
         try {
             let dataAdd = {
                 fullname: payloadRegisterPegawaiBaru.namaLengkap,
-                tbt: payloadRegisterPegawaiBaru.dob,
+                tbt: formatDateYYYYMMDD(payloadRegisterPegawaiBaru.dob),
                 gender: payloadRegisterPegawaiBaru.jenisKelamin,
-                email: payloadRegisterPegawaiBaru.email
+                email: payloadRegisterPegawaiBaru.email,
+                password: payloadRegisterPegawaiBaru.password
             };
 
             const result = await apiAddRegisterPegawaiBaru({
@@ -234,13 +238,24 @@ export default function RegisterPegawaiBaru ({
     const handleEditRegisterPegawaiBaru = async (e) => {
         e.preventDefault();
         try {
-            let dataEdit = {
-                id: payloadRegisterPegawaiBaru.id,
-                fullname: payloadRegisterPegawaiBaru.namaLengkap,
-                tbt: payloadRegisterPegawaiBaru.dob,
-                gender: payloadRegisterPegawaiBaru.jenisKelamin,
-                email: payloadRegisterPegawaiBaru.email
-            };
+            let dataEdit = {};
+
+            if(boolChangePassword) {
+                dataEdit = {
+                    id: payloadRegisterPegawaiBaru.id,
+                    password: payloadRegisterPegawaiBaru.password,
+                    is_edit: 1
+                }
+            } else {
+                dataEdit = {
+                    id: payloadRegisterPegawaiBaru.id,
+                    fullname: payloadRegisterPegawaiBaru.namaLengkap,
+                    tbt: formatDateYYYYMMDD(payloadRegisterPegawaiBaru.dob),
+                    gender: payloadRegisterPegawaiBaru.jenisKelamin,
+                    email: payloadRegisterPegawaiBaru.email,
+                    is_edit: 0
+                };
+            }
 
             const result = await apiEditRegisterPegawaiBaru({
                 body: JSON.stringify(dataEdit)
@@ -282,6 +297,17 @@ export default function RegisterPegawaiBaru ({
         }
     };
 
+    const handleChangePassword = (value) => {
+        if(value === "batal") {
+            setBoolChangePassword(false);
+            handleChange("password", "");
+        } else {
+            setBoolChangePassword(true);
+        }
+    };
+
+    console.log(payloadRegisterPegawaiBaru);
+
     return (
         <>
             <Box className={classes.containerParent}>
@@ -290,7 +316,7 @@ export default function RegisterPegawaiBaru ({
                     <Button
                         sx={styles.buttonAdd}
                         startIcon={<AddCircle />}
-                        // onClick={handleAdd}
+                        onClick={handleAdd}
                     >
                         Tambah
                     </Button>
@@ -320,18 +346,18 @@ export default function RegisterPegawaiBaru ({
                                     <TableCell align="center">{data.email}</TableCell>
                                     {/* <TableCell align="center">{data.password}</TableCell> */}
                                     <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                             <Button 
                                                 sx={styles.buttonEdit}
                                                 startIcon={<Edit />}
-                                                // onClick={() => handleEdit(data)}
+                                                onClick={() => handleEdit(data)}
                                             >
                                                 Edit
                                             </Button>
                                             <Button
                                                 sx={styles.buttonDelete}
                                                 startIcon={<DeleteForever />}
-                                                // onClick={() => handleDeleteRegisterPegawaiBaru(data.id)}
+                                                onClick={() => handleDeleteRegisterPegawaiBaru(data.id_admin)}
                                             >
                                                 Hapus
                                             </Button>
@@ -355,6 +381,7 @@ export default function RegisterPegawaiBaru ({
 
             {openDialog && (
                 <FormDialogAdd
+                    classes={classes}
                     openDialog={openDialog}
                     payloadRegisterPegawaiBaru={payloadRegisterPegawaiBaru}
                     handleChange={handleChange}
@@ -365,11 +392,14 @@ export default function RegisterPegawaiBaru ({
 
             {openEditDialog && (
                 <FormDialogEdit
+                    classes={classes}
                     openEditDialog={openEditDialog}
                     payloadRegisterPegawaiBaru={payloadRegisterPegawaiBaru}
                     handleChange={handleChange}
                     handleCloseEdit={handleCloseEdit}
                     handleEditRegisterPegawaiBaru={handleEditRegisterPegawaiBaru}
+                    boolChangePassword={boolChangePassword}
+                    handleChangePassword={handleChangePassword}
                 />
             )}
 

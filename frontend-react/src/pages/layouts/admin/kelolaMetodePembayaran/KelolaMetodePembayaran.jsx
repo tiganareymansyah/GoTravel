@@ -304,7 +304,7 @@ export default function KelolaMetodePembayaran ({
                                     <TableCell align="center">{data.value}</TableCell>
                                     <TableCell align="center">{data.nama_payment_method}</TableCell>
                                     <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                             <Button 
                                                 sx={styles.buttonEdit}
                                                 startIcon={<Edit />}

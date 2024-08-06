@@ -325,7 +325,7 @@ export default function KelolaTransportasi ({
                                     <TableCell align="center">{data.stok}</TableCell>
                                     <TableCell align="center">{data.harga}</TableCell>
                                     <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                             <Button 
                                                 sx={styles.buttonEdit}
                                                 startIcon={<Edit />}

@@ -1,17 +1,14 @@
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    styled,
-    TextField
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  styled,
+  TextField,
 } from "@mui/material";
-import { 
-    Close, 
-    Send 
-} from "@mui/icons-material";
+import { Close, Save, Send } from "@mui/icons-material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -56,72 +53,76 @@ export default function FormDialogEdit({
   payloadMetodePembayaran,
   handleChange,
   handleCloseEdit,
-  handleEditMetodePembayaran
+  handleEditMetodePembayaran,
 }) {
-    
-    return (
-        <>
-            <BootstrapDialog
-                onClose={handleCloseEdit}
-                aria-labelledby="customized-dialog-title"
-                open={openEditDialog}
-                PaperProps={{ style: { width: "500px", padding: "20px" } }}
-            >
-                <BootstrapDialogTitle
-                    id="customized-dialog-title"
-                    onClose={handleCloseEdit}
+  return (
+    <>
+      <BootstrapDialog
+        onClose={handleCloseEdit}
+        aria-labelledby="customized-dialog-title"
+        open={openEditDialog}
+        PaperProps={{ style: { width: "500px", padding: "20px" } }}
+      >
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleCloseEdit}
+        >
+          Edit Metode Pembayaran
+        </BootstrapDialogTitle>
+
+        <DialogContent dividers>
+          <Box>
+            <form onSubmit={(e) => handleEditMetodePembayaran(e)}>
+              <TextField
+                label="Value Metode Pembayaran"
+                name="valueMetodePembayaran"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={payloadMetodePembayaran.valueMetodePembayaran}
+                onChange={(e) =>
+                  handleChange("valueMetodePembayaran", e.target.value)
+                }
+              />
+
+              <TextField
+                label="Nama Metode Pembayaran"
+                name="namaMetodePembayaran"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                value={payloadMetodePembayaran.namaMetodePembayaran}
+                onChange={(e) =>
+                  handleChange("namaMetodePembayaran", e.target.value)
+                }
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "end",
+                }}
+              >
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    background: "#18345c",
+                    color: "white",
+                    fontWeight: "bold",
+                    marginTop: "5px",
+                    width: "30%"
+                  }}
+                  startIcon={<Save />}
                 >
-                    Edit Metode Pembayaran
-                </BootstrapDialogTitle>
-
-                <DialogContent dividers>
-                    <Box>
-                        <form onSubmit={(e) => handleEditMetodePembayaran(e)}>
-                            <TextField
-                                label="Value Metode Pembayaran"
-                                name="valueMetodePembayaran"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={payloadMetodePembayaran.valueMetodePembayaran}
-                                onChange={(e) => handleChange("valueMetodePembayaran", e.target.value)}
-                            />
-
-                            <TextField
-                                label="Nama Metode Pembayaran"
-                                name="namaMetodePembayaran"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={payloadMetodePembayaran.namaMetodePembayaran}
-                                onChange={(e) => handleChange("namaMetodePembayaran", e.target.value)}
-                            />
-
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "end",
-                                }}
-                            >
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    sx={{
-                                        background: "#18345c",
-                                        color: "white",
-                                        fontWeight: "bold",
-                                        marginTop: "5px",
-                                    }}
-                                    startIcon={<Send />}
-                                >
-                                    Submit
-                                </Button>
-                            </Box>
-                        </form>
-                    </Box>
-                </DialogContent>
-            </BootstrapDialog>
-        </>
-    );
+                  Save
+                </Button>
+              </Box>
+            </form>
+          </Box>
+        </DialogContent>
+      </BootstrapDialog>
+    </>
+  );
 }

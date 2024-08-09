@@ -30,6 +30,28 @@
             }
         }
 
+        public function GetDataBookingByEmail($params) {
+            $dataBookingClass = new DataBookingClass();
+            $dataBookingResult = $dataBookingClass->getDataBookingByEmail($params);
+
+            if ($dataBookingResult == false) {
+                http_response_code(500);
+                return array(
+                    "code" => 500, 
+                    "status" => "failed",
+                    "message" => "Error"
+                );
+            } else {
+                http_response_code(201);
+                return array(
+                    "code" => 201, 
+                    "status" => "success",
+                    "message" => "Data booking by email ditemukan",
+                    "data" => $dataBookingResult
+                );
+            }
+        }
+
         public function GetDataBooking($params) {
             $dataBookingClass = new DataBookingClass();
             $dataBookingResult = $dataBookingClass->getDataBooking($params);

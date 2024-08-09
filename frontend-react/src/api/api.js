@@ -154,11 +154,27 @@ export async function apiRequestDataBooking({ body }) {
     }
 }
 
-export async function apiGetDataBooking() {
+export async function apiGetDataBookingByEmail(urlParams) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + `/request/get-data-booking-by-email?email=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiGetAllDataBooking() {
     try {
         const response = await axios({
             method: "GET",
-            url: ApiUrl + "/request/get-data-booking",
+            url: ApiUrl + "/request/get-all-data-booking",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             },

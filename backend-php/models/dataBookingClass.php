@@ -167,9 +167,35 @@
             $sendEmailSuccessBooking = $instanceEmail->sendEmailSuccessBooking($params);
         }
 
+        public function getDataBookingByEmail($params) {
+            try {
+                $query = "SELECT * FROM data_booking WHERE email = :email";
+
+                $stmt = $this->connection->prepare($query);
+                $stmt->bindValue(":email", $params);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+                    foreach ($results as &$result) {
+                        if (isset($result['data_perjalanan'])) {
+                            $result['data_perjalanan'] = json_decode($result['data_perjalanan'], true);
+                        }
+                    }
+        
+                    return $results;
+                } else {
+                    return false;
+                }
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
         public function getDataBooking($params) {
             try {
-                $query = "SELECT * FROM data_booking";
+                $query = "SELECT * FROM data_booking ORDER BY is_bayar ASC, created_at DESC";
 
                 $stmt = $this->connection->prepare($query);
                 $stmt->execute();

@@ -32,7 +32,7 @@ export const useBookingStyles = makeStyles({
         padding: "16px", 
         boxSizing: "border-box", 
         width: "400px", 
-        height: "400px", 
+        height: "450px", 
         borderRadius: "8px", 
         backgroundColor: "#fff", 
         transition: "all 0.3s cubic-bezier(.25,.8,.25,1)", 
@@ -43,7 +43,7 @@ export const useBookingStyles = makeStyles({
         "&:hover": {
             cursor: "pointer", 
             width: "410px", 
-            height: "410px" 
+            height: "460px" 
         }  
     },
 

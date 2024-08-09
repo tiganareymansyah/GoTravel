@@ -146,7 +146,14 @@
                 $data = $dataBookingController->AddDataBooking($jsonParams);
                 
                 $result = $data;
-            } else if($paths[4] === "get-data-booking") {
+            } else if($paths[4] === "get-data-booking-by-email") {
+                $urlParams = $_GET['email'];
+
+                $dataBookingController = new DataBookingController();
+                $data = $dataBookingController->GetDataBookingByEmail($urlParams);
+                
+                $result = $data;
+            } else if($paths[4] === "get-all-data-booking") {
                 $dataBookingController = new DataBookingController();
                 $data = $dataBookingController->GetDataBooking($jsonParams);
                 

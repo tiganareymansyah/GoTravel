@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, Button, Divider, Pagination, Stack, Typography } from "@mui/material";
+import { Box, Button, Chip, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { Add } from '@mui/icons-material';
 import Navbar from "../../../components/navbar/Navbar";
 import { useMediaQuery } from "react-responsive";

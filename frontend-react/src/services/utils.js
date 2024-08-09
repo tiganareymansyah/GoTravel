@@ -36,3 +36,25 @@ export const formatDateToCustomString = (propsDate) => {
 
     return `${day}, ${dayOfMonth} ${month} ${year}`;
 }
+
+export function formatUangByKodeMataUang(price, currency) {
+    const numericPrice = Number(price);
+  
+    if (isNaN(numericPrice)) {
+        return "Invalid Price";
+    }
+  
+    if (currency) {
+        const formattedPrice = new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency,
+            currencyDisplay: "narrowSymbol",
+        }).format(numericPrice);
+  
+        const spaceSeparatedFormattedPrice = formattedPrice.replace(/\s+/g, " ");
+  
+        return spaceSeparatedFormattedPrice;
+    }
+  
+    return "";
+}

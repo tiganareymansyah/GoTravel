@@ -5,7 +5,7 @@ import Register from "./pages/authentication/register-user/Register.jsx";
 import LoginAdmin from "./pages/authentication/login-admin/LoginAdmin.jsx";
 import GoTravelIndex from "./pages/index.jsx";
 import Loader from "./components/Loader/Loader.jsx";
-import { apiGetDataBooking } from "./api/api.js";
+import { apiGetDataBookingByEmail } from "./api/api.js";
 import { useLocation } from "react-router-dom";
 
 export default function App() {
@@ -76,7 +76,9 @@ export default function App() {
 
   const handleGetDataBooking = async () => {
     try {
-      const result = await apiGetDataBooking();
+      let urlParams = userLogin.email;
+
+      const result = await apiGetDataBookingByEmail(urlParams);
 
       const { code, status, message, data } = result;
 

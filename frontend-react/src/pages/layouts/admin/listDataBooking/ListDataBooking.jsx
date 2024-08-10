@@ -162,6 +162,8 @@ export default function ListDataBooking ({
         console.log("Masuk");
     };
 
+    console.log(detailListDataBooking);
+
     return (
         <>
             <Box className={classes.containerParent}>
@@ -176,9 +178,9 @@ export default function ListDataBooking ({
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Kode Booking</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Lengkap</TableCell>
-                                <TableCell sx={{ fontWeight: "bold" }} align="center">NIK</TableCell>
-                                <TableCell sx={{ fontWeight: "bold" }} align="center">Nomor Hp</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Alamat</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Mulai Booking</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Akhir Booking</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Status</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
                             </TableRow>
@@ -190,9 +192,9 @@ export default function ListDataBooking ({
                                     <TableCell align="center">{(pageListDataBooking - 1) * itemPerPagesListDataBooking + index + 1}.</TableCell>
                                     <TableCell align="center">{data.kode_booking}</TableCell>
                                     <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.nama_lengkap}</TableCell>
-                                    <TableCell align="center">{data.nik}</TableCell>
-                                    <TableCell align="center">{data.nomor_hp}</TableCell>
                                     <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.alamat}</TableCell>
+                                    <TableCell align="center">{data.mulai_booking}</TableCell>
+                                    <TableCell align="center">{data.akhir_booking}</TableCell>
                                     <TableCell 
                                         align="center"
                                         sx={{
@@ -240,6 +242,7 @@ export default function ListDataBooking ({
 
             {openDetail && (
                 <FormPembayaran
+                    classes={classes}
                     openDetail={openDetail}
                     detailListDataBooking={detailListDataBooking}
                     handleCloseDetail={handleCloseDetail}

@@ -17,6 +17,7 @@ export default function Booking(props) {
     const [page, setPage] = useState(1);
 
     const navigate = useNavigate();
+    const currentDate = new Date();
 
     const styles = {
         buttonTambah: {
@@ -68,6 +69,10 @@ export default function Booking(props) {
         console.log(data);
     };
 
+    const isBookingExpired = (lastBooking, currentDate) => {
+        return lastBooking > currentDate;
+    };
+
     console.log(dataBooking);
 
     return (
@@ -101,16 +106,25 @@ export default function Booking(props) {
                                                 <Typography>{data.kode_booking}</Typography>
                                                 <Typography
                                                     sx={{
-                                                        backgroundColor: data.is_bayar === 1 ? "green" : "grey",
+                                                        backgroundColor: 
+                                                        isBookingExpired(new Date(data.akhir_booking), 
+                                                        new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? 
+                                                            data.is_bayar === 1 ? "green" : "red"
+                                                        : "grey",
                                                         color: "white",
                                                         padding: "5px",
                                                         borderRadius: "5px",
                                                     }}
                                                 >
-                                                    {data.is_bayar === 1 
-                                                        ? capitalizeWords("Sudah Bayar")
-                                                        : capitalizeWords("Belum Bayar")
-                                                    }
+                                                    {isBookingExpired(new Date(data.akhir_booking), 
+                                                    new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? (
+                                                        <>
+                                                            {data.is_bayar === 1 
+                                                                ? capitalizeWords("Sudah Bayar")
+                                                                : capitalizeWords("Belum Bayar")
+                                                            }
+                                                        </>
+                                                    ) : capitalizeWords("Kadaluarsa")}
                                                 </Typography>
                                             </Box>
 
@@ -130,39 +144,44 @@ export default function Booking(props) {
                                                 <Typography>
                                                     {capitalizeWords(data.alamat)}
                                                 </Typography>
-                                                {data.is_bayar === 0 ? (
-                                                    <Box>
-                                                        <Chip
-                                                            label="Silahkan datang ke lokasi"
-                                                            sx={{
-                                                                marginLeft: "8px",
-                                                                marginTop: "16px",
-                                                            }}
-                                                        />
-
-                                                        <Typography
-                                                            sx={{
-                                                                fontFamily: "Nunito Sans",
-                                                                marginTop: "20px",
-                                                                textDecoration: "underline #00f",
-                                                                color: "blue",
-                                                            }}
-                                                        >
-                                                            {capitalizeWords("pembayaran")}
-                                                        </Typography>
-                                                    </Box>
-                                                ) : (
-                                                    <Typography
-                                                        sx={{
-                                                            fontFamily: "Nunito Sans",
-                                                            marginTop: "20px",
-                                                            textDecoration: "underline #00f",
-                                                            color: "blue",
-                                                        }}
-                                                    >
-                                                        {capitalizeWords("Aktif")}
-                                                    </Typography>
-                                                )}
+                                                {isBookingExpired(new Date(data.akhir_booking), 
+                                                new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? (
+                                                    <>
+                                                        {data.is_bayar === 0 ? (
+                                                            <Box>
+                                                                <Chip
+                                                                    label="Silahkan datang ke perusahaan untuk pembayaran"
+                                                                    sx={{
+                                                                        marginLeft: "8px",
+                                                                        marginTop: "16px",
+                                                                    }}
+                                                                />
+        
+                                                                <Typography
+                                                                    sx={{
+                                                                        fontFamily: "Nunito Sans",
+                                                                        marginTop: "20px",
+                                                                        textDecoration: "underline #00f",
+                                                                        color: "blue",
+                                                                    }}
+                                                                >
+                                                                    {capitalizeWords("pembayaran")}
+                                                                </Typography>
+                                                            </Box>
+                                                        ) : (
+                                                            <Typography
+                                                                sx={{
+                                                                    fontFamily: "Nunito Sans",
+                                                                    marginTop: "20px",
+                                                                    textDecoration: "underline #00f",
+                                                                    color: "blue",
+                                                                }}
+                                                            >
+                                                                {capitalizeWords("Aktif")}
+                                                            </Typography>
+                                                        )}
+                                                    </>
+                                                ) : null}
                                                 <Box
                                                     sx={{
                                                     textTransform: "capitalize",

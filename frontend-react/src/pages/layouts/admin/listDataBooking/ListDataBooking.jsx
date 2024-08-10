@@ -109,6 +109,7 @@ export default function ListDataBooking ({
     const [message, setMessage] = useState("");
 
     let itemPerPagesListDataBooking = 5;
+    const currentDate = new Date();
 
     useEffect(() => {
         handleGetListDataBooking();
@@ -162,6 +163,10 @@ export default function ListDataBooking ({
         console.log("Masuk");
     };
 
+    const isBookingExpired = (lastBooking, currentDate) => {
+        return lastBooking > currentDate;
+    };
+
     console.log(detailListDataBooking);
 
     return (
@@ -199,11 +204,20 @@ export default function ListDataBooking ({
                                         align="center"
                                         sx={{
                                             fontWeight: "bold",
-                                            color: data.is_bayar === 1 ? "green" : "red",
+                                            color: 
+                                                isBookingExpired(new Date(data.akhir_booking), 
+                                                new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? 
+                                                    data.is_bayar === 1 ? "green" : "red"
+                                                : "grey",
                                             textTransform: "uppercase"
                                         }}
                                     >
-                                        {data.is_bayar === 1 ? "aktif" : "belum bayar"}
+                                        {isBookingExpired(new Date(data.akhir_booking), 
+                                        new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? (
+                                            <>
+                                                {data.is_bayar === 1 ? "aktif" : "belum bayar"}
+                                            </>
+                                        ) : "Kadaluarsa"}
                                     </TableCell>
                                     <TableCell sx={{ display: "flex", justifyContent: "center", }}>
                                         <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>

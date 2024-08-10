@@ -215,7 +215,7 @@
     
                     $stmt = $this->connection->prepare($query);
                     $stmt->bindValue(":id_admin", $id_admin);
-                    $stmt->bindValue(":fullname", $params['fullname']);
+                    $stmt->bindValue(":fullname", strtolower($params['fullname']));
                     $stmt->bindValue(":tbt", $params['tbt']);
                     $stmt->bindValue(":gender", strtoupper($params['gender']));
                     $stmt->bindValue(":email", $params['email']);
@@ -320,6 +320,61 @@
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            else return false;
+        }
+
+        public function editAdmin($params) {
+            $querySelect = "SELECT * FROM login_admin WHERE id_admin = :id_admin";
+
+            $stmtSelect = $this->connection->prepare($querySelect);
+            $stmtSelect->bindValue(":id_admin", $params['id']);
+            $stmtSelect->execute();
+            $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+
+            if($params['is_edit'] === 1) {
+                $queryUpdate = "UPDATE login_admin SET 
+                    password = :password 
+                    WHERE id_admin = :id_admin
+                ";
+    
+                $stmt = $this->connection->prepare($queryUpdate);
+                $stmt->bindValue(":password", $params['password'] === "" ? $cekEmail['password'] : password_hash($params['password'], PASSWORD_DEFAULT));
+                $stmt->bindValue(":id_admin", $params['id']);
+                $stmt->execute();
+    
+                if ($stmt->rowCount() > 0) return true;
+                else return false;
+            } else {
+                $queryUpdate = "UPDATE login_admin SET 
+                    fullname = :fullname, 
+                    tbt = :tbt, 
+                    gender = :gender, 
+                    email = :email 
+                    WHERE id_admin = :id_admin
+                ";
+    
+                $stmt = $this->connection->prepare($queryUpdate);
+                $stmt->bindValue(":fullname", $params['fullname'] === "" ? $cekEmail['fullname'] : strtolower($params['fullname']));
+                $stmt->bindValue(":tbt", $params['tbt'] === "" ? $cekEmail['tbt'] : $params['tbt']);
+                $stmt->bindValue(":gender", $params['gender'] === "" ? $cekEmail['gender'] : strtoupper($params['gender']));
+                $stmt->bindValue(":email", $params['email'] === "" ? $cekEmail['email'] : $params['email']);
+                $stmt->bindValue(":id_admin", $params['id']);
+                $stmt->execute();
+    
+                if ($stmt->rowCount() > 0) return true;
+                else return false;
+            }
+
+        }
+
+        public function deleteAdmin($params) {
+            $query = "DELETE FROM login_admin WHERE id_admin = :id_admin";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id_admin", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
             else return false;
         }
     }

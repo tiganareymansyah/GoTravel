@@ -50,6 +50,18 @@
                 $data = $logregController->GetAkunAdmin($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] == "edit") {
+                $logregController = new LogregController();
+                $data = $logregController->EditAdmin($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $logregController = new LogregController();
+                $data = $logregController->DeleteAdmin($urlParams);
+                
+                $result = $data;
             }
         } else if($paths[3] === "transportation") {
             include_once __DIR__ . '/controllers/transportationController.php';

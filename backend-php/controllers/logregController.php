@@ -199,5 +199,47 @@
                 );
             }
         }
+
+        public function EditAdmin($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->editAdmin($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal ubah data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Akun berhasil diedit"
+                );
+            }
+        }
+
+        public function DeleteAdmin($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->deleteAdmin($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Akun berhasil dihapus"
+                );
+            }
+        }
     }
 ?>

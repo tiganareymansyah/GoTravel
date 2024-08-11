@@ -401,3 +401,37 @@ export async function apiGetAllDataBooking() {
         throw error;
     }
 }
+
+export async function apiEditPay({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/request/edit-pay",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteDataBooking({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/request/delete",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

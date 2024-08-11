@@ -4,12 +4,13 @@ import KarikaturBeach from "../../../../../media/karikatur_beach1.jpg";
 
 export const sectionTouristData = (
     classes, 
+    props, 
     formik, 
     handleNext, 
     handlePrev, 
     inputRefFullName, 
     inputRefNik, 
-    inputRefEmail, 
+    // inputRefEmail, 
     inputRefNomorHp, 
     inputRefAlamat 
 ) => {
@@ -65,7 +66,9 @@ export const sectionTouristData = (
                         <TextField 
                             id="namaLengkap"
                             name="namaLengkap"
-                            variant="standard"
+                            // variant="standard"
+                            variant="outlined"
+                            size="small"
                             placeholder="Nama Lengkap"
                             inputRef={inputRefFullName}
                             defaultValue={formik?.values?.fullName}
@@ -87,7 +90,8 @@ export const sectionTouristData = (
                         <TextField 
                             id="nik"
                             name="nik"
-                            variant="standard"
+                            variant="outlined"
+                            size="small"
                             placeholder="NIK"
                             inputRef={inputRefNik}
                             defaultValue={formik?.values?.nik}
@@ -109,13 +113,21 @@ export const sectionTouristData = (
                         <TextField 
                             id="email"
                             name="email"
-                            variant="standard"
+                            variant="outlined"
+                            size="small"
                             placeholder="Email"
-                            inputRef={inputRefEmail}
-                            defaultValue={formik?.values?.email}
-                            onBlur={() => formik.setFieldValue("email", inputRefEmail.current?.value)}
-                            required
+                            // defaultValue={formik?.values?.email}
+                            // inputRef={inputRefEmail}
+                            // onBlur={() => formik.setFieldValue("email", inputRefEmail.current?.value)}
+                            // required
+                            defaultValue={props?.userLogin?.email}
+                            disabled
                             sx={styles.textField}
+                            InputProps={{
+                                classes: {
+                                    disabled: classes.disabled
+                                },
+                            }}
                         />
                     </Box>
 
@@ -131,7 +143,8 @@ export const sectionTouristData = (
                         <TextField 
                             id="nomorHp"
                             name="nomorHp"
-                            variant="standard"
+                            variant="outlined"
+                            size="small"
                             placeholder="Nomor Hp"
                             inputRef={inputRefNomorHp}
                             defaultValue={formik?.values?.nomorHp}

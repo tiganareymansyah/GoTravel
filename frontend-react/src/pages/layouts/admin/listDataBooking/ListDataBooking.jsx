@@ -14,15 +14,17 @@ import {
     Typography 
 } from "@mui/material";
 import { 
-    DeleteForever,
-    ManageSearch  
+    DeleteForever, 
+    ManageSearch, 
+    Tune 
 } from "@mui/icons-material";
 import { useMediaQuery } from "react-responsive";
 import { useListDataBookingStyles } from "./style";
 import { orange } from "@mui/material/colors";
 import Alert from "../../../../components/Alert/Alert";
-import { apiGetAllDataBooking } from "../../../../api/api";
+import { apiDeleteDataBooking, apiEditPay, apiGetAllDataBooking } from "../../../../api/api";
 import FormPembayaran from "./form/FormPembayaran";
+import Select, { components } from "react-select";
 
 export default function ListDataBooking ({
     props
@@ -33,6 +35,12 @@ export default function ListDataBooking ({
     const classes = useListDataBookingStyles({ isMobile });
 
     const styles = {
+        label: {
+            fontWeight: "700",
+            fontSize: "18px",
+            textTransform: "capitalize",
+        },
+
         buttonAdd: {
             padding: "7px 14px",
             textAlign: "center",
@@ -107,6 +115,16 @@ export default function ListDataBooking ({
     const [severity, setSeverity] = useState("");
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
+    const [selectState, setSelectState] = useState({
+        status: {
+            selectedState: "",
+            states: [
+                { value: "aktif", label: "AKTIF" },
+                { value: "belum bayar", label: "BELUM BAYAR" },
+                { value: "kadaluarsa", label: "KADALUARSA" }
+            ]
+        }
+    });
 
     let itemPerPagesListDataBooking = 5;
     const currentDate = new Date();
@@ -148,7 +166,27 @@ export default function ListDataBooking ({
         if(severity === "successNoReload") {
             location.href = "/kelola-admin";
         }
-    }
+    };
+
+    const handleChangeSelectState = (name, state) => {
+        setSelectState((prev) => ({
+            ...prev,
+            [name]: {
+                ...prev[name],
+                selectedState: state,
+            },
+        }));
+    };
+
+    const customControl = ({ children, ...props }) => (
+        <components.Control {...props}>
+            <Tune sx={{ marginLeft: "8px" }} /> {children}
+        </components.Control>
+    );
+
+    const isBookingExpired = (lastBooking, currentDate) => {
+        return lastBooking > currentDate;
+    };
 
     const handleOpenDetail = (data) => {
         setDetailListDataBooking(data);
@@ -159,12 +197,56 @@ export default function ListDataBooking ({
         setOpenDetail(false);
     };
 
-    const handleBayar = () => {
-        console.log("Masuk");
+    const handleBayar = async (e) => {
+        e.preventDefault();
+        props.doLoad();
+        try {
+            let payload = {
+                kode_booking: detailListDataBooking.kode_booking
+            };
+
+            const result = await apiEditPay({
+                body: JSON.stringify(payload)
+            });
+
+            const  { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+                props.doLoad();
+            }
+        } catch (err) {
+            console.log(err);
+            props.doLoad();
+        }
     };
 
-    const isBookingExpired = (lastBooking, currentDate) => {
-        return lastBooking > currentDate;
+    const handleDeleteListDataBooking = async (value) => {
+        try {
+            let payload = value;
+
+            const result = await apiDeleteDataBooking({
+                body: JSON.stringify(payload)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     console.log(detailListDataBooking);
@@ -174,6 +256,32 @@ export default function ListDataBooking ({
             <Box className={classes.containerParent}>
                 <Box className={classes.containerChild}>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>List Data Booking</Typography>
+                    <Select
+                        placeholder="filter status"
+                        components={{ Control: customControl }}
+                        onChange={(state) => handleChangeSelectState("status", state)}
+                        value={selectState.status.selectedState}
+                        options={selectState.status.states}
+                        styles={{
+                            container: (baseStyles, state) => ({
+                                ...baseStyles,
+                                ...styles.label,
+                                fontSize: 14,
+                                width: "21%"
+                            }),
+                            control: (baseStyles, state) => ({
+                                ...baseStyles,
+                                textIndent: "10px",
+                                backgroundColor: state.isDisabled && "#d8d4d4",
+                            }),
+                            singleValue: (baseStyles, state) => ({
+                                ...baseStyles,
+                                color: "#000000",
+                            }),
+                        }}
+                        // isDisabled={props.boolDicabut ? true : false}
+                        className="form-input"
+                    />
                 </Box>
 
                 <TableContainer component={Paper} className={classes.tableContainer}>
@@ -232,7 +340,7 @@ export default function ListDataBooking ({
                                             <Button
                                                 sx={styles.buttonPayment}
                                                 startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteListDataBooking(data.id)}
+                                                onClick={() => handleDeleteListDataBooking(data)}
                                             >
                                                 Hapus
                                             </Button>
@@ -261,6 +369,8 @@ export default function ListDataBooking ({
                     detailListDataBooking={detailListDataBooking}
                     handleCloseDetail={handleCloseDetail}
                     handleBayar={handleBayar}
+                    currentDate={currentDate}
+                    isBookingExpired={isBookingExpired}
                 />
             )}
 

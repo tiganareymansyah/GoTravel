@@ -62,7 +62,9 @@ export default function FormPembayaran({
   openDetail,
   detailListDataBooking,
   handleCloseDetail,
-  handleBayar
+  handleBayar,
+  currentDate,
+  isBookingExpired
 }) {
   const styles = {
     tableCell: {
@@ -321,7 +323,9 @@ export default function FormPembayaran({
                 defaultValue={detailListDataBooking.metode_pembayaran}
               />
 
-              {detailListDataBooking.is_bayar === 0 && (
+              {detailListDataBooking.is_bayar === 0 && 
+              isBookingExpired(new Date(detailListDataBooking.akhir_booking), 
+              new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) && (
                 <Box
                   sx={{
                     display: "flex",

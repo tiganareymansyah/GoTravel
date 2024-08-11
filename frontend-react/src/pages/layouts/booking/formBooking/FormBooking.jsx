@@ -48,7 +48,7 @@ export default function FormBooking(props) {
     const inputRefDurasi = useRef(null);
     const inputRefFullName = useRef(null);
     const inputRefNik = useRef(null);
-    const inputRefEmail = useRef(null);
+    // const inputRefEmail = useRef(null);
     const inputRefNomorHp = useRef(null);
     const inputRefAlamat = useRef(null);
 
@@ -70,7 +70,7 @@ export default function FormBooking(props) {
             listData: listData, 
             fullName: "", 
             nik: "", 
-            email: "", 
+            // email: "", 
             nomorHp: "", 
             alamat: "", 
             total: "", 
@@ -214,7 +214,7 @@ export default function FormBooking(props) {
         } else if (step === 1) {
             if(formik.values.fullName === "" ||
             formik.values.nik === "" ||
-            formik.values.email === "" ||
+            // formik.values.email === "" ||
             formik.values.nomorHp === "" ||
             formik.values.alamat === "") {
                 handleAlert(
@@ -391,7 +391,8 @@ export default function FormBooking(props) {
                 data_perjalanan: formik.values.listData,
                 nama_lengkap: formik.values.fullName,
                 nik: formik.values.nik,
-                email: formik.values.email,
+                // email: formik.values.email,
+                email: props.userLogin.email,
                 nomor_hp: formik.values.nomorHp,
                 alamat: formik.values.alamat,
                 kode_pembayaran: kodePembayaran,
@@ -490,12 +491,13 @@ export default function FormBooking(props) {
                             <>
                                 {sectionTouristData(
                                     classes, 
+                                    props, 
                                     formik, 
                                     handleNext, 
                                     handlePrev, 
                                     inputRefFullName, 
                                     inputRefNik, 
-                                    inputRefEmail, 
+                                    // inputRefEmail, 
                                     inputRefNomorHp, 
                                     inputRefAlamat 
                                 )}

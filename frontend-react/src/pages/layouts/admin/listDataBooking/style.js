@@ -40,7 +40,7 @@ export const useListDataBookingStyles = makeStyles({
         "& .MuiInputBase-input": {
             color: "black !important",
             fontSize: 17,
-            fontWeight: "600",
+            // fontWeight: "600",
             fontFamily: "Roboto, sans-serif",
             WebkitTextFillColor: "black !important",
             //   textTransform: "UPPERCASE",

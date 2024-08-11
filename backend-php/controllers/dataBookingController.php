@@ -73,5 +73,47 @@
                 );
             }
         }
+
+        public function EditPay($params) {
+            $dataBookingClass = new DataBookingClass();
+            $dataBookingResult = $dataBookingClass->editPay($params);
+
+            if ($dataBookingResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal pembayaran"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Pembayaran berhasil"
+                );
+            }
+        }
+
+        public function DeleteDataBooking($params) {
+            $dataBookingClass = new DataBookingClass();
+            $dataBookingResult = $dataBookingClass->deleteDataBooking($params);
+
+            if ($dataBookingResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Data booking berhasil dihapus"
+                );
+            }
+        }
     }
 ?>

@@ -217,5 +217,46 @@
                 throw $e;
             }
         }
+
+        public function editPay($params) {
+            $queryUpdate = "UPDATE data_booking SET is_bayar = :is_bayar WHERE kode_booking = :kode_booking";
+
+            $stmt = $this->connection->prepare($queryUpdate);
+            $stmt->bindValue(":is_bayar", 1);
+            $stmt->bindValue(":kode_booking", $params['kode_booking']);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
+
+        public function deleteDataBooking($params) {
+            foreach ($params['data_perjalanan'] as $index => $data) {
+                $querySelect = "SELECT * FROM tm_tourist_transportation WHERE id = :id";
+
+                $stmt = $this->connection->prepare($querySelect);
+                $stmt->bindValue(":id", $data['transportasi']);
+                $stmt->execute();
+                $currentStok = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                $newStock = $currentStok['stok'] + $data['unit'];
+
+                $queryUpdate = "UPDATE tm_tourist_transportation SET stok = :stok WHERE id = :id";
+
+                $stmt1 = $this->connection->prepare($queryUpdate);
+                $stmt1->bindValue(":stok", $newStock);
+                $stmt1->bindValue(":id", $data['transportasi']);
+                $stmt1->execute();
+            };
+
+            $queryDelete = "DELETE FROM data_booking WHERE kode_booking = :kode_booking";
+
+            $stmt = $this->connection->prepare($queryDelete);
+            $stmt->bindValue(":kode_booking", $params['kode_booking']);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
+        }
     }
 ?>

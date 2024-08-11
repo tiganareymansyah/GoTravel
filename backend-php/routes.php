@@ -170,6 +170,16 @@
                 $data = $dataBookingController->GetDataBooking($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] === "edit-pay") {
+                $dataBookingController = new DataBookingController();
+                $data = $dataBookingController->EditPay($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $dataBookingController = new DataBookingController();
+                $data = $dataBookingController->DeleteDataBooking($jsonParams);
+                
+                $result = $data;
             }
         } else {
             throw new Exception('Invalid Route');

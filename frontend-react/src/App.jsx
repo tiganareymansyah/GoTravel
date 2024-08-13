@@ -114,6 +114,10 @@ export default function App() {
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
+          path="/booking/form-booking"
+          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+        />
+        <Route
           path="/about"
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
@@ -122,7 +126,7 @@ export default function App() {
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
-          path="/booking/form-booking"
+          path="/profil"
           element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route

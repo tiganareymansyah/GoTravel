@@ -114,27 +114,31 @@ export default function Navbar() {
         </Box>
 
         <Box className={classes.boxButton}>
-          <Box sx={styles.boxNotification}>
-            <Notifications sx={styles.notification} />
-          </Box>
+          <NavLink>
+            <Box sx={styles.boxNotification}>
+              <Notifications sx={styles.notification} />
+            </Box>
+          </NavLink>
 
-          <Box sx={styles.backgroundProfile}>
-            {(profil) ? (
-              <img 
-                // src={`http://10.20.75.50/api/${fotoProfil}`}
-                src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GzszKKQDonXcCchn1vvL7dIoSBEOXUuoOw&usqp=CAU"}
-                style={styles.profile}
-              />
-            ) : (
-              <Person 
-                style={{ 
-                  fontSize: "40px",
-                  color: "#f3f3f3"
-                }}
-              />
-            )}
-            <span style={styles.activeProfile} />
-          </Box>
+          <NavLink to="/profil">
+            <Box sx={styles.backgroundProfile}>
+              {(profil) ? (
+                <img 
+                  // src={`http://10.20.75.50/api/${fotoProfil}`}
+                  src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GzszKKQDonXcCchn1vvL7dIoSBEOXUuoOw&usqp=CAU"}
+                  style={styles.profile}
+                />
+              ) : (
+                <Person 
+                  style={{ 
+                    fontSize: "40px",
+                    color: "#f3f3f3"
+                  }}
+                />
+              )}
+              <span style={styles.activeProfile} />
+            </Box>
+          </NavLink>
 
           <Button 
             startIcon={<Logout />} 

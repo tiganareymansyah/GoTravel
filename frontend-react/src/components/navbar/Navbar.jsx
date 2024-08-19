@@ -125,7 +125,7 @@ export default function Navbar() {
               {(profil) ? (
                 <img 
                   // src={`http://10.20.75.50/api/${fotoProfil}`}
-                  src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3GzszKKQDonXcCchn1vvL7dIoSBEOXUuoOw&usqp=CAU"}
+                  src={"https://i.pinimg.com/564x/3e/6b/6d/3e6b6d77fdca471ea96fa33c6c371132.jpg"}
                   style={styles.profile}
                 />
               ) : (

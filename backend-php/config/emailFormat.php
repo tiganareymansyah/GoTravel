@@ -58,53 +58,105 @@
             $formattedNumber = number_format($params['total_bayar'], 0, ',', '.');
             $formatMoney = 'Rp. ' . $formattedNumber . ',-';
 
-            $htmlString = '
-                <!DOCTYPE html>
-                <html lang="en">
-                    <head>
-                        <meta charset="utf-8" />
-                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-                        <meta name="viewport" content="width=device-width, initial-scale=1" />
-                        <title>Booking Confirmation</title>
-                    </head>
-                    <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
-                        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                            <div style="text-align: center;">
-                                <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
-                                <div style="text-align: center; font-style: italic;">
-                                    <strong>
-                                        <span style="font-size: 24px">GoTravel</span>
-                                    </strong>
-                                </div>
-                            </div>
-                            <h3 style="text-align: center;"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
-                            <div style="margin: 20px 0;">
-                                <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['nama_lengkap']) . '</p>
-                                <p style="text-indent: 32px; text-align: justify;">
-                                    Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
-                                    aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
-                                    Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
-                                    ataupun pulang berlibur nanti.
-                                </p><br />
-                                <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
-                                <p>Kode Booking : ' . htmlspecialchars($params['kode_booking']) . '</p>
-                                <p>Kode Pembayaran : ' . htmlspecialchars($params['kode_pembayaran']) . '</p>
-                                <p style="text-transform: capitalize;">Nama Lengkap : ' . htmlspecialchars($params['nama_lengkap']) . '</p>
-                                <p>Alamat : ' . htmlspecialchars($params['alamat']) . '</p>
-                                <p>Email : ' . htmlspecialchars($params['email']) . '</p>
-                                <p>Tanggal Pembayaran : ' . htmlspecialchars($params['mulai_booking']) . '</p>
-                                <p>Biaya : ' . htmlspecialchars($formatMoney) . '</p>
-                                <div style="text-align: right; margin-top: 64px;">
-                                    <p>Salam Hangat,</p>
-                                    <p style="font-style: italic;">GoTravel</p>
-                                </div>
-                            </div>
-                        </div>
-                    </body>
-                </html>
-            ';
+            $htmlString = '';
 
-            return $htmlString;
+            if($params['metode_pembayaran'] == 'cod') {
+                $htmlString = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="utf-8" />
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                            <meta name="viewport" content="width=device-width, initial-scale=1" />
+                            <title>Booking Confirmation</title>
+                        </head>
+                        <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+                            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <div style="text-align: center;">
+                                    <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
+                                    <div style="text-align: center; font-style: italic;">
+                                        <strong>
+                                            <span style="font-size: 24px">GoTravel</span>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <h3 style="text-align: center;"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
+                                <div style="margin: 20px 0;">
+                                    <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                                    <p style="text-indent: 32px; text-align: justify;">
+                                        Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
+                                        aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
+                                        Silahkan datang ke perusahaan untuk melakukan pembayaran dengan tenggat bayar jam dan tanggal kepergian. 
+                                        Lewat dari itu, maka pembookingan anda kadaluarsa dan silahkan booking lagi.
+                                    </p><br />
+                                    <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
+                                    <p>Kode Booking : ' . htmlspecialchars($params['kode_booking']) . '</p>
+                                    <p>Kode Pembayaran : ' . htmlspecialchars($params['kode_pembayaran']) . '</p>
+                                    <p style="text-transform: capitalize;">Nama Lengkap : ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                                    <p>Alamat : ' . htmlspecialchars($params['alamat']) . '</p>
+                                    <p>Email : ' . htmlspecialchars($params['email']) . '</p>
+                                    <p>Tanggal Pembayaran : ' . htmlspecialchars($params['mulai_booking']) . '</p>
+                                    <p>Biaya : ' . htmlspecialchars($formatMoney) . '</p>
+                                    <div style="text-align: right; margin-top: 64px;">
+                                        <p>Salam Hangat,</p>
+                                        <p style="font-style: italic;">GoTravel</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </body>
+                    </html>
+                ';
+
+                return $htmlString;
+            } else {
+                $htmlString = '
+                    <!DOCTYPE html>
+                    <html lang="en">
+                        <head>
+                            <meta charset="utf-8" />
+                            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                            <meta name="viewport" content="width=device-width, initial-scale=1" />
+                            <title>Booking Confirmation</title>
+                        </head>
+                        <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+                            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <div style="text-align: center;">
+                                    <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
+                                    <div style="text-align: center; font-style: italic;">
+                                        <strong>
+                                            <span style="font-size: 24px">GoTravel</span>
+                                        </strong>
+                                    </div>
+                                </div>
+                                <h3 style="text-align: center;"><strong>Selamat Pesanan Anda Telah Berhasil</strong></h3>
+                                <div style="margin: 20px 0;">
+                                    <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                                    <p style="text-indent: 32px; text-align: justify;">
+                                        Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
+                                        aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
+                                        Selamat berlibur dengan keluarga, semoga tetap dalam keadaan sehat baik sewaktu pergi 
+                                        ataupun pulang berlibur nanti.
+                                    </p><br />
+                                    <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>
+                                    <p>Kode Booking : ' . htmlspecialchars($params['kode_booking']) . '</p>
+                                    <p>Kode Pembayaran : ' . htmlspecialchars($params['kode_pembayaran']) . '</p>
+                                    <p style="text-transform: capitalize;">Nama Lengkap : ' . htmlspecialchars($params['nama_lengkap']) . '</p>
+                                    <p>Alamat : ' . htmlspecialchars($params['alamat']) . '</p>
+                                    <p>Email : ' . htmlspecialchars($params['email']) . '</p>
+                                    <p>Tanggal Pembayaran : ' . htmlspecialchars($params['mulai_booking']) . '</p>
+                                    <p>Biaya : ' . htmlspecialchars($formatMoney) . '</p>
+                                    <div style="text-align: right; margin-top: 64px;">
+                                        <p>Salam Hangat,</p>
+                                        <p style="font-style: italic;">GoTravel</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </body>
+                    </html>
+                ';
+
+                return $htmlString;
+            }
         }
     }
 ?>

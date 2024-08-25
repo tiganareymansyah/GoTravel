@@ -155,7 +155,7 @@
         }
 
         public function handleSendEmailSuccessBooking($data) {
-            $query = "SELECT * FROM data_booking WHERE nik = :nik";
+            $query = "SELECT * FROM data_booking WHERE nik = :nik ORDER BY mulai_booking DESC, created_at DESC";
 
             $stmt = $this->connection->prepare($query);
             $stmt->bindValue(":nik", $data['nik']);
@@ -195,7 +195,7 @@
 
         public function getDataBooking($params) {
             try {
-                $query = "SELECT * FROM data_booking ORDER BY is_bayar ASC, created_at DESC";
+                $query = "SELECT * FROM data_booking ORDER BY is_bayar ASC, mulai_booking DESC, created_at DESC";
 
                 $stmt = $this->connection->prepare($query);
                 $stmt->execute();

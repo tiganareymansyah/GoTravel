@@ -98,7 +98,7 @@ export default function FormPembayaran({
 
         <DialogContent dividers>
           <Box>
-            <form onSubmit={(e) => handleBayar(e)}>
+            <form>
               {detailListDataBooking?.data_perjalanan?.length > 0 ? (
                 <>
                   <Typography 
@@ -334,7 +334,6 @@ export default function FormPembayaran({
                   }}
                 >
                   <Button
-                    type="submit"
                     variant="contained"
                     sx={{
                       background: "#18345c",
@@ -344,6 +343,7 @@ export default function FormPembayaran({
                       width: "30%"
                     }}
                     startIcon={<Payments />}
+                    onClick={(e) => handleBayar(e)}
                   >
                     Bayar
                   </Button>

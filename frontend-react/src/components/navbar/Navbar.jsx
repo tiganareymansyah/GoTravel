@@ -10,7 +10,8 @@ import {
   Info,
   Logout,
   Notifications,
-  Person
+  Person,
+  Home
 } from "@mui/icons-material";
 import { orange } from "@mui/material/colors";
 import { useNavbarStyles } from "./style";
@@ -155,10 +156,10 @@ export default function Navbar() {
           {({ isActive }) => (
             <Button
               variant="text"
-              startIcon={<GridView />}
+              startIcon={<Home />}
               sx={styles.colorBar(isActive)}
             >
-              Dashboard
+              Beranda
             </Button>
           )}
         </NavLink>
@@ -170,7 +171,7 @@ export default function Navbar() {
               startIcon={<EditCalendar />}
               sx={styles.colorBar(isActive)}
             >
-              Booking
+              Pemesanan
             </Button>
           )}
         </NavLink>
@@ -182,7 +183,7 @@ export default function Navbar() {
               startIcon={<Info />}
               sx={styles.colorBar(isActive)}
             >
-              About
+              Tentang
             </Button>
           )}
         </NavLink>
@@ -194,7 +195,7 @@ export default function Navbar() {
               startIcon={<Call />}
               sx={styles.colorBar(isActive)}
             >
-              Contact
+              Kontak
             </Button>
           )}
         </NavLink>

@@ -100,7 +100,7 @@ export default function Contact(props) {
                             letterSpacing: "2px"
                         }}
                     >
-                        Contact Us
+                        Hubungi Kami
                     </Typography>
 
                     <Box className={classes.containerChild}>
@@ -112,7 +112,7 @@ export default function Contact(props) {
                                     fontSize: 20 
                                 }}
                             >
-                                Other Contacts : 
+                                Kontak Lainnya : 
                             </Typography>
                             <Box
                                 sx={{
@@ -179,7 +179,7 @@ export default function Contact(props) {
                                     fontSize: 22 
                                 }}
                             >
-                                Let's Chat!
+                                Ayo Ngobrol!
                             </Typography>
                             <Box className={classes.formContact}>
                                 <TextField 
@@ -187,7 +187,7 @@ export default function Contact(props) {
                                     name="sender"
                                     variant="outlined"
                                     fullWidth
-                                    defaultValue={`From : ${dataContact.fromEmail}`}
+                                    defaultValue={`Dari : ${dataContact.fromEmail}`}
                                     disabled
                                     InputProps={{
                                         classes: {
@@ -202,7 +202,7 @@ export default function Contact(props) {
                                     name="recipient"
                                     variant="outlined"
                                     fullWidth
-                                    defaultValue={`To : ${dataContact.toEmail}`}
+                                    defaultValue={`Ke : ${dataContact.toEmail}`}
                                     disabled
                                     InputProps={{
                                         classes: {
@@ -213,7 +213,7 @@ export default function Contact(props) {
                                 />
 
                                 <TextField 
-                                    placeholder="Please fill in..."
+                                    placeholder="Silahkan isi..."
                                     id="chat"
                                     name="chat"
                                     variant="outlined"

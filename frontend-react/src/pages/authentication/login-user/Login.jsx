@@ -277,7 +277,7 @@ export default function Login(props) {
                     sx={styles.button}
                     onClick={formik.handleSubmit}
                   >
-                    Login
+                    Masuk
                   </Button>
                 </form>
 

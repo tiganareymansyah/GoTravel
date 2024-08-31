@@ -116,7 +116,7 @@ export default function FormDialogEdit({
                   }}
                   startIcon={<Save />}
                 >
-                  Save
+                  Simpan
                 </Button>
               </Box>
             </form>

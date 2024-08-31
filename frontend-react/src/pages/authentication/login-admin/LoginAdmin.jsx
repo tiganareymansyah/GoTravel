@@ -271,7 +271,7 @@ export default function LoginAdmin(props) {
                     />
                   </FormControl>
                   <Button sx={styles.button} onClick={formik.handleSubmit}>
-                    Login
+                    Masuk
                   </Button>
                 </form>
               </Box>

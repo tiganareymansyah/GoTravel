@@ -352,7 +352,7 @@ export default function RegisterPegawaiBaru ({
                                                 startIcon={<Edit />}
                                                 onClick={() => handleEdit(data)}
                                             >
-                                                Edit
+                                                Ubah
                                             </Button>
                                             <Button
                                                 sx={styles.buttonDelete}

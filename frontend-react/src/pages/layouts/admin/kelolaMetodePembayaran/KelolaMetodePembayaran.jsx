@@ -310,7 +310,7 @@ export default function KelolaMetodePembayaran ({
                                                 startIcon={<Edit />}
                                                 onClick={() => handleEdit(data)}
                                             >
-                                                Edit
+                                                Ubah
                                             </Button>
                                             <Button
                                                 sx={styles.buttonDelete}

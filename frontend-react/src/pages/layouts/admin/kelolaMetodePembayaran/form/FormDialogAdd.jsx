@@ -116,7 +116,7 @@ export default function FormDialogAdd({
                   }}
                   startIcon={<Save />}
                 >
-                  Save
+                  Simpan
                 </Button>
               </Box>
             </form>

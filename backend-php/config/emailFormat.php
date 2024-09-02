@@ -86,7 +86,7 @@
                                     <p style="text-indent: 32px; text-align: justify;">
                                         Terima kasih atas kepercayaan anda yang telah melakukan pemesanan pada 
                                         aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
-                                        Silahkan datang ke perusahaan untuk melakukan pembayaran dengan tenggat bayar jam dan tanggal kepergian. 
+                                        Silahkan datang ke perusahaan untuk melakukan pembayaran dengan tenggat bayarnya pada hari H keberangkatan. 
                                         Lewat dari itu, maka pembookingan anda kadaluarsa dan silahkan booking lagi.
                                     </p><br />
                                     <span style="font-weight: bold;">Berikut ini adalah detail transaksi yang telah anda lakukan :</span>

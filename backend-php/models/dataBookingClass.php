@@ -41,15 +41,10 @@
                 $dataId = array();
 
                 foreach ($params['data_perjalanan'] as $index => $data) {
-                    $getDuration = $data['durasi'] * 86400;
-                    $duration = $getDuration;
-                    $mulai_booking = date('Y-m-d H:i:s');
-                    $akhir_booking = date('Y-m-d H:i:s', strtotime($mulai_booking) + $duration);
-
                     $cekQueryStok = "SELECT * FROM tm_tourist_transportation WHERE id = :id";
 
                     $stmt = $this->connection->prepare($cekQueryStok);
-                    $stmt->bindValue(":id", $data['transportasi']);
+                    $stmt->bindValue(":id", $data['id_transportasi']);
                     $stmt->execute();
 
                     $cek = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -57,7 +52,7 @@
                     if($cek['stok'] < 1) {
                         return "stok";
                     } else {
-                        $dataId[] = $data['transportasi'];
+                        $dataId[] = $data['id_transportasi'];
                     }
                 }
 
@@ -77,6 +72,8 @@
                         total_bayar,
                         mulai_booking,
                         akhir_booking,
+                        dari_jam,
+                        ke_jam,
                         is_bayar,
                         created_at
     
@@ -93,6 +90,8 @@
                         $total,
                         :mulai_booking,
                         :akhir_booking,
+                        :dari_jam,
+                        :ke_jam,
                         :is_bayar,
                         NOW()
                     )";
@@ -106,8 +105,10 @@
                     $stmt->bindValue(":alamat", $params['alamat']);
                     $stmt->bindValue(":kode_pembayaran", $params['kode_pembayaran']);
                     $stmt->bindValue(":metode_pembayaran", $params['metode_pembayaran']);
-                    $stmt->bindValue(":mulai_booking", $mulai_booking);
-                    $stmt->bindValue(":akhir_booking", $akhir_booking);
+                    $stmt->bindValue(":mulai_booking", $params['mulai_booking']);
+                    $stmt->bindValue(":akhir_booking", $params['akhir_booking']);
+                    $stmt->bindValue(":dari_jam", $params['dari_jam']);
+                    $stmt->bindValue(":ke_jam", $params['ke_jam']);
                     $stmt->bindValue(":is_bayar", $params['metode_pembayaran'] === "qris" ? 1 : 0);
                     $stmt->execute();
     
@@ -235,7 +236,7 @@
                 $querySelect = "SELECT * FROM tm_tourist_transportation WHERE id = :id";
 
                 $stmt = $this->connection->prepare($querySelect);
-                $stmt->bindValue(":id", $data['transportasi']);
+                $stmt->bindValue(":id", $data['id_transportasi']);
                 $stmt->execute();
                 $currentStok = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -245,7 +246,7 @@
 
                 $stmt1 = $this->connection->prepare($queryUpdate);
                 $stmt1->bindValue(":stok", $newStock);
-                $stmt1->bindValue(":id", $data['transportasi']);
+                $stmt1->bindValue(":id", $data['id_transportasi']);
                 $stmt1->execute();
             };
 

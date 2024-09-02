@@ -41,6 +41,9 @@ dependencies:
   react-input-mask:
     specifier: ^2.0.4
     version: 2.0.4(react-dom@18.3.1)(react@18.3.1)
+  react-medium-image-zoom:
+    specifier: ^5.2.9
+    version: 5.2.9(react-dom@18.3.1)(react@18.3.1)
   react-otp-input:
     specifier: ^3.1.1
     version: 3.1.1(react-dom@18.3.1)(react@18.3.1)
@@ -2701,6 +2704,16 @@ packages:
 
   /react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+    dev: false
+
+  /react-medium-image-zoom@5.2.9(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-NtjuwWdvjyjIo+IBv2Ka/oQwYMDlPM0M1nHYM3Ga1QBnr/YwpjyrEWKQB2FlGCmgiBmgIMsb6Dij2RTWxKkY+w==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /react-onclickoutside@6.13.1(react-dom@18.3.1)(react@18.3.1):

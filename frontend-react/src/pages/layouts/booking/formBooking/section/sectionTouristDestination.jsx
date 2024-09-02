@@ -13,9 +13,13 @@ import {
     TextField, 
     Typography 
 } from "@mui/material";
-import { ArrowForward, Delete, Save } from "@mui/icons-material";
+import { ArrowForward, CalendarToday, Delete, Save } from "@mui/icons-material";
 import Select from "react-select";
 import KarikaturBeach from "../../../../../media/karikatur_beach.jpg";
+import DatePicker from "react-datepicker";
+import InputMask from "react-input-mask";
+import "react-datepicker/dist/react-datepicker.css";
+import { formatDateYYYYMMDD } from "../../../../../services/utils";
 
 export const sectionTouristDestination = (
     isMobile, 
@@ -26,11 +30,7 @@ export const sectionTouristDestination = (
     handleChangeSelectState, 
     hoveredOption, 
     handleMouseOver, 
-    handleMouseLeave, 
-    inputRefDurasi, 
-    handleListData, 
-    listData, 
-    handleListDelete 
+    handleMouseLeave 
 ) => {
     const styles = {
         label: {
@@ -83,78 +83,27 @@ export const sectionTouristDestination = (
         },
     };
 
+    const handleInputClick = (e) => {
+        if (e && e.target) {
+            e.target.readOnly = true;
+            e.target.placeholder = "dd/MM/yyyy";
+            e.target.blur();
+            e.target.readOnly = false;
+        }
+    };
+
+    const handleChange = (field, value) => {
+        if(field === "dariJam") {
+            formik.setFieldValue(field, value);
+        } else {
+            formik.setFieldValue(field, formatDateYYYYMMDD(value));
+        }
+    };
+
     return (
         <Box className={classes.containerParent}>
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
-                    {listData?.length > 0 ? (
-                        <>
-                            <Typography 
-                                variant="body1" 
-                                sx={{ 
-                                    fontWeight: "bold", 
-                                    textAlign: "center", 
-                                    letterSpacing: "1px" 
-                                }}
-                            >
-                                Daftar Pilihan
-                            </Typography>
-                            <Box 
-                                className={classes.boxTouristData} 
-                                sx={{ 
-                                    height: listData.length >= 3 && "30vh", 
-                                    // overflowY: listData.length >= 3 && "scroll" 
-                                }}
-                            >
-                                <TableContainer component={Paper} sx={{ maxHeight: "100%" }}>
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table" stickyHeader>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={styles.tableCell}>No</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Tujuan</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Transportasi</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Unit</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Durasi</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Satuan</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Total</TableCell>
-                                                <TableCell align="center" style={styles.tableCell}>Aksi</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-
-                                        <TableBody>
-                                            {listData?.map((row, index) => {
-                                                const matchedItem = selectState?.touristTransportation?.states?.find((f) => 
-                                                    f.value === row.transportasi
-                                                );
-                                                
-                                                return (
-                                                    <TableRow
-                                                        key={index}
-                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                    >
-                                                        <TableCell component="th" scope="row">{index + 1}.</TableCell>
-                                                        <TableCell align="center">{row.tujuan}</TableCell>
-                                                        <TableCell align="center">{matchedItem ? matchedItem.label : "Tidak ditemukan"}</TableCell>
-                                                        <TableCell align="center">{row.unit}</TableCell>
-                                                        <TableCell align="center">{row.durasi} hari</TableCell>
-                                                        <TableCell align="center">{row.satuan}</TableCell>
-                                                        <TableCell align="center">{row.total}</TableCell>
-                                                        <TableCell align="center">
-                                                            <Delete 
-                                                                sx={{ cursor: "pointer" }} 
-                                                                onClick={() => handleListDelete(index)}
-                                                            />
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Box>
-                        </>
-                    ) : null}
-
                     <Box className={classes.boxTouristData}>
                         <Typography 
                             variant="span" 
@@ -377,46 +326,233 @@ export const sectionTouristDestination = (
                                     className="form-label" 
                                     sx={styles.label}
                                 >
-                                    Lama Wisata
+                                    Mulai Booking
                                     <span style={{ color: "red" }}>&nbsp;*</span>
                                 </Typography>
-                                <TextField 
-                                    id="lamaWisata"
-                                    name="lamaWisata"
-                                    placeholder="Input dalam jumlah hari"
-                                    type="number"
-                                    inputRef={inputRefDurasi}
-                                    defaultValue={formik?.values?.durasi}
-                                    onBlur={() => formik.setFieldValue("durasi", parseInt(inputRefDurasi.current?.value))}
-                                    inputProps={{ min: 1 }}
-                                    InputProps={{
-                                        endAdornment: <InputAdornment position="end">Hari</InputAdornment>,
+                                <Box
+                                    sx={{
+                                        width: "47%", 
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center"
                                     }}
-                                    required
-                                    sx={styles.textField}
-                                />
+                                >
+                                    <Box className={classes.datePickerWrapper} sx={{ width: "48%" }}>
+                                        <DatePicker
+                                            placeholderText="dd/mm/yyyy"
+                                            fullWidth
+                                            dropdownMode="select"
+                                            //   disabled={
+                                            //     props.dataRequest &&
+                                            //     props.userLogin.roleName !== "VERIFIKATOR"
+                                            //       ? true
+                                            //       : false
+                                            //   }
+                                            onInputClick={handleInputClick}
+                                            dateFormat={"dd/MM/yyyy"}
+                                            showYearDropdown
+                                            showMonthDropdown
+                                            yearDropdownItemNumber={100}
+                                            maxDate={new Date()}
+                                            scrollableYearDropdown
+                                            className={classes.calendarContainer}
+                                            calendarClassName={classes.calendar}
+                                            selected={
+                                                formik.values?.startBooking &&
+                                                new Date(formik.values.startBooking)
+                                            }
+                                            // popperPlacement="right-start"
+                                            onChangeRaw={(event) => {
+                                                const rawInput = event.target.value;
+                                                const isValidInput = /^[0-3]?[0-9]\/[0-1]?[0-9]{0,4}$/.test(
+                                                    rawInput
+                                                );
+
+                                                if (isValidInput) {
+                                                    if (rawInput.length === 10) {
+                                                        const [day, month, year] = rawInput.split("/");
+                                                        const parsedDate = new Date(`${year}-${month}-${day}`);
+
+                                                        if (!isNaN(parsedDate.getTime())) {
+                                                            handleChange("startBooking", parsedDate)
+                                                        } else {
+                                                            console.log("Invalid date");
+                                                        }
+                                                    }
+                                                } else {
+                                                    console.log("Invalid input format");
+                                                }
+                                            }}
+                                            onChange={(e) => handleChange("startBooking", e)}
+                                            customInput={
+                                                <InputMask
+                                                    mask="99/99/9999"
+                                                    // value={props.value}
+                                                >
+                                                    {(inputProps) => (
+                                                        <TextField
+                                                            {...inputProps}
+                                                            fullWidth
+                                                            size="small"
+                                                            type="tel"
+                                                            variant="outlined"
+                                                            sx={{
+                                                            cursor: "pointer",
+                                                                "& .Mui-disabled": {
+                                                                    WebkitTextFillColor: "black !important",
+                                                                    background: "#ffffff",
+                                                                },
+                                                            }}
+                                                            InputProps={{
+                                                                style: { cursor: "pointer", width: "100%" },
+                                                                autoComplete: "off",
+                                                                endAdornment: <CalendarToday sx={{ paddingBottom: "6px" }} />
+                                                            }}
+                                                        />
+                                                    )}
+                                                </InputMask>
+                                            }
+                                        />
+                                    </Box>
+                                    -
+                                    <TextField
+                                        // label="Pilih Waktu"
+                                        size="small"
+                                        type="time"
+                                        value={formik.values.dariJam}
+                                        onChange={(e) => formik.setFieldValue("dariJam", e.target.value)}
+                                        sx={{ width: "47%" }}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 300, // 5 menit
+                                        }}
+                                    />
+                                </Box>
+                            </Box>
+                            
+                            <Box className={classes.boxTouristData}>
+                                <Typography 
+                                    variant="span" 
+                                    className="form-label" 
+                                    sx={styles.label}
+                                >
+                                    Akhir Booking
+                                    <span style={{ color: "red" }}>&nbsp;*</span>
+                                </Typography>
+                                <Box
+                                    sx={{
+                                        width: "47%", 
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    <Box className={classes.datePickerWrapper} sx={{ width: "48%" }}>
+                                        <DatePicker
+                                            placeholderText="dd/mm/yyyy"
+                                            fullWidth
+                                            dropdownMode="select"
+                                            //   disabled={
+                                            //     props.dataRequest &&
+                                            //     props.userLogin.roleName !== "VERIFIKATOR"
+                                            //       ? true
+                                            //       : false
+                                            //   }
+                                            onInputClick={handleInputClick}
+                                            dateFormat={"dd/MM/yyyy"}
+                                            showYearDropdown
+                                            showMonthDropdown
+                                            yearDropdownItemNumber={100}
+                                            maxDate={new Date()}
+                                            scrollableYearDropdown
+                                            className={classes.calendarContainer}
+                                            calendarClassName={classes.calendar}
+                                            selected={
+                                                formik.values?.lastBooking &&
+                                                new Date(formik.values.lastBooking)
+                                            }
+                                            // popperPlacement="right-start"
+                                            onChangeRaw={(event) => {
+                                                const rawInput = event.target.value;
+                                                const isValidInput = /^[0-3]?[0-9]\/[0-1]?[0-9]{0,4}$/.test(
+                                                    rawInput
+                                                );
+
+                                                if (isValidInput) {
+                                                    if (rawInput.length === 10) {
+                                                        const [day, month, year] = rawInput.split("/");
+                                                        const parsedDate = new Date(`${year}-${month}-${day}`);
+
+                                                        if (!isNaN(parsedDate.getTime())) {
+                                                            handleChange("lastBooking", parsedDate)
+                                                        } else {
+                                                            console.log("Invalid date");
+                                                        }
+                                                    }
+                                                } else {
+                                                    console.log("Invalid input format");
+                                                }
+                                            }}
+                                            onChange={(e) => handleChange("lastBooking", e)}
+                                            customInput={
+                                                <InputMask
+                                                    mask="99/99/9999"
+                                                    // value={props.value}
+                                                >
+                                                    {(inputProps) => (
+                                                        <TextField
+                                                            {...inputProps}
+                                                            fullWidth
+                                                            size="small"
+                                                            type="tel"
+                                                            variant="outlined"
+                                                            sx={{
+                                                            cursor: "pointer",
+                                                                "& .Mui-disabled": {
+                                                                    WebkitTextFillColor: "black !important",
+                                                                    background: "#ffffff",
+                                                                },
+                                                            }}
+                                                            InputProps={{
+                                                                style: { cursor: "pointer", width: "100%" },
+                                                                autoComplete: "off",
+                                                                endAdornment: <CalendarToday sx={{ paddingBottom: "6px" }} />
+                                                            }}
+                                                        />
+                                                    )}
+                                                </InputMask>
+                                            }
+                                        />
+                                    </Box>
+                                    -
+                                    <TextField
+                                        size="small"
+                                        type="time"
+                                        value={formik.values.keJam}
+                                        disabled
+                                        sx={{ width: "47%" }}
+                                        InputProps={{
+                                            classes: {
+                                                disabled: classes.disabled
+                                            },
+                                        }}
+                                    />
+                                </Box>
                             </Box>
                         </>
                     )}
 
                     <Box className={classes.boxPrevOrNext}>
+                        <Box />
                         <Button
-                            sx={styles.buttonSave}
-                            endIcon={<Save />}
-                            onClick={handleListData}
+                            sx={styles.buttonNext}
+                            endIcon={<ArrowForward />}
+                            onClick={handleNext}
                         >
-                            Simpan
+                            Lanjut
                         </Button>
-
-                        {listData?.length > 0 && (
-                            <Button
-                                sx={styles.buttonNext}
-                                endIcon={<ArrowForward />}
-                                onClick={handleNext}
-                            >
-                                Lanjut
-                            </Button>
-                        )}
                     </Box>
                 </Box>
                 

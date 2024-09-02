@@ -58,3 +58,14 @@ export function formatUangByKodeMataUang(price, currency) {
   
     return "";
 }
+
+export function hitungJarakHari(date1, date2) {
+    const startDate = new Date(date1);
+    const endDate = new Date(date2);
+
+    const timeDifference = Math.abs(endDate - startDate);
+
+    const dayDifference = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)) + 1;
+
+    return dayDifference;
+}

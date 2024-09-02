@@ -121,6 +121,7 @@ export default function ListDataBooking ({
             states: [
                 { value: "aktif", label: "AKTIF" },
                 { value: "belum bayar", label: "BELUM BAYAR" },
+                { value: "selesai", label: "SELESAI" },
                 { value: "kadaluarsa", label: "KADALUARSA" }
             ]
         }
@@ -325,6 +326,8 @@ export default function ListDataBooking ({
                                             <>
                                                 {data.is_bayar === 1 ? "aktif" : "belum bayar"}
                                             </>
+                                        ) : data.is_bayar === 1 ? (
+                                            "Selesai"
                                         ) : "Kadaluarsa"}
                                     </TableCell>
                                     <TableCell sx={{ display: "flex", justifyContent: "center", }}>

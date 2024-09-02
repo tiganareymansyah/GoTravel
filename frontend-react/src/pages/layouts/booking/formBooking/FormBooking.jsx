@@ -11,6 +11,7 @@ import { sectionTouristPayment } from "./section/sectionTouristPayment";
 import { useFormik } from "formik";
 import { apiGetKodePembayaran, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiRequestDataBooking } from "../../../../api/api";
 import Alert from "../../../../components/Alert/Alert";
+import { hitungJarakHari } from "../../../../services/utils";
 
 export default function FormBooking(props) {
     console.log(props);
@@ -38,14 +39,12 @@ export default function FormBooking(props) {
         },
     });
     const [hoveredOption, setHoveredOption] = useState(null);
-    const [listData, setListData] = useState([]);
     const [openAlert, setOpenAlert] = useState(false);
     const [severity, setSeverity] = useState("");
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [kodePembayaran, setKodePembayaran] = useState("");
 
-    const inputRefDurasi = useRef(null);
     const inputRefFullName = useRef(null);
     const inputRefNik = useRef(null);
     // const inputRefEmail = useRef(null);
@@ -66,8 +65,11 @@ export default function FormBooking(props) {
             touristDestination: "", 
             touristTransportation: "", 
             unitTransportation: "", 
-            durasi: "", 
-            listData: listData, 
+            startBooking: "", 
+            lastBooking: "", 
+            dariJam: "", 
+            keJam: "", 
+            listData: [], 
             fullName: "", 
             nik: "", 
             // email: "", 
@@ -131,49 +133,10 @@ export default function FormBooking(props) {
     }, [step]);
 
     useEffect(() => {
-        if(listData.length !== 0) {
-            setSelectState((prev) => ({
-                ...prev,
-                touristDestination: {
-                  ...prev["touristDestination"],
-                  selectedState: "",
-                },
-                touristTransportation: {
-                  ...prev["touristTransportation"],
-                  selectedState: "",
-                },
-                unitTransportation: {
-                  ...prev["unitTransportation"],
-                  selectedState: "",
-                },
-            }));
-
-            formik.setFieldValue("durasi", "");
-
-            const updatedStates = selectState.touristTransportation.states.map(option => {
-                const matchedData = listData.find(data => 
-                    data.transportasi === option.value
-                );
-                
-                if(matchedData) {
-                    return { 
-                        ...option, 
-                        stok: option.stok - matchedData.unit
-                    };
-                }
-                
-                return option;
-            });
-            
-            setSelectState(prevState => ({
-                ...prevState,
-                touristTransportation: {
-                    ...prevState.touristTransportation,
-                    states: updatedStates
-                }
-            }));
+        if(formik.values.dariJam !== "") {
+            formik.setFieldValue("keJam", formik.values.dariJam);
         }
-    }, [listData]);
+    }, [formik.values.dariJam]);
 
     const handleAlert = (open, severity, title, message) => {
         setOpenAlert(open);
@@ -209,8 +172,44 @@ export default function FormBooking(props) {
 
     const handleNext = () => {
         if(step === 0) {
-            formik.setFieldValue("listData", listData);
-            setStep(step + 1);
+            if(formik.values.touristDestination === "" || 
+            formik.values.touristTransportation === "" || 
+            formik.values.unitTransportation === "" || 
+            formik.values.startBooking === "" || 
+            formik.values.lastBooking === "" || 
+            formik.values.dariJam === "" || 
+            formik.values.keJam === "") {
+                handleAlert(
+                    true,
+                    "warning",
+                    "Pemberitahuan",
+                    "Form tidak boleh kosong"
+                );
+            } else {
+                let resultDurasi = hitungJarakHari(formik.values.startBooking, formik.values.lastBooking);
+    
+                let hargaDariDurasi = (selectState.touristTransportation.selectedState.harga / 2) * resultDurasi;
+                let totalHarga;
+    
+                if(resultDurasi === 1) {
+                    totalHarga = selectState.touristTransportation.selectedState.harga * 
+                    formik.values.unitTransportation;
+                } else {
+                    totalHarga = selectState.touristTransportation.selectedState.harga * 
+                    formik.values.unitTransportation + hargaDariDurasi;
+                }
+    
+                let listData = [{
+                    tujuan: selectState.touristDestination.selectedState.label,
+                    id_transportasi: selectState.touristTransportation.selectedState.value, 
+                    unit: parseInt(selectState.unitTransportation.selectedState.label),
+                    satuan: selectState.touristTransportation.selectedState.harga,
+                    total: totalHarga
+                }];
+    
+                formik.setFieldValue("listData", listData);
+                setStep(step + 1);
+            }
         } else if (step === 1) {
             if(formik.values.fullName === "" ||
             formik.values.nik === "" ||
@@ -332,35 +331,6 @@ export default function FormBooking(props) {
         }
     };
 
-    const handleListData = () => {
-        let hitungDurasi = (selectState.touristTransportation.selectedState.harga / 2) * formik.values.durasi;
-        let totalHarga;
-
-        if(formik.values.durasi === 1) {
-            totalHarga = selectState.touristTransportation.selectedState.harga * 
-            formik.values.unitTransportation;
-        } else {
-            totalHarga = selectState.touristTransportation.selectedState.harga * 
-            formik.values.unitTransportation + hitungDurasi;
-        }
-
-        setListData((prev) => ([
-            ...prev, 
-            {
-                tujuan: selectState.touristDestination.selectedState.label,
-                transportasi: selectState.touristTransportation.selectedState.value, 
-                unit: parseInt(selectState.unitTransportation.selectedState.label),
-                durasi: formik.values.durasi,
-                satuan: selectState.touristTransportation.selectedState.harga,
-                total: totalHarga
-            }
-        ]));
-    };
-
-    const handleListDelete = (index) => {
-        setListData(prev => prev.filter((_, i) => i !== index));
-    };
-
     const handleChangeSelectState = (name, state) => {
         setSelectState((prev) => ({
           ...prev,
@@ -389,9 +359,12 @@ export default function FormBooking(props) {
         try {
             let payload = {
                 data_perjalanan: formik.values.listData,
+                mulai_booking: formik.values.startBooking,
+                akhir_booking: formik.values.lastBooking,
+                dari_jam: formik.values.dariJam,
+                ke_jam: formik.values.keJam,
                 nama_lengkap: formik.values.fullName,
                 nik: formik.values.nik,
-                // email: formik.values.email,
                 email: props.userLogin.email,
                 nomor_hp: formik.values.nomorHp,
                 alamat: formik.values.alamat,
@@ -422,7 +395,6 @@ export default function FormBooking(props) {
 
     console.log(formik.values);
     console.log(selectState);
-    console.log(listData);
 
     return (
         <>
@@ -480,11 +452,7 @@ export default function FormBooking(props) {
                                     handleChangeSelectState, 
                                     hoveredOption, 
                                     handleMouseOver, 
-                                    handleMouseLeave, 
-                                    inputRefDurasi, 
-                                    handleListData, 
-                                    listData, 
-                                    handleListDelete
+                                    handleMouseLeave 
                                 )}
                             </>
                         ) : step === 1 ? (

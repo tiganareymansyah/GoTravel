@@ -34,6 +34,8 @@ import DatePicker from "react-datepicker";
 import InputMask from "react-input-mask";
 import "react-datepicker/dist/react-datepicker.css";
 import { formatDateYYYYMMDD } from "../../../services/utils";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 export default function Profil(props) {
     console.log(props);
@@ -169,14 +171,16 @@ export default function Profil(props) {
                         <Box className={classes.setProfil}>
                             <Box className={classes.boxProfil}>
                                 {profil ? (
-                                    <img 
-                                        src={"https://i.pinimg.com/564x/3e/6b/6d/3e6b6d77fdca471ea96fa33c6c371132.jpg"}
-                                        style={{ 
-                                            width: "16.5vw", 
-                                            height: "39vh", 
-                                            borderRadius: "16px" 
-                                        }}
-                                    />
+                                    <Zoom>
+                                        <img 
+                                            src={"https://i.pinimg.com/564x/3e/6b/6d/3e6b6d77fdca471ea96fa33c6c371132.jpg"}
+                                            style={{ 
+                                                width: "16.5vw", 
+                                                height: "39vh", 
+                                                borderRadius: "16px" 
+                                            }}
+                                        />
+                                    </Zoom>
                                 ) : (
                                     <Person 
                                         style={{ 

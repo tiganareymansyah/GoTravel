@@ -83,7 +83,14 @@ export const sectionTouristPayment = (
             <Box className={classes.containerChild}>
                 <Box className={classes.setForm}>
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Kode Pembayaran</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Kode Pembayaran
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="kodePembayaran"
                             name="kodePembayaran"
@@ -101,7 +108,14 @@ export const sectionTouristPayment = (
                     </Box>
 
                     <Box className={classes.boxTouristData}>
-                        <Typography variant="span" className="form-label" sx={styles.label}>Total Keseluruhan</Typography>
+                        <Typography 
+                            variant="span" 
+                            className="form-label" 
+                            sx={styles.label}
+                        >
+                            Total Keseluruhan
+                            <span style={{ color: "red" }}>&nbsp;*</span>
+                        </Typography>
                         <TextField 
                             id="biaya"
                             name="biaya"
@@ -125,6 +139,7 @@ export const sectionTouristPayment = (
                             sx={styles.label}
                         >
                             Metode Pembayaran
+                            <span style={{ color: "red" }}>&nbsp;*</span>
                         </Typography>
                         <Select 
                             value={selectState.paymentMethod.selectedState}

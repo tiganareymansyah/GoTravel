@@ -124,6 +124,8 @@ export default function Booking(props) {
                                                                 : capitalizeWords("Belum Bayar")
                                                             }
                                                         </>
+                                                    ) : data.is_bayar === 1 ? (
+                                                        capitalizeWords("Selesai")
                                                     ) : capitalizeWords("Kadaluarsa")}
                                                 </Typography>
                                             </Box>

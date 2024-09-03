@@ -315,38 +315,51 @@ export default function KelolaTransportasi ({
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {dataMapTransportasi?.map((data, index) => (
-                                <TableRow key={index}>
-                                    <TableCell align="center">{(pageTransportasi - 1) * itemPerPagesTransportasi + index + 1}.</TableCell>
-                                    <TableCell align="center">{data.value}</TableCell>
-                                    <TableCell align="center">{data.nama_transportasi_wisata}</TableCell>
-                                    <TableCell align="center">{data.muatan}</TableCell>
-                                    <TableCell align="center">{data.stok}</TableCell>
-                                    <TableCell align="center">{data.harga}</TableCell>
-                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <Button 
-                                                sx={styles.buttonEdit}
-                                                startIcon={<Edit />}
-                                                onClick={() => handleEdit(data)}
-                                            >
-                                                Ubah
-                                            </Button>
-                                            <Button
-                                                sx={styles.buttonDelete}
-                                                startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteTransportasi(data.id)}
-                                            >
-                                                Hapus
-                                            </Button>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        {dataMapTransportasi?.length > 0 ? (
+                            <>
+                                <TableBody>
+                                    {dataMapTransportasi?.map((data, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{(pageTransportasi - 1) * itemPerPagesTransportasi + index + 1}.</TableCell>
+                                            <TableCell align="center">{data.value}</TableCell>
+                                            <TableCell align="center">{data.nama_transportasi_wisata}</TableCell>
+                                            <TableCell align="center">{data.muatan}</TableCell>
+                                            <TableCell align="center">{data.stok}</TableCell>
+                                            <TableCell align="center">{data.harga}</TableCell>
+                                            <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                                <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <Button 
+                                                        sx={styles.buttonEdit}
+                                                        startIcon={<Edit />}
+                                                        onClick={() => handleEdit(data)}
+                                                    >
+                                                        Ubah
+                                                    </Button>
+                                                    <Button
+                                                        sx={styles.buttonDelete}
+                                                        startIcon={<DeleteForever />}
+                                                        onClick={() => handleDeleteTransportasi(data.id)}
+                                                    >
+                                                        Hapus
+                                                    </Button>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={7} align="center">
+                                    <Typography sx={{ fontStyle: "italic" }}>
+                                        Tidak ada data transportasi.
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </Table>
                 </TableContainer>
+                
                 <Stack spacing={2} sx={styles.stackPagination}>
                     <Pagination 
                         count={totalPagesTransportasi} 

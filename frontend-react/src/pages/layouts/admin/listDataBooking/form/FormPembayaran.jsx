@@ -76,6 +76,16 @@ export default function FormPembayaran({
     },
   };
 
+  const cekJam = (value) => {
+    let [hours, minutes] = value.split(":").map(Number);
+
+    if (hours >= 0 && hours < 12) {
+      return `${value} AM`
+    } else {
+      return `${value} PM`
+    }
+  };
+
   return (
     <>
       <BootstrapDialog
@@ -127,7 +137,6 @@ export default function FormPembayaran({
                             <TableCell align="center" style={styles.tableCell}>Tujuan</TableCell>
                             <TableCell align="center" style={styles.tableCell}>Transportasi</TableCell>
                             <TableCell align="center" style={styles.tableCell}>Unit</TableCell>
-                            <TableCell align="center" style={styles.tableCell}>Durasi</TableCell>
                             <TableCell align="center" style={styles.tableCell}>Satuan</TableCell>
                             <TableCell align="center" style={styles.tableCell}>Total</TableCell>
                           </TableRow>
@@ -141,11 +150,10 @@ export default function FormPembayaran({
                             >
                               <TableCell component="th" scope="row">{index + 1}.</TableCell>
                               <TableCell align="center">{row.tujuan}</TableCell>
-                              <TableCell align="center">{row.transportasi}</TableCell>
+                              <TableCell align="center">{row.nama_transportasi}</TableCell>
                               <TableCell align="center">{row.unit}</TableCell>
-                              <TableCell align="center">{row.durasi} hari</TableCell>
-                              <TableCell align="center">{row.satuan}</TableCell>
-                              <TableCell align="center">{row.total}</TableCell>
+                              <TableCell align="center">{formatUangByKodeMataUang(row.satuan, "IDR")}</TableCell>
+                              <TableCell align="center">{formatUangByKodeMataUang(row.total, "IDR")}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -275,6 +283,36 @@ export default function FormPembayaran({
                 fullWidth
                 margin="normal"
                 defaultValue={detailListDataBooking.akhir_booking}
+              />
+
+              <TextField
+                InputProps={{
+                  classes: {
+                    disabled: classes.disabled
+                  },
+                }}
+                disabled
+                label="Dari Jam"
+                name="dariJam"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                defaultValue={cekJam(detailListDataBooking.dari_jam)}
+              />
+
+              <TextField
+                InputProps={{
+                  classes: {
+                    disabled: classes.disabled
+                  },
+                }}
+                disabled
+                label="Ke Jam"
+                name="keJam"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                defaultValue={cekJam(detailListDataBooking.ke_jam)}
               />
 
               <TextField

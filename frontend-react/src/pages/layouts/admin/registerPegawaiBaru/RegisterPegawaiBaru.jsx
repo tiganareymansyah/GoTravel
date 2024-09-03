@@ -336,38 +336,51 @@ export default function RegisterPegawaiBaru ({
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {dataMapRegisterPegawaiBaru?.map((data, index) => (
-                                <TableRow key={index}>
-                                    <TableCell align="center">{(pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru + index + 1}.</TableCell>
-                                    <TableCell align="center">{data.fullname}</TableCell>
-                                    <TableCell align="center">{data.tbt}</TableCell>
-                                    <TableCell align="center">{data.gender === "L" ? "Laki-laki" : "Perempuan"}</TableCell>
-                                    <TableCell align="center">{data.email}</TableCell>
-                                    {/* <TableCell align="center">{data.password}</TableCell> */}
-                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <Button 
-                                                sx={styles.buttonEdit}
-                                                startIcon={<Edit />}
-                                                onClick={() => handleEdit(data)}
-                                            >
-                                                Ubah
-                                            </Button>
-                                            <Button
-                                                sx={styles.buttonDelete}
-                                                startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteRegisterPegawaiBaru(data.id_admin)}
-                                            >
-                                                Hapus
-                                            </Button>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        {dataMapRegisterPegawaiBaru?.length > 0 ? (
+                            <>
+                                <TableBody>
+                                    {dataMapRegisterPegawaiBaru?.map((data, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{(pageRegisterPegawaiBaru - 1) * itemPerPagesRegisterPegawaiBaru + index + 1}.</TableCell>
+                                            <TableCell align="center">{data.fullname}</TableCell>
+                                            <TableCell align="center">{data.tbt}</TableCell>
+                                            <TableCell align="center">{data.gender === "L" ? "Laki-laki" : "Perempuan"}</TableCell>
+                                            <TableCell align="center">{data.email}</TableCell>
+                                            {/* <TableCell align="center">{data.password}</TableCell> */}
+                                            <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                                <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <Button 
+                                                        sx={styles.buttonEdit}
+                                                        startIcon={<Edit />}
+                                                        onClick={() => handleEdit(data)}
+                                                    >
+                                                        Ubah
+                                                    </Button>
+                                                    <Button
+                                                        sx={styles.buttonDelete}
+                                                        startIcon={<DeleteForever />}
+                                                        onClick={() => handleDeleteRegisterPegawaiBaru(data.id_admin)}
+                                                    >
+                                                        Hapus
+                                                    </Button>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={8} align="center">
+                                    <Typography sx={{ fontStyle: "italic" }}>
+                                        Tidak ada data akun pegawai.
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </Table>
                 </TableContainer>
+
                 <Stack spacing={2} sx={styles.stackPagination}>
                     <Pagination 
                         count={totalPagesRegisterPegawaiBaru} 

@@ -207,6 +207,17 @@
                     foreach ($results as &$result) {
                         if (isset($result['data_perjalanan'])) {
                             $result['data_perjalanan'] = json_decode($result['data_perjalanan'], true);
+
+                            $querySelect = "SELECT nama_transportasi_wisata FROM tm_tourist_transportation WHERE id = :id";
+        
+                            $stmt1 = $this->connection->prepare($querySelect);
+                            $stmt1->bindValue(":id", $result['data_perjalanan'][0]['id_transportasi']);
+                            $stmt1->execute();
+                            $transportasiResult = $stmt1->fetch(PDO::FETCH_ASSOC);
+
+                            foreach ($result['data_perjalanan'] as &$perjalanan) {
+                                $perjalanan['nama_transportasi'] = $transportasiResult['nama_transportasi_wisata'];
+                            }
                         }
                     }
         

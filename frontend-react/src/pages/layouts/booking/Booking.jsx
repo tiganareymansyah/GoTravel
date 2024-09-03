@@ -109,7 +109,7 @@ export default function Booking(props) {
                                                         backgroundColor: 
                                                         isBookingExpired(new Date(data.akhir_booking), 
                                                         new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? 
-                                                            data.is_bayar === 1 ? "green" : "red"
+                                                            data.is_bayar === 1 ? "#06D001" : "#FF0000"
                                                         : "grey",
                                                         color: "white",
                                                         padding: "5px",
@@ -163,8 +163,8 @@ export default function Booking(props) {
                                                                     sx={{
                                                                         fontFamily: "Nunito Sans",
                                                                         marginTop: "20px",
-                                                                        textDecoration: "underline #00f",
-                                                                        color: "blue",
+                                                                        textDecoration: "underline #FF0000",
+                                                                        color: "#FF0000",
                                                                     }}
                                                                 >
                                                                     {capitalizeWords("pembayaran")}
@@ -175,8 +175,8 @@ export default function Booking(props) {
                                                                 sx={{
                                                                     fontFamily: "Nunito Sans",
                                                                     marginTop: "20px",
-                                                                    textDecoration: "underline #00f",
-                                                                    color: "blue",
+                                                                    textDecoration: "underline #06D001",
+                                                                    color: "#06D001",
                                                                 }}
                                                             >
                                                                 {capitalizeWords("Aktif")}

@@ -300,60 +300,71 @@ export default function ListDataBooking ({
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {mapListDataBooking?.map((data, index) => (
-                                <TableRow key={index}>
-                                    <TableCell align="center">{(pageListDataBooking - 1) * itemPerPagesListDataBooking + index + 1}.</TableCell>
-                                    <TableCell align="center">{data.kode_booking}</TableCell>
-                                    <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.nama_lengkap}</TableCell>
-                                    <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.alamat}</TableCell>
-                                    <TableCell align="center">{data.mulai_booking}</TableCell>
-                                    <TableCell align="center">{data.akhir_booking}</TableCell>
-                                    <TableCell 
-                                        align="center"
-                                        sx={{
-                                            fontWeight: "bold",
-                                            color: 
-                                                isBookingExpired(new Date(data.akhir_booking), 
-                                                new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? 
-                                                    data.is_bayar === 1 ? "green" : "red"
-                                                : "grey",
-                                            textTransform: "uppercase"
-                                        }}
-                                    >
-                                        {isBookingExpired(new Date(data.akhir_booking), 
-                                        new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? (
-                                            <>
-                                                {data.is_bayar === 1 ? "aktif" : "belum bayar"}
-                                            </>
-                                        ) : data.is_bayar === 1 ? (
-                                            "Selesai"
-                                        ) : "Kadaluarsa"}
-                                    </TableCell>
-                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <Button
-                                                sx={styles.buttonCekDetail}
-                                                startIcon={<ManageSearch />}
-                                                onClick={() => handleOpenDetail(data)}
-                                            >
-                                                Detail
-                                            </Button>
-
-                                            <Button
-                                                sx={styles.buttonPayment}
-                                                startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteListDataBooking(data)}
-                                            >
-                                                Hapus
-                                            </Button>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        {mapListDataBooking?.length > 0 ? (
+                            <TableBody>
+                                {mapListDataBooking?.map((data, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell align="center">{(pageListDataBooking - 1) * itemPerPagesListDataBooking + index + 1}.</TableCell>
+                                        <TableCell align="center">{data.kode_booking}</TableCell>
+                                        <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.nama_lengkap}</TableCell>
+                                        <TableCell align="center" sx={{ textTransform: "capitalize" }}>{data.alamat}</TableCell>
+                                        <TableCell align="center">{data.mulai_booking}</TableCell>
+                                        <TableCell align="center">{data.akhir_booking}</TableCell>
+                                        <TableCell 
+                                            align="center"
+                                            sx={{
+                                                fontWeight: "bold",
+                                                color: 
+                                                    isBookingExpired(new Date(data.akhir_booking), 
+                                                    new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? 
+                                                        data.is_bayar === 1 ? "green" : "red"
+                                                    : "grey",
+                                                textTransform: "uppercase"
+                                            }}
+                                        >
+                                            {isBookingExpired(new Date(data.akhir_booking), 
+                                            new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }))) ? (
+                                                <>
+                                                    {data.is_bayar === 1 ? "aktif" : "belum bayar"}
+                                                </>
+                                            ) : data.is_bayar === 1 ? (
+                                                "Selesai"
+                                            ) : "Kadaluarsa"}
+                                        </TableCell>
+                                        <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                            <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                <Button
+                                                    sx={styles.buttonCekDetail}
+                                                    startIcon={<ManageSearch />}
+                                                    onClick={() => handleOpenDetail(data)}
+                                                >
+                                                    Detail
+                                                </Button>
+    
+                                                <Button
+                                                    sx={styles.buttonPayment}
+                                                    startIcon={<DeleteForever />}
+                                                    onClick={() => handleDeleteListDataBooking(data)}
+                                                >
+                                                    Hapus
+                                                </Button>
+                                            </Box>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={8} align="center">
+                                    <Typography sx={{ fontStyle: "italic" }}>
+                                        Tidak ada data booking.
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </Table>
                 </TableContainer>
+
                 <Stack spacing={2} sx={styles.stackPagination}>
                     <Pagination 
                         count={totalPagesListDataBooking} 

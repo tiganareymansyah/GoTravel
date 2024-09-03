@@ -353,7 +353,7 @@ export const sectionTouristDestination = (
                                             showYearDropdown
                                             showMonthDropdown
                                             yearDropdownItemNumber={100}
-                                            maxDate={new Date()}
+                                            // maxDate={new Date()}
                                             scrollableYearDropdown
                                             className={classes.calendarContainer}
                                             calendarClassName={classes.calendar}
@@ -465,7 +465,7 @@ export const sectionTouristDestination = (
                                             showYearDropdown
                                             showMonthDropdown
                                             yearDropdownItemNumber={100}
-                                            maxDate={new Date()}
+                                            // maxDate={new Date()}
                                             scrollableYearDropdown
                                             className={classes.calendarContainer}
                                             calendarClassName={classes.calendar}

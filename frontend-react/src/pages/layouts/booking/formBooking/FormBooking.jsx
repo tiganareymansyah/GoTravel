@@ -186,6 +186,18 @@ export default function FormBooking(props) {
                     "Form tidak boleh kosong"
                 );
             } else {
+                /* 
+                    >>> Perhitungan Gaji Pegawai <<<
+
+                    1. Hitung dulu jarak hari.
+                    2. Harga satuan transportasi dibagi 2 dulu yang gunanya untuk membagi hasil uang 
+                       yang didapat untuk ke pegawai dan untuk ke perusahaan. Baru dikalikan dengan hasil jarak hari.
+                    3. Jika hasil jarak hari sama dengan 1, maka harga satuan dikali dengan unit booking transportasi.
+                       Jika hasil jarak hari lebih dari 1, maka harga satuan dikali dengan unit booking transportasi 
+                       ditambah dengan hasil perhitungan yang diawal tadi.
+                    4. Segitulah gaji pegawai tetapi tidak termasuk biaya bensin, makan, dll.
+                */
+
                 let resultDurasi = hitungJarakHari(formik.values.startBooking, formik.values.lastBooking);
     
                 let hargaDariDurasi = (selectState.touristTransportation.selectedState.harga / 2) * resultDurasi;

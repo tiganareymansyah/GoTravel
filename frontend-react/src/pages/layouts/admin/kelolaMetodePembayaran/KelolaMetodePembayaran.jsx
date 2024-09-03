@@ -297,35 +297,48 @@ export default function KelolaMetodePembayaran ({
                             </TableRow>
                         </TableHead>
 
-                        <TableBody>
-                            {dataMapMetodePembayaran?.map((data, index) => (
-                                <TableRow key={index}>
-                                    <TableCell align="center">{(pageMetodePembayaran - 1) * itemPerPagesMetodePembayaran + index + 1}.</TableCell>
-                                    <TableCell align="center">{data.value}</TableCell>
-                                    <TableCell align="center">{data.nama_payment_method}</TableCell>
-                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <Button 
-                                                sx={styles.buttonEdit}
-                                                startIcon={<Edit />}
-                                                onClick={() => handleEdit(data)}
-                                            >
-                                                Ubah
-                                            </Button>
-                                            <Button
-                                                sx={styles.buttonDelete}
-                                                startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteMetodePembayaran(data.id)}
-                                            >
-                                                Hapus
-                                            </Button>
-                                        </Box>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
+                        {dataMapMetodePembayaran?.length > 0 ? (
+                            <>
+                                <TableBody>
+                                    {dataMapMetodePembayaran?.map((data, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{(pageMetodePembayaran - 1) * itemPerPagesMetodePembayaran + index + 1}.</TableCell>
+                                            <TableCell align="center">{data.value}</TableCell>
+                                            <TableCell align="center">{data.nama_payment_method}</TableCell>
+                                            <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                                <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <Button 
+                                                        sx={styles.buttonEdit}
+                                                        startIcon={<Edit />}
+                                                        onClick={() => handleEdit(data)}
+                                                    >
+                                                        Ubah
+                                                    </Button>
+                                                    <Button
+                                                        sx={styles.buttonDelete}
+                                                        startIcon={<DeleteForever />}
+                                                        onClick={() => handleDeleteMetodePembayaran(data.id)}
+                                                    >
+                                                        Hapus
+                                                    </Button>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </>
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={4} align="center">
+                                    <Typography sx={{ fontStyle: "italic" }}>
+                                        Tidak ada data metode pembayaran.
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </Table>
                 </TableContainer>
+                
                 <Stack spacing={2} sx={styles.stackPagination}>
                     <Pagination 
                         count={totalPagesMetodePembayaran} 

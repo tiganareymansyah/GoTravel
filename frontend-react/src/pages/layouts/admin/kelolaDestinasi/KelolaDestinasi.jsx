@@ -300,34 +300,47 @@ export default function KelolaDestinasi ({
                         </TableHead>
 
                         <TableBody>
-                            {dataMapDestinasi?.map((data, index) => (
-                                <TableRow key={index}>
-                                    <TableCell align="center">{(pageDestinasi - 1) * itemPerPagesDestinasi + index + 1}.</TableCell>
-                                    <TableCell align="center">{data.value}</TableCell>
-                                    <TableCell align="center">{data.nama_tujuan_wisata}</TableCell>
-                                    <TableCell sx={{ display: "flex", justifyContent: "center", }}>
-                                        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                                            <Button 
-                                                sx={styles.buttonEdit}
-                                                startIcon={<Edit />}
-                                                onClick={() => handleEdit(data)}
-                                            >
-                                                Ubah
-                                            </Button>
-                                            <Button
-                                                sx={styles.buttonDelete}
-                                                startIcon={<DeleteForever />}
-                                                onClick={() => handleDeleteDestinasi(data.id)}
-                                            >
-                                                Hapus
-                                            </Button>
-                                        </Box>
+                            {dataMapDestinasi?.length > 0 ? (
+                                <>
+                                    {dataMapDestinasi?.map((data, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{(pageDestinasi - 1) * itemPerPagesDestinasi + index + 1}.</TableCell>
+                                            <TableCell align="center">{data.value}</TableCell>
+                                            <TableCell align="center">{data.nama_tujuan_wisata}</TableCell>
+                                            <TableCell sx={{ display: "flex", justifyContent: "center", }}>
+                                                <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                                    <Button 
+                                                        sx={styles.buttonEdit}
+                                                        startIcon={<Edit />}
+                                                        onClick={() => handleEdit(data)}
+                                                    >
+                                                        Ubah
+                                                    </Button>
+                                                    <Button
+                                                        sx={styles.buttonDelete}
+                                                        startIcon={<DeleteForever />}
+                                                        onClick={() => handleDeleteDestinasi(data.id)}
+                                                    >
+                                                        Hapus
+                                                    </Button>
+                                                </Box>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </>
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={4} align="center">
+                                        <Typography sx={{ fontStyle: "italic" }}>
+                                            Tidak ada data destinasi.
+                                        </Typography>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            )}
                         </TableBody>
                     </Table>
                 </TableContainer>
+                
                 <Stack spacing={2} sx={styles.stackPagination}>
                     <Pagination 
                         count={totalPagesDestinasi} 

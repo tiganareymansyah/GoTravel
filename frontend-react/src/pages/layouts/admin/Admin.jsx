@@ -22,6 +22,7 @@ import {
   FormatListBulleted,
   LocationOn,
   Logout,
+  Mail,
   ManageAccounts,
   Menu,
   MiscellaneousServices,
@@ -39,6 +40,7 @@ import KelolaTransportasi from "./kelolaTransportasi/KelolaTransportasi";
 import KelolaMetodePembayaran from "./kelolaMetodePembayaran/KelolaMetodePembayaran";
 import KelolaInformasiDanLayanan from "./kelolaInformasiDanLayanan/KelolaInformasiDanLayanan";
 import RegisterPegawaiBaru from "./registerPegawaiBaru/RegisterPegawaiBaru";
+import KelolaMessage from "./kelolaMessage/KelolaMessage";
 
 const drawerWidth = 240;
 
@@ -140,6 +142,10 @@ export default function Admin(props) {
     {
       name: "Register Pegawai Baru",
       to: "/register-pegawai-baru"
+    },
+    {
+      name: "Kelola Pesan",
+      to: "/kelola-pesan"
     },
   ];
 
@@ -302,6 +308,8 @@ export default function Admin(props) {
                       <MiscellaneousServices />
                     ) : index === 5 ? (
                       <ManageAccounts />
+                    ) : index === 6 ? (
+                      <Mail />
                     ) : null}
                   </ListItemIcon>
                   <ListItemText primary={menu.name} sx={{ color: "#fff" }} />
@@ -352,6 +360,10 @@ export default function Admin(props) {
             />
           ) : section === "/register-pegawai-baru" ? (
             <RegisterPegawaiBaru
+              props={props}
+            />
+          ) : section === "/kelola-pesan" ? (
+            <KelolaMessage
               props={props}
             />
           ) : null}

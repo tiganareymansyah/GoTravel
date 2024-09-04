@@ -181,6 +181,26 @@
                 
                 $result = $data;
             }
+        } else if($paths[3] === "contact") {
+            include_once __DIR__ . '/controllers/contactController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "add-message") {
+                $contactController = new ContactController();
+                $data = $contactController->AddMessage($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "add-answer") {
+                $contactController = new ContactController();
+                $data = $contactController->AddAnswer($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "get-data") {
+                $contactController = new ContactController();
+                $data = $contactController->GetData();
+                
+                $result = $data;
+            }
         } else {
             throw new Exception('Invalid Route');
         }

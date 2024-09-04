@@ -435,3 +435,54 @@ export async function apiDeleteDataBooking({ body }) {
         throw error;
     }
 }
+
+export async function apiSendMessage({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/contact/add-message",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiSendAnswer({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/contact/add-answer",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiContactGetData() {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/contact/get-data",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

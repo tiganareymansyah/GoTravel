@@ -158,5 +158,93 @@
                 return $htmlString;
             }
         }
+
+        public function messageSuccess($params) {
+            $htmlString = '
+                <!DOCTYPE html>
+                <html lang="en">
+                    <head>
+                        <meta charset="utf-8" />
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        <title>Booking Confirmation</title>
+                    </head>
+                    <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+                        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
+                                <div style="text-align: center; font-style: italic;">
+                                    <strong>
+                                        <span style="font-size: 24px">GoTravel</span>
+                                    </strong>
+                                </div>
+                            </div>
+                            <h3 style="text-align: center;"><strong>Pesan Anda Telah Berhasil Terkirim</strong></h3>
+                            <div style="margin: 20px 0;">
+                                <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['fullname']) . '</p>
+                                <p style="text-indent: 32px; text-align: justify;">
+                                    Terima kasih atas pesan yang telah anda kirimkan pada 
+                                    aplikasi <span style="font-style: italic; font-weight: bold;">GoTravel</span>. 
+                                    Pesan anda akan kami balas secepatnya dan kami akan mengirimkan jawabannya 
+                                    melalui email anda.
+                                </p><br />
+                                <span style="font-weight: bold;">Berikut adalah pesan yang anda kirimkan :</span>
+                                <p>Pesan : ' . htmlspecialchars($params['message']) . '</p>
+                                <div style="text-align: right; margin-top: 64px;">
+                                    <p>Salam Hangat,</p>
+                                    <p style="font-style: italic;">GoTravel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                </html>
+            ';
+
+            return $htmlString;
+        }
+
+        public function answerSuccess($params) {
+            $htmlString = '
+                <!DOCTYPE html>
+                <html lang="en">
+                    <head>
+                        <meta charset="utf-8" />
+                        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1" />
+                        <title>Booking Confirmation</title>
+                    </head>
+                    <body style="font-family: sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
+                        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                            <div style="text-align: center;">
+                                <img src="https://raw.githubusercontent.com/tiganareymansyah/GoTravel/main/frontend-react/src/media/logo_gotravel1.png" width="96px">
+                                <div style="text-align: center; font-style: italic;">
+                                    <strong>
+                                        <span style="font-size: 24px">GoTravel</span>
+                                    </strong>
+                                </div>
+                            </div>
+                            <h3 style="text-align: center;"><strong>Pesan Anda Telah Dibalas</strong></h3>
+                            <div style="margin: 20px 0;">
+                                <p style="text-transform: capitalize;">Halo, ' . htmlspecialchars($params['fullname']) . '</p>
+                                <p style="text-indent: 32px; text-align: justify;">
+                                    Kami sudah membalas pesan yang anda kirimkan. Jikalau jawaban dari kami 
+                                    kurang memuaskan, silahkan kirim pesan yang lain sampai anda merasa puas 
+                                    dengan jawaban kami.
+                                </p><br />
+                                <span style="font-weight: bold;">Berikut adalah jawabannya :</span>
+                                <p>Pesan : ' . htmlspecialchars($params['message']) . '</p>
+                                <p>Jawaban : ' . htmlspecialchars($params['answer']) . '</p>
+                                <div style="text-align: right; margin-top: 64px;">
+                                    <p>Salam Hangat,</p>
+                                    <p style="font-style: italic;">GoTravel</p>
+                                </div>
+                            </div>
+                        </div>
+                    </body>
+                </html>
+            ';
+
+            return $htmlString;
+        }
     }
 ?>

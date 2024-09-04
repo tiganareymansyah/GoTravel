@@ -16,6 +16,8 @@ import {
 import Navbar from "../../../components/navbar/Navbar";
 import { useMediaQuery } from "react-responsive";
 import { useContactStyles } from "./style";
+import Alert from "../../../components/Alert/Alert";
+import { apiSendMessage } from "../../../api/api";
 
 export default function Contact(props) {
     console.log(props);
@@ -68,11 +70,30 @@ export default function Contact(props) {
         }
     };
 
+    const [openAlert, setOpenAlert] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
     const [dataContact, setDataContact] = useState({
         fromEmail: props.userLogin.email,
         toEmail: "tiganareymansyah2502@gmail.com",
+        idUser: props.userLogin.id_user,
         chat: ""
     });
+
+    const handleAlert = (open, severity, title, message) => {
+        setOpenAlert(open);
+        setSeverity(severity);
+        setTitle(title);
+        setMessage(message);
+    };
+
+    const handleCloseAlert = () => {
+        setOpenAlert(false);
+        if(severity === "successNoReload") {
+            location.href = "/contact";
+        }
+    }
 
     const handleChange = (field, value) => {
         setDataContact((prev) => ({
@@ -82,7 +103,32 @@ export default function Contact(props) {
     };
 
     const handleSendChat = async () => {
-        console.log("Kirim");
+        props.doLoad();
+        try {
+            let payload = {
+                id_user: dataContact.idUser,
+                message: dataContact.chat
+            };
+
+            const result = await apiSendMessage({
+                body: JSON.stringify(payload)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Sukses",
+                    message
+                )
+                props.doLoad();
+            }
+        } catch (err) {
+            console.log(err);
+            props.doLoad();
+        }
     };
 
     console.log(dataContact);
@@ -237,6 +283,16 @@ export default function Contact(props) {
                     </Box>
                 </Box>
             </Box>
+
+            {openAlert && (
+                <Alert
+                    open={openAlert}
+                    close={handleCloseAlert}
+                    severity={severity}
+                    title={title}
+                    message={message}
+                />
+            )}
         </>
     );
 };

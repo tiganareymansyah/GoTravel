@@ -65,5 +65,26 @@
                 );
             }
         }
+
+        public function DeleteContact($params) {
+            $contactClass = new ContactClass();
+            $contactResult = $contactClass->deleteContact($params);
+
+            if ($contactResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Pesan berhasil dihapus"
+                );
+            }
+        }
     }
 ?>

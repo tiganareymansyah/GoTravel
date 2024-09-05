@@ -200,6 +200,13 @@
                 $data = $contactController->GetData();
                 
                 $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $contactController = new ContactController();
+                $data = $contactController->DeleteContact($urlParams);
+                
+                $result = $data;
             }
         } else {
             throw new Exception('Invalid Route');

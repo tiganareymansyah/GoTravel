@@ -475,7 +475,22 @@ export async function apiContactGetData() {
         const response = await axios({
             method: "POST",
             url: ApiUrl + "/contact/get-data",
-            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteContact(urlParams) {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + `/contact/delete?id=${urlParams}`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             },

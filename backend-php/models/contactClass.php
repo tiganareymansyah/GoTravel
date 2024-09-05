@@ -46,10 +46,11 @@
         }
 
         public function addAnswer($params) {
-            $queryUpdate = "UPDATE contact_us SET answer = :answer, update_now = NOW()";
+            $queryUpdate = "UPDATE contact_us SET answer = :answer, update_now = NOW() WHERE id_user = :id_user";
 
             $stmt = $this->connection->prepare($queryUpdate);
             $stmt->bindValue(":answer", $params['answer']);
+            $stmt->bindValue(":id_user", $params['id_user']);
             $stmt->execute();
 
             if($stmt->rowCount() > 0) {
@@ -89,14 +90,26 @@
         }
 
         public function getData() {
-            $query = "SELECT cu.*, lu.* FROM contact_us cu 
+            $query = "SELECT cu.*, lu.fullname, tbt, gender, email, 
+                token, kode_otp, is_success, foto_profil FROM contact_us cu 
                 INNER JOIN login_user lu ON cu.id_user = lu.id_user 
-                ORDER BY cu.answer IS NULL DESC, cu.created_at desc";
+                ORDER BY cu.answer IS NULL DESC, cu.created_at DESC";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            else return false;
+        }
+
+        public function deleteContact($params) {
+            $query = "DELETE FROM contact_us WHERE id = :id";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
             else return false;
         }
     }

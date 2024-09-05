@@ -16,14 +16,15 @@ import {
 import { 
     AddCircle, 
     DeleteForever, 
-    Edit 
+    Edit, 
+    Visibility
 } from "@mui/icons-material";
 import { orange } from "@mui/material/colors";
-import { apiContactGetData } from "../../../../api/api";
-import FormDialogAdd from "./form/FormDialogAdd";
+import { apiContactGetData, apiDeleteContact, apiSendAnswer } from "../../../../api/api";
 import { useMediaQuery } from "react-responsive";
 import { useKelolaMessageStyles } from "./style";
 import Alert from "../../../../components/Alert/Alert";
+import FormDialogEdit from "./form/FormDialogEdit";
 
 export default function KelolaMessage ({
     props
@@ -117,11 +118,19 @@ export default function KelolaMessage ({
 
     useEffect(() => {
         if(openEditDialog) {
-            setAddMessage((prev) => ({
-                ...prev,
-                message: editDataMessage.message,
-                answer: editDataMessage.answer
-            }));
+            if(editDataMessage.answer) {
+                setAddMessage((prev) => ({
+                    ...prev,
+                    message: editDataMessage.message,
+                    answer: editDataMessage.answer
+                }));
+            } else {
+                setAddMessage((prev) => ({
+                    ...prev,
+                    message: editDataMessage.message,
+                    answer: ""
+                }));
+            }
         }
     }, [openEditDialog]);
 
@@ -176,15 +185,16 @@ export default function KelolaMessage ({
         setOpenEditDialog(false);
     };
 
-    const handleEditMessage = async (e) => {
+    const handleAddAnswer = async (e) => {
         e.preventDefault();
+        props.doLoad();
         try {
             let dataEdit = {
-                id_user: dataMessage.id_user,
+                id_user: editDataMessage.id_user,
                 answer: addMessage.answer
             };
 
-            const result = await apiEditDestinasi({
+            const result = await apiSendAnswer({
                 body: JSON.stringify(dataEdit)
             });
 
@@ -197,34 +207,39 @@ export default function KelolaMessage ({
                     "Success",
                     message
                 );
+                props.doLoad();
             }
         } catch (err) {
             console.log(err);
+            props.doLoad();
         }
     };
 
-    // const handleDeleteMessage = async (id) => {
-    //     try {
-    //         let urlParams = id;
+    const handleDeleteMessage = async (id) => {
+        props.doLoad();
+        try {
+            let urlParams = id;
 
-    //         const result = await apiDeleteDestinasi(urlParams);
+            const result = await apiDeleteContact(urlParams);
 
-    //         const { code, status, message, data } = result;
+            const { code, status, message, data } = result;
 
-    //         if(status === "success") {
-    //             handleAlert(
-    //                 true,
-    //                 "successNoReload",
-    //                 "Success",
-    //                 message
-    //             );
-    //         }
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // };
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+                props.doLoad();
+            }
+        } catch (err) {
+            console.log(err);
+            props.doLoad();
+        }
+    };
 
-    console.log(dataMessage, editDataMessage);
+    console.log(dataMapMessage, addMessage, editDataMessage);
 
     return (
         <>
@@ -239,8 +254,10 @@ export default function KelolaMessage ({
                             <TableRow>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Tanggal Kirim</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Pertanyaan</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Jawaban</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Status</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
                             </TableRow>
                         </TableHead>
@@ -252,21 +269,34 @@ export default function KelolaMessage ({
                                         <TableRow key={index}>
                                             <TableCell align="center">{(pageMessage - 1) * itemPerPagesMessage + index + 1}.</TableCell>
                                             <TableCell align="center">{data.email}</TableCell>
+                                            <TableCell align="center">{data.created_at}</TableCell>
                                             <TableCell align="center">{data.message}</TableCell>
                                             <TableCell align="center">{data.answer}</TableCell>
+                                            <TableCell 
+                                                align="center"
+                                                sx={{
+                                                    color: data.answer ? "green" : "red"
+                                                }}
+                                            >
+                                                {data.answer ? "Sudah dijawab" : "Belum dijawab"}
+                                            </TableCell>
                                             <TableCell sx={{ display: "flex", justifyContent: "center", }}>
                                                 <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                                     <Button 
-                                                        sx={styles.buttonEdit}
-                                                        startIcon={<Edit />}
+                                                        sx={{
+                                                            ...styles.buttonEdit,
+                                                            width: data.answer && "102px"
+                                                        }}
+                                                        startIcon={data.answer ? <Visibility /> : <Edit />}
                                                         onClick={() => handleAnswer(data)}
                                                     >
-                                                        Jawab
+                                                        {data.answer ? "Cek" : "Jawab"}
                                                     </Button>
+
                                                     <Button
                                                         sx={styles.buttonDelete}
                                                         startIcon={<DeleteForever />}
-                                                        // onClick={() => handleDeleteMessage(data.id)}
+                                                        onClick={() => handleDeleteMessage(data.id)}
                                                     >
                                                         Hapus
                                                     </Button>
@@ -277,9 +307,9 @@ export default function KelolaMessage ({
                                 </>
                             ) : (
                                 <TableRow>
-                                    <TableCell colSpan={5} align="center">
+                                    <TableCell colSpan={7} align="center">
                                         <Typography sx={{ fontStyle: "italic" }}>
-                                            Tidak ada data Pesan.
+                                            Tidak ada data pesan.
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -300,12 +330,14 @@ export default function KelolaMessage ({
             </Box>
             
             {openEditDialog && (
-                <FormDialogAdd
+                <FormDialogEdit
+                    classes={classes}
                     openEditDialog={openEditDialog}
                     addMessage={addMessage}
+                    editDataMessage={editDataMessage}
                     handleChange={handleChange}
                     handleCloseEdit={handleCloseEdit}
-                    handleEditMessage={handleEditMessage}
+                    handleAddAnswer={handleAddAnswer}
                 />
             )}
 

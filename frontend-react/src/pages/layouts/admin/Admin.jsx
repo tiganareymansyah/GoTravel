@@ -163,15 +163,27 @@ export default function Admin(props) {
         <CssBaseline />
         <AppBar position="fixed" open={open} sx={{ backgroundColor: "#181c24" }}>
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2, ...(open && { display: "none" }) }}
-            >
-              <Menu />
-            </IconButton>
+            {open ? (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerClose}
+                edge="start"
+                sx={{ mr: 2, ...(!open && { display: "none" }) }}
+              >
+                <ChevronLeft />
+              </IconButton>
+            ) : (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{ mr: 2, ...(open && { display: "none" }) }}
+              >
+                <Menu />
+              </IconButton>
+            )}
 
             <Box
               sx={{
@@ -257,8 +269,9 @@ export default function Admin(props) {
           <List
             sx={{
               backgroundColor: "#181c24",
-              height: "100vh",
-              paddingTop: "32px"
+              height: "100vw",
+              paddingTop: "32px",
+              // overflowY: "scroll"
             }}
           >
             {menu.map((menu, index) => (
@@ -318,12 +331,12 @@ export default function Admin(props) {
             ))}
           </List>
 
-          <IconButton 
+          {/* <IconButton 
             onClick={handleDrawerClose} 
             sx={{ 
               color: "#000", 
               position: "absolute", 
-              top: "90%", 
+              top: "45vw", 
               left: "40%", 
               display: "flex", 
               backgroundColor: "#fff", 
@@ -334,7 +347,7 @@ export default function Admin(props) {
             }}
           >
             <ChevronLeft />
-          </IconButton>
+          </IconButton> */}
         </Drawer>
 
         <Main open={open} sx={{ paddingTop: "100px" }}>

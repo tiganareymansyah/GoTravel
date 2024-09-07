@@ -160,7 +160,7 @@
                         $dataUserLogin = array(
                             "id_user" => $result['id_user'],
                             "fullname" => $result['fullname'],
-                            "date_of_birth" => $result['tbt'],
+                            "tbt" => $result['tbt'],
                             "gender" => $result['gender'],
                             "email" => $result['email'],
                             "created_at" => $result['created_at'],
@@ -269,6 +269,62 @@
                 } else {
                     return false;
                 }
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        public function editUser($params) {
+            $querySelect = "SELECT * FROM login_user WHERE id_user = :id_user";
+
+            $stmtSelect = $this->connection->prepare($querySelect);
+            $stmtSelect->bindValue(":id_user", $params['id']);
+            $stmtSelect->execute();
+            $cekEmail = $stmtSelect->fetch(PDO::FETCH_ASSOC);
+
+            if($params['is_edit'] === 1) {
+                $queryUpdate = "UPDATE login_user SET 
+                    password = :password 
+                    WHERE id_user = :id_user
+                ";
+    
+                $stmt = $this->connection->prepare($queryUpdate);
+                $stmt->bindValue(":password", $params['password'] === "" ? $cekEmail['password'] : password_hash($params['password'], PASSWORD_DEFAULT));
+                $stmt->bindValue(":id_user", $params['id']);
+                $stmt->execute();
+    
+                if ($stmt->rowCount() > 0) return true;
+                else return false;
+            } else {
+                $queryUpdate = "UPDATE login_user SET 
+                    fullname = :fullname, 
+                    tbt = :tbt, 
+                    gender = :gender 
+                    WHERE id_user = :id_user
+                ";
+    
+                $stmt = $this->connection->prepare($queryUpdate);
+                $stmt->bindValue(":fullname", $params['fullname'] === "" ? $cekEmail['fullname'] : strtolower($params['fullname']));
+                $stmt->bindValue(":tbt", $params['tbt'] === "" ? $cekEmail['tbt'] : $params['tbt']);
+                $stmt->bindValue(":gender", $params['gender'] === "" ? $cekEmail['gender'] : strtoupper($params['gender']));
+                $stmt->bindValue(":id_user", $params['id']);
+                $stmt->execute();
+    
+                if ($stmt->rowCount() > 0) return true;
+                else return false;
+            }
+        }
+
+        public function getDataUserByEmail($params) {
+            try {
+                $query = "SELECT * FROM login_user WHERE email = :email";
+
+                $stmt = $this->connection->prepare($query);
+                $stmt->bindValue(":email", $params);
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                else return false;
             } catch (Exception $e) {
                 throw $e;
             }

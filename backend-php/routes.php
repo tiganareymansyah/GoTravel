@@ -28,6 +28,18 @@
                 $data = $logregController->ValidationOtp($jsonParams);
                 
                 $result = $data;
+            } else if($paths[4] == "edit") {
+                $logregController = new LogregController();
+                $data = $logregController->EditUser($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] == "get-data-user-by-email") {
+                $urlParams = $_GET['email'];
+
+                $logregController = new LogregController();
+                $data = $logregController->GetDataUserByEmail($urlParams);
+                
+                $result = $data;
             } else {
                 throw new Exception('Invalid Endpoint');
             }
@@ -62,6 +74,8 @@
                 $data = $logregController->DeleteAdmin($urlParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else if($paths[3] === "transportation") {
             include_once __DIR__ . '/controllers/transportationController.php';
@@ -89,6 +103,8 @@
                 $data = $transportationController->DeleteTransportation($urlParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else if($paths[3] === "destination") {
             include_once __DIR__ . '/controllers/destinationController.php';
@@ -116,6 +132,8 @@
                 $data = $destinationController->DeleteDestination($urlParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else if($paths[3] === "paymeth") {
             include_once __DIR__ . '/controllers/paymentMethodController.php';
@@ -148,6 +166,8 @@
                 $data = $paymentMethodController->DeletePaymentMethod($urlParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else if($paths[3] === "request") {
             include_once __DIR__ . '/controllers/dataBookingController.php';
@@ -180,6 +200,8 @@
                 $data = $dataBookingController->DeleteDataBooking($jsonParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else if($paths[3] === "contact") {
             include_once __DIR__ . '/controllers/contactController.php';
@@ -207,9 +229,11 @@
                 $data = $contactController->DeleteContact($urlParams);
                 
                 $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
             }
         } else {
-            throw new Exception('Invalid Route');
+            throw new Exception('Invalid Endpoint');
         }
 
         echo json_encode($result);

@@ -36,6 +36,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { formatDateYYYYMMDD } from "../../../services/utils";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { apiEditRegisterUser } from "../../../api/api";
+import Alert from "../../../components/Alert/Alert";
 
 export default function Profil(props) {
     console.log(props);
@@ -89,6 +91,7 @@ export default function Profil(props) {
     };
 
     const [dataProfile, setDataProfile] = useState({
+        id_user: "",
         fullname: "",
         tbt: "",
         gender: "",
@@ -98,6 +101,11 @@ export default function Profil(props) {
     const [boolUbahDataProfil, setBoolUbahDataProfil] = useState(false);
     const [boolUbahPassword, setBoolUbahPassword] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [title, setTitle] = useState("");
+    const [message, setMessage] = useState("");
+    const [cekEdit, setCekEdit] = useState("");
 
     let profil = true;
 
@@ -106,14 +114,34 @@ export default function Profil(props) {
         !boolUbahDataProfil) {
             setDataProfile((prev) => ({
                 ...prev,
+                id_user: props.userLogin.id_user,
                 fullname: props.userLogin.fullname,
-                tbt: props.userLogin.date_of_birth,
+                tbt: props.userLogin.tbt,
                 gender: props.userLogin.gender,
                 email: props.userLogin.email,
                 password: ""
             }));
         }
     }, [props.userLogin, boolUbahDataProfil]);
+
+    const handleAlert = (open, severity, title, message, cekEdit) => {
+        setOpenAlert(open);
+        setSeverity(severity);
+        setTitle(title);
+        setMessage(message);
+        setCekEdit(cekEdit);
+    };
+
+    const handleCloseAlert = () => {
+        setOpenAlert(false);
+        if(severity === "successNoReload") {
+            if(cekEdit === 1) {
+                location.href = "/";
+            } else {
+                location.href = "/booking";
+            }
+        }
+    }
 
     const handleUbahDataProfil = () => {
         setBoolUbahDataProfil(true);
@@ -147,6 +175,74 @@ export default function Profil(props) {
             ...prev,
             [field]: field === "tbt" ? formatDateYYYYMMDD(value) : value
         }));
+    };
+
+    const handleEditRegisterUser = async (e) => {
+        e.preventDefault();
+
+        if(boolUbahPassword && 
+        dataProfile.password === "") {
+            handleAlert(
+                true,
+                "warning",
+                "Pemberitahuan",
+                "Password tidak boleh kosong"
+            );
+
+            return false;
+        }
+
+        try {
+            let dataEdit = {};
+
+            if(boolUbahPassword) {
+                dataEdit = {
+                    id: dataProfile.id_user,
+                    password: dataProfile.password,
+                    is_edit: 1
+                }
+            } else {
+                dataEdit = {
+                    id: dataProfile.id_user,
+                    fullname: dataProfile.fullname,
+                    tbt: formatDateYYYYMMDD(dataProfile.tbt),
+                    gender: dataProfile.gender,
+                    email: dataProfile.email,
+                    is_edit: 0
+                };
+            }
+
+            const result = await apiEditRegisterUser({
+                body: JSON.stringify(dataEdit)
+            });
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                if(dataEdit.is_edit === 1) {
+                    handleAlert(
+                        true,
+                        "successNoReload",
+                        "Success",
+                        `${message}, silahkan login ulang`,
+                        1
+                    );
+
+                    localStorage.removeItem("userLogin");
+                    localStorage.removeItem("tokenTimestamp");
+                } else {
+                    handleAlert(
+                        true,
+                        "successNoReload",
+                        "Success",
+                        message,
+                        0
+                    );
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     console.log(dataProfile);
@@ -227,7 +323,11 @@ export default function Profil(props) {
                                 <>
                                     <TextField
                                         // label={boolUbahDataProfil ? "Nama Lengkap" : ""}
-                                        label="Nama Lengkap"
+                                        label={
+                                            <>
+                                                Nama Lengkap<span style={{ color: "red" }}> *</span>
+                                            </>
+                                        }
                                         name="namaLengkap"
                                         variant="outlined"
                                         fullWidth
@@ -241,7 +341,12 @@ export default function Profil(props) {
                                                 input: classes.inputCapitalize 
                                             },
                                         }}
-                                        sx={styles.clearMarginTextField}
+                                        sx={{
+                                            ...styles.clearMarginTextField,
+                                            "& .MuiInputLabel-root.Mui-disabled": {
+                                                WebkitTextFillColor: "#aaa !important",
+                                            },
+                                        }}
                                     />
 
                                     <Box className={classes.datePickerWrapper}>
@@ -294,7 +399,12 @@ export default function Profil(props) {
                                                     {(inputProps) => (
                                                         <TextField
                                                             {...inputProps}
-                                                            label="Birthday (dd/mm/yyyy)"
+                                                            // label="Birthday (dd/mm/yyyy)"
+                                                            label={
+                                                                <>
+                                                                    Birthday (dd/mm/yyyy)<span style={{ color: "red" }}> *</span>
+                                                                </>
+                                                            }
                                                             variant="outlined"
                                                             fullWidth
                                                             margin="normal"
@@ -326,6 +436,7 @@ export default function Profil(props) {
                                     <FormControl sx={{ paddingTop: "16px" }} disabled={!boolUbahDataProfil}>
                                         <FormLabel id="demo-row-radio-buttons-group-label">
                                             Jenis Kelamin
+                                            <span style={{ color: !boolUbahDataProfil ? "#aaa" : "red" }}>&nbsp;*</span>
                                         </FormLabel>
                                         <RadioGroup
                                             row
@@ -355,7 +466,7 @@ export default function Profil(props) {
                                         margin="normal"
                                         value={dataProfile?.email}
                                         onChange={(e) => handleChange("email", e.target.value)}
-                                        disabled={!boolUbahDataProfil}
+                                        disabled
                                         InputProps={{
                                             classes: {
                                                 disabled: classes.disabled 
@@ -371,6 +482,7 @@ export default function Profil(props) {
                                 >
                                     <InputLabel htmlFor="standard-adornment-password">
                                         Password Baru
+                                        <span style={{ color: "red" }}>&nbsp;*</span>
                                     </InputLabel>
                                     <OutlinedInput
                                         id="passwordBaru"
@@ -413,7 +525,7 @@ export default function Profil(props) {
                                         <Button
                                             sx={styles.buttonAdd}
                                             startIcon={<Save />}
-                                            // onClick={handleBatalDataProfil}
+                                            onClick={(e) => handleEditRegisterUser(e)}
                                         >
                                             Save
                                         </Button>
@@ -432,6 +544,16 @@ export default function Profil(props) {
                     </Box>
                 </Box>
             </Box>
+
+            {openAlert && (
+                <Alert
+                    open={openAlert}
+                    close={handleCloseAlert}
+                    severity={severity}
+                    title={title}
+                    message={message}
+                />
+            )}
         </>
     );
 }

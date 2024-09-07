@@ -5,7 +5,7 @@ import Register from "./pages/authentication/register-user/Register.jsx";
 import LoginAdmin from "./pages/authentication/login-admin/LoginAdmin.jsx";
 import GoTravelIndex from "./pages/index.jsx";
 import Loader from "./components/Loader/Loader.jsx";
-import { apiGetDataBookingByEmail } from "./api/api.js";
+import { apiGetDataBookingByEmail, apiGetDataUserLogin } from "./api/api.js";
 import { useLocation } from "react-router-dom";
 
 export default function App() {
@@ -14,6 +14,7 @@ export default function App() {
       ? JSON.parse(localStorage.getItem("userLogin"))
       : null
   );
+  const [dataUserLogin, setDataUserLogin] = useState();
   const [loading, setLoading] = useState(false);
   const [dataBooking, setDataBooking] = useState([]);
 
@@ -28,6 +29,7 @@ export default function App() {
         navigate("/kelola-admin");
       } else {
         navigate("/booking");
+        handleGetUserLogin();
       }
     }
   }, [userLogin]);
@@ -74,6 +76,22 @@ export default function App() {
     setLoading((prev) => !prev);
   };
 
+  const handleGetUserLogin = async () => {
+    try {
+      let urlParams = userLogin.email;
+
+      const result = await apiGetDataUserLogin(urlParams);
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataUserLogin(data[0]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleGetDataBooking = async () => {
     try {
       let urlParams = userLogin.email;
@@ -89,6 +107,8 @@ export default function App() {
       console.log(err);
     }
   };
+
+  console.log(userLogin, dataUserLogin);
 
   return (
     <>
@@ -107,31 +127,31 @@ export default function App() {
         />
         <Route
           path="/dashboard"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/booking"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/booking/form-booking"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/about"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/contact"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/profil"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
           path="/kelola-admin"
-          element={<GoTravelIndex userLogin={userLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
       </Routes>
       <Loader open={loading} />

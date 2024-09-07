@@ -157,6 +157,49 @@
             }
         }
 
+        public function EditUser($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->editUser($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal ubah data"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Akun berhasil diedit"
+                );
+            }
+        }
+
+        public function GetDataUserByEmail($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->getDataUserByEmail($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Tidak ditemukan"
+                );
+            } else {
+                http_response_code(201);
+                return array(
+                    "code" => 201, 
+                    "status" => "success",
+                    "message" => "Data booking by email ditemukan",
+                    "data" => $logregResult
+                );
+            }
+        }
+
         public function ValidationOtp($params) {
             $logregClass = new LogregClass();
             $logregResult = $logregClass->validationOtp($params);

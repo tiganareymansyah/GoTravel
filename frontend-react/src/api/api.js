@@ -39,6 +39,23 @@ export async function apiLoginUserAccount({ body }) {
     }
 }
 
+export async function apiEditRegisterUser({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/user/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function apiLoginAdminAccount({ body }) {
     try {
         const response = await axios({
@@ -78,6 +95,22 @@ export async function apiAddRegisterPegawaiBaru({ body }) {
             method: "POST",
             url: ApiUrl + "/admin/register",
             data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiGetDataUserLogin(urlParams) {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + `/user/get-data-user-by-email?email=${urlParams}`,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             },

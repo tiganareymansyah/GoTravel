@@ -9,4 +9,24 @@ export const useBerandaStyles = makeStyles({
         backgroundPosition: "center",
         minHeight: "100vh"
     },
+
+    containerParent: {
+        marginTop: "1%",
+        margin: "auto", 
+        padding: "16px", 
+        boxSizing: "border-box", 
+        width: "50vw", 
+        height: "68vh",
+        // overflowY: "scroll",
+        borderRadius: "8px", 
+        backgroundColor: "#fff", 
+    },
+
+    containerChild: {
+        paddingTop: "32px", 
+        display: "flex", 
+        alignItems: "center", 
+        gap: "16px", 
+        width: "100%" 
+    },
 });

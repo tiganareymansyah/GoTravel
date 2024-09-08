@@ -269,7 +269,7 @@ export default function Profil(props) {
                                 {profil ? (
                                     <Zoom>
                                         <img 
-                                            src={"https://i.pinimg.com/564x/3e/6b/6d/3e6b6d77fdca471ea96fa33c6c371132.jpg"}
+                                            src={"https://i.pinimg.com/564x/52/df/9f/52df9f251e55b28c5ea69444fdb3c0db.jpg"}
                                             style={{ 
                                                 width: "16.5vw", 
                                                 height: "39vh", 
@@ -288,7 +288,7 @@ export default function Profil(props) {
                             </Box>
 
                             {boolUbahDataProfil ? (
-                                <Box className={classes.boxButtonProfil}>
+                                <Box className={classes.boxButtonProfil} sx={{ display: "none" }}>
                                     <Button
                                         sx={styles.buttonDelete}
                                         startIcon={<DeleteForever />}

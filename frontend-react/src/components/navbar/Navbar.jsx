@@ -1,6 +1,13 @@
+import { useState } from "react";
 import { 
+  Badge,
   Box, 
-  Button 
+  Button, 
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography
 } from "@mui/material";
 import { 
   EditCalendar,
@@ -58,14 +65,14 @@ export default function Navbar() {
       alignItems: "center",
       cursor: "pointer",
       position: "relative",
-      width: "40px",
+      width: "43px",
       borderRadius: "20px",
       backgroundColor: "#cccc"
     },
 
     profile: {
-      width: "40px",
-      height: "40px",
+      width: "43px",
+      height: "43px",
       borderRadius: "20px",
     },
 
@@ -75,8 +82,8 @@ export default function Navbar() {
       height: "10px",
       borderRadius: "7px",
       position: "absolute",
-      top: "29px",
-      left: "29px"
+      top: "31px",
+      left: "31px"
     },
 
     boxNotification: {
@@ -95,13 +102,29 @@ export default function Navbar() {
     },
   };
 
+  const [openNotifkasi, setOpenNotifikasi] = useState(false);
+  const [dataDummy, setDataDummy] = useState([
+    {
+      id: 1,
+      value: "Selamat, Pesanan anda telah berhasil dikirim.",
+      created_at: "2024-07-07 09:00"
+    },
+    {
+      id: 2,
+      value: "Halo, Selamat datang pada aplikasi GoTravel. Silahkan menikmati fitur-fiturnya :).",
+      created_at: "2024-10-10 08:21"
+    }
+  ]);
+
+  let profil = true;
+
+  const handleClickOpen = () => setOpenNotifikasi(prev => !prev);
+
   const handleLogout = () => {
     localStorage.removeItem("userLogin");
     localStorage.removeItem("tokenTimestamp");
     navigate("/");
   }
-
-  let profil = true;
 
   return (
     <Box className={classes.root}>
@@ -116,9 +139,113 @@ export default function Navbar() {
 
         <Box className={classes.boxButton}>
           <NavLink>
-            <Box sx={styles.boxNotification}>
-              <Notifications sx={styles.notification} />
+            <Box sx={styles.boxNotification} onClick={handleClickOpen}>
+              <Badge badgeContent={dataDummy.length} color="primary" sx={{ position: "relative" }}>
+                <Notifications color="action" sx={styles.notification} />
+
+                {openNotifkasi && (
+                  <Box 
+                    sx={{ 
+                      position: "absolute",
+                      top: isMobile ? "7vw" : "3.5vw",
+                      left: isMobile ? "-12.35vw" : "-15.82vw"
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        overflow: "visible",
+                        position: "relative"
+                      }}
+                    >
+                      <Box
+                        className={classes.cardNotifikasi}
+                        sx={{ 
+                          width: "32vw",
+                          overflowY: "scroll",
+                          position: "relative"
+                        }}
+                      >
+                        <Typography 
+                          variant="h5" 
+                          sx={{ 
+                            color: "#000", 
+                            textAlign: "center",
+                            letterSpacing: 2
+                          }}
+                        >
+                          Notifikasi
+                        </Typography>
+
+                        <Box 
+                          sx={{ 
+                            display: "flex", 
+                            borderBottom: "1px solid #000", 
+                            paddingTop: "8px" 
+                          }} 
+                        />
+
+                        <Box sx={{ paddingTop: "16px", width: "100%" }}>
+                          {dataDummy.map((item) => (
+                            <Box 
+                              sx={{ 
+                                display: "flex", 
+                                alignItems: "center" 
+                              }}
+                            >
+                              <Typography
+                                key={item.id}
+                                variant="span"
+                                sx={{ 
+                                  display: "block", 
+                                  color: "#000", 
+                                  fontFamily: "arial",
+                                  width: "75%"
+                                }}
+                              >
+                                <ul>
+                                  <li>{item.value}</li>
+                                </ul>
+                              </Typography>
+
+                              <Typography
+                                variant="span"
+                                sx={{ 
+                                  display: "block", 
+                                  color: "#aaa", 
+                                  fontSize: 12,
+                                  fontFamily: "arial",
+                                  width: "25%",
+                                  textAlign: "end"
+                                }}
+                              >
+                                {item.created_at}
+                              </Typography>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          width: 0,
+                          height: 5,
+                          borderLeft: "16px solid transparent",
+                          borderRight: "16px solid transparent",
+                          transform: "translate(-50%, -50%) rotate(180deg)",
+                          // borderTop: "70px solid #EAEAEA",
+                          borderTop: "32px solid #fff",
+                          position: "absolute",
+                          right: "40.7%",
+                          top: "-1%",
+                          zIndex: 4,
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                )}
+              </Badge>
             </Box>
+
           </NavLink>
 
           <NavLink to="/profil">
@@ -126,7 +253,7 @@ export default function Navbar() {
               {(profil) ? (
                 <img 
                   // src={`http://10.20.75.50/api/${fotoProfil}`}
-                  src={"https://i.pinimg.com/564x/3e/6b/6d/3e6b6d77fdca471ea96fa33c6c371132.jpg"}
+                  src={"https://i.pinimg.com/564x/52/df/9f/52df9f251e55b28c5ea69444fdb3c0db.jpg"}
                   style={styles.profile}
                 />
               ) : (

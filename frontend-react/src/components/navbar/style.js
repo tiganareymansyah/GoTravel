@@ -31,7 +31,7 @@ export const useNavbarStyles = makeStyles({
         paddingRight: "24px",
         display: "flex",
         alignItems: "center",
-        gap: "48px"
+        gap: "40px"
     },
 
     containerMenu: {
@@ -51,5 +51,19 @@ export const useNavbarStyles = makeStyles({
         padding: "16px",
         position: "fixed",
         bottom: 0
+    },
+
+    cardNotifikasi: {
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#fff",
+        borderLeft: "1px solid #ccc",
+        borderRight: "1px solid #ccc",
+        borderBottom: "1px solid #ccc",
+        borderRadius: "8px",
+        height: "32vh",
+        padding: "3%",
+        position: "relative",
+        zIndex: 5,
     },
 });

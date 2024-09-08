@@ -75,9 +75,9 @@ export default function Contact(props) {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [dataContact, setDataContact] = useState({
-        fromEmail: props.userLogin.email,
+        fromEmail: props.userLogin?.email,
         toEmail: "tiganareymansyah2502@gmail.com",
-        idUser: props.userLogin.id_user,
+        idUser: props.userLogin?.id_user,
         chat: ""
     });
 
@@ -103,6 +103,17 @@ export default function Contact(props) {
     };
 
     const handleSendChat = async () => {
+        if(dataContact.chat === "") {
+            handleAlert(
+                true,
+                "warning",
+                "Pemberitahuan",
+                "Form tidak boleh kosong"
+            );
+
+            return false;
+        }
+
         props.doLoad();
         try {
             let payload = {

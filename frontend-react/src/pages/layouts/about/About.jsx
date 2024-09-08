@@ -80,9 +80,11 @@ export default function About(props) {
                                             textIndent: "48px"
                                         }}
                                     >
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum labore quia laborum nostrum animi iusto mollitia maiores obcaecati omnis facere optio quod cupiditate adipisci et illum porro, doloremque veritatis natus.
-                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero aperiam laboriosam facere impedit voluptates eligendi distinctio unde reiciendis omnis iusto quidem nemo ratione at, nihil error molestiae, nam explicabo quod.
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni omnis velit nulla soluta laborum et quia ex sunt reprehenderit autem, eius, adipisci excepturi impedit quaerat id. Velit, exercitationem? Non, dolore!
+                                        GoTravel adalah nama perusahaan yang berdiri pada tahun 2 Mei 2023 dan penanggung jawab keberlangsungan kinerja perusahaannya bernama Tigana Reymansyah. Perusahaan GoTravel 
+                                        berlokasi di Jln. Kolonel Bangun Siregar BTN Sitio-tio Hilir AMD Kalangan. Perusahaan GoTravel bergerak dibidang pariwisata dengan jarak jangkau wisatanya hanya sekabupaten
+                                        Tapanuli Tengah saja. Visi dari perusahaan GoTravel ini adalah <span style={{ fontWeight: "bold", fontStyle: "italic" }}>"Menjadi penyedia layanan transportasi darat 
+                                        terkemuka yang mengutamakan kenyamanan, keselamatan, dan kepuasan pelanggan melalui inovasi teknologi dan pelayanan yang prima, serta berkontribusi pada pengembangan 
+                                        pariwisata lokal dan nasional".</span>
                                     </Typography>
                                 </Box>
                             </Box>
@@ -98,12 +100,11 @@ export default function About(props) {
                                         // textIndent: "48px"
                                     }}
                                 >
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum labore quia laborum nostrum animi iusto mollitia maiores obcaecati omnis facere optio quod cupiditate adipisci et illum porro, doloremque veritatis natus.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero aperiam laboriosam facere impedit voluptates eligendi distinctio unde reiciendis omnis iusto quidem nemo ratione at, nihil error molestiae, nam explicabo quod.
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni omnis velit nulla soluta laborum et quia ex sunt reprehenderit autem, eius, adipisci excepturi impedit quaerat id. Velit, exercitationem? Non, dolore!
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum corporis porro consectetur ipsum a perferendis, deleniti fuga libero, maxime quae sed iure veniam aut aliquam ut nobis sit eveniet error?
-                                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo pariatur maxime amet doloribus quia cum ipsam nostrum atque, ullam sit illum odit aut suscipit necessitatibus dolorem neque magnam accusamus nulla!
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat quas eveniet expedita corrupti recusandae temporibus dicta, adipisci officia. Necessitatibus libero quo itaque debitis illo ea deserunt ipsam saepe molestias enim?
+                                    Misinya adalah <span style={{ fontWeight: "bold", fontStyle: "italic" }}>"1. Memberikan layanan transportasi darat yang aman, nyaman, dan tepat waktu dengan armada transportasi 
+                                    dan perawatan berkala. 2. Mempermudah transportasi untuk liburan dengan keluarga. 3. Berinovasi dalam teknologi untuk meningkatkan kompetensi tim operasional dan staf melalui 
+                                    pelatihan rutin untuk menjaga standar layanan dan keselamatan".</span> Dahulu, perusahaan GoTravel sangat susah mempromosikan bidangnya kepada masyarakat. Sehingga, dibangunlah 
+                                    aplikasi yang nama aplikasinya sendiri sama dengan nama perusahaan. Aplikasi ini telah dikembangkan dari bulan Juli - September 2024 yang kemudian di rilis pada bulan
+                                    Oktober 2024. 
                                 </Typography>
                             </Box>
                         </Box>

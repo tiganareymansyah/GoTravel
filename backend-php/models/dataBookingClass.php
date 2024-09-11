@@ -156,7 +156,7 @@
         }
 
         public function handleSendEmailSuccessBooking($data) {
-            $query = "SELECT * FROM data_booking WHERE nik = :nik ORDER BY mulai_booking DESC, created_at DESC";
+            $query = "SELECT * FROM data_booking WHERE nik = :nik ORDER BY created_at DESC";
 
             $stmt = $this->connection->prepare($query);
             $stmt->bindValue(":nik", $data['nik']);

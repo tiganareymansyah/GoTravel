@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 
 export default function MoveContent() {
   const myWord = [
-    "Halo, Selamat datang di Tapanuli Tengah, Sumatera Utara", 
+    "Halo, Selamat datang di Aplikasi GoTravel :)", 
     "Apakah kalian sudah siap main ke pantai ?", 
-    "Ayo buruan pesan sekarang transportasi kalian :)"
+    "Ayo buruan pesan sekarang transportasi kalian !"
   ];
   
   let tamp = 0;

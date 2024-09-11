@@ -245,7 +245,7 @@ export default function KelolaMessage ({
         <>
             <Box className={classes.containerParent}>
                 <Box className={classes.containerChild}>
-                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>Kelola Message</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: "bold" }}>Kelola Pesan</Typography>
                 </Box>
 
                 <TableContainer component={Paper} className={classes.tableContainer}>

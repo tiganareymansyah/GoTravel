@@ -107,7 +107,7 @@ export default function Profil(props) {
     const [message, setMessage] = useState("");
     const [cekEdit, setCekEdit] = useState("");
 
-    let profil = true;
+    let profil = false;
 
     useEffect(() => {
         if(props.userLogin && 

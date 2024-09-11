@@ -116,7 +116,7 @@ export default function Navbar() {
     }
   ]);
 
-  let profil = true;
+  let profil = false;
 
   const handleClickOpen = () => setOpenNotifikasi(prev => !prev);
 
@@ -139,7 +139,7 @@ export default function Navbar() {
 
         <Box className={classes.boxButton}>
           <NavLink>
-            <Box sx={styles.boxNotification} onClick={handleClickOpen}>
+            <Box sx={{ ...styles.boxNotification, display: "none" }} onClick={handleClickOpen}>
               <Badge badgeContent={dataDummy.length} color="primary" sx={{ position: "relative" }}>
                 <Notifications color="action" sx={styles.notification} />
 

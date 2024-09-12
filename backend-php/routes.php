@@ -232,6 +232,35 @@
             } else {
                 throw new Exception('Invalid Endpoint');
             }
+        } else if($paths[3] === "informasi-dan-layanan") {
+            include_once __DIR__ . '/controllers/informationAndServicesController.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "insert") {
+                $informationAndServicesController = new InformationAndServicesController();
+                $data = $informationAndServicesController->InsertInformationAndServices($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "get-option") {
+                $informationAndServicesController = new InformationAndServicesController();
+                $data = $informationAndServicesController->GetOptionInformationAndServices($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "edit") {
+                $informationAndServicesController = new InformationAndServicesController();
+                $data = $informationAndServicesController->EditInformationAndServices($jsonParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $informationAndServicesController = new InformationAndServicesController();
+                $data = $informationAndServicesController->DeleteInformationAndServices($urlParams);
+                
+                $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
+            }
         } else {
             throw new Exception('Invalid Endpoint');
         }

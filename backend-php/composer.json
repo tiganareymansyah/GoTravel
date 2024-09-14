@@ -1,6 +1,7 @@
 {
     "require": {
-        "firebase/php-jwt": "*"
+        "firebase/php-jwt": "*",
+        "midtrans/midtrans-php": "^2.5"
     },
 
     "autoload": {

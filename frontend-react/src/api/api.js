@@ -403,6 +403,23 @@ export async function apiRequestDataBooking({ body }) {
     }
 }
 
+export async function apiPaymentGatewayMidtrans({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/midtrans/pay",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function apiGetDataBookingByEmail(urlParams) {
     try {
         const response = await axios({

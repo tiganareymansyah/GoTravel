@@ -21,11 +21,13 @@ export const useBookingStyles = makeStyles({
     },
 
     setCard: {
+        paddingTop: "16px", 
         display: "flex", 
         justifyContent: "center", 
         alignItems: "center", 
         gap: "78px", 
-        height: "72%" 
+        height: "72%", 
+        paddingBottom: "16px" 
     },
 
     boxCard: {
@@ -65,7 +67,7 @@ export const useBookingStyles = makeStyles({
     },
 
     buttonTambah: {
-        paddingTop: "32px", 
+        paddingTop: "16px", 
         display: "flex", 
         justifyContent: "end", 
         marginBottom: "16px" 

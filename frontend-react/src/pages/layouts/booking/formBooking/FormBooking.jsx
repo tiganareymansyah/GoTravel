@@ -9,7 +9,7 @@ import { sectionTouristDestination } from "./section/sectionTouristDestination";
 import { sectionTouristData } from "./section/sectionTouristData";
 import { sectionTouristPayment } from "./section/sectionTouristPayment";
 import { useFormik } from "formik";
-import { apiGetKodePembayaran, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiRequestDataBooking } from "../../../../api/api";
+import { apiGetKodePembayaran, apiGetPaymentMethod, apiGetTouristDestination, apiGetTouristTransportation, apiPaymentGatewayMidtrans, apiRequestDataBooking } from "../../../../api/api";
 import Alert from "../../../../components/Alert/Alert";
 import { hitungJarakHari } from "../../../../services/utils";
 
@@ -384,19 +384,19 @@ export default function FormBooking(props) {
                 metode_pembayaran: formik.values.paymentMethod
             }
 
-            const result = await apiRequestDataBooking({
+            const result = await apiPaymentGatewayMidtrans({
                 body: JSON.stringify(payload)
-            });
+            })
 
             const { code, status, message, data } = result;
 
             if(status === "success") {
-                handleAlert(
-                    true, 
-                    "successNoReload", 
-                    "Sukses", 
-                    "Data anda sudah terkirim"
-                );
+                window.snap.pay(data);
+
+                await apiRequestDataBooking({
+                    body: JSON.stringify(payload)
+                });
+                
                 props.doLoad();
             }
         } catch (err) {

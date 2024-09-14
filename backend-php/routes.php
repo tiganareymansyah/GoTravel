@@ -261,6 +261,18 @@
             } else {
                 throw new Exception('Invalid Endpoint');
             }
+        } else if($paths[3] === "midtrans") {
+            include_once __DIR__ . '/placeOrder.php';
+            $jsonParams = json_decode(file_get_contents('php://input'), true);
+
+            if($paths[4] === "pay") {
+                $midTrans = new MidTrans();
+                $data = $midTrans->midTrans($jsonParams);
+                
+                $result = $data;
+            } else {
+                throw new Exception('Invalid Endpoint');
+            }
         } else {
             throw new Exception('Invalid Endpoint');
         }

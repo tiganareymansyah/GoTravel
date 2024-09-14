@@ -168,7 +168,7 @@ export const sectionTouristPayment = (
                     </Box>
 
                     {selectState.paymentMethod.selectedState.value === "qris" && (
-                        <Box sx={{ paddingTop: "16px" }}>
+                        <Box sx={{ paddingTop: "16px", display: "none" }}>
                             <Box className={classes.boxTouristData}>
                                 <img 
                                     src={logoQris} 

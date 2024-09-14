@@ -66,7 +66,7 @@ export default function Booking(props) {
     const dataBooking = props?.dataBooking?.slice((page - 1) * 3, page * 3);
 
     const handleRequestByKodeBooking = (data) => {
-        console.log(data);
+        navigate("/detail-booking");
     };
 
     const isBookingExpired = (lastBooking, currentDate) => {

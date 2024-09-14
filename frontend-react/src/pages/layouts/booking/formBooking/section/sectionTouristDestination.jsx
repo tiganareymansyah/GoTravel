@@ -292,7 +292,7 @@ export const sectionTouristDestination = (
                                     className="form-label" 
                                     sx={styles.label}
                                 >
-                                    Satuan Transportasi Wisata
+                                    Satuan Transportasi
                                     <span style={{ color: "red" }}>&nbsp;*</span>
                                 </Typography>
                                 <Select 

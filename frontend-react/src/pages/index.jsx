@@ -6,6 +6,7 @@ import About from "./layouts/about/About";
 import Contact from "./layouts/contact/Contact";
 import Profil from "./layouts/profil/Profil";
 import Admin from "./layouts/admin/Admin";
+import DetailBooking from "./layouts/booking/formBooking/detail/DetailBooking";
 
 export default function GoTravelIndex(props) {
     const pathname = useLocation().pathname;
@@ -26,6 +27,8 @@ export default function GoTravelIndex(props) {
                 <Profil userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
             ) : pathname === "/kelola-admin" ? (
                 <Admin userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
+            ) : pathname === "/detail-booking" ? (
+                <DetailBooking userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
             ) : ( 
                 console.log("Not Found")
             )}

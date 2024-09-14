@@ -108,8 +108,6 @@ export default function App() {
     }
   };
 
-  console.log(pathname, userLogin, dataUserLogin);
-
   return (
     <>
       <Routes>
@@ -151,6 +149,10 @@ export default function App() {
         />
         <Route
           path="/kelola-admin"
+          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+        />
+        <Route
+          path="/detail-booking"
           element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
       </Routes>

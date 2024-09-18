@@ -109,7 +109,7 @@
                     $stmt->bindValue(":akhir_booking", $params['akhir_booking']);
                     $stmt->bindValue(":dari_jam", $params['dari_jam']);
                     $stmt->bindValue(":ke_jam", $params['ke_jam']);
-                    $stmt->bindValue(":is_bayar", $params['metode_pembayaran'] === "payment gateway" ? 1 : 0);
+                    $stmt->bindValue(":is_bayar", $params['metode_pembayaran'] === "pg" ? 1 : 0);
                     $stmt->execute();
     
                     if($stmt->rowCount() > 0) {

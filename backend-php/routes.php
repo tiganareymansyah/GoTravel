@@ -232,7 +232,7 @@
             } else {
                 throw new Exception('Invalid Endpoint');
             }
-        } else if($paths[3] === "informasi-dan-layanan") {
+        } else if($paths[3] === "information-and-services") {
             include_once __DIR__ . '/controllers/informationAndServicesController.php';
             $jsonParams = json_decode(file_get_contents('php://input'), true);
 

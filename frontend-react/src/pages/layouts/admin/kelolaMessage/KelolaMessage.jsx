@@ -255,7 +255,7 @@ export default function KelolaMessage ({
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Email</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Tanggal Kirim</TableCell>
-                                <TableCell sx={{ fontWeight: "bold" }} align="center">Pertanyaan</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Pesan</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Jawaban</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Status</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>

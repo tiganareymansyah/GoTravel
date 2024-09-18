@@ -13,10 +13,12 @@ import {
     Save, 
     Send 
 } from "@mui/icons-material";
+import Select from "react-select";
   
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
         padding: theme.spacing(2),
+        // overflow: "hidden"
     },
     "& .MuiDialogActions-root": {
         padding: theme.spacing(1),
@@ -53,11 +55,13 @@ function BootstrapDialogTitle(props) {
 // };
   
 export default function FormDialogAdd({
-    openDialog,
-    addInformasiDanLayanan,
-    handleChange,
-    handleCloseAdd,
-    handleAddInformasiDanLayanan
+    openDialog, 
+    addInformasiDanLayanan, 
+    selectState, 
+    handleChange, 
+    handleChangeSelectState, 
+    handleCloseAdd, 
+    handleAddInformasiDanLayanan 
 }) {
     return (
         <>
@@ -77,24 +81,40 @@ export default function FormDialogAdd({
                 <DialogContent dividers>
                     <Box>
                         <form onSubmit={(e) => handleAddInformasiDanLayanan(e)}>
-                            <TextField
-                                label="Value Informasi Dan Layanan"
-                                name="valueInformasiDanLayanan"
-                                variant="outlined"
-                                fullWidth
-                                margin="normal"
-                                value={addInformasiDanLayanan.valueInformasiDanLayanan}
-                                onChange={(e) => handleChange("valueInformasiDanLayanan", e.target.value)}
+                            <Select 
+                                value={selectState.destinationName.selectedState}
+                                options={selectState.destinationName.states}
+                                onChange={(state) => {
+                                    handleChangeSelectState("destinationName", state);
+                                }}
+                                styles={{
+                                    container: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        fontSize: 16,
+                                        zIndex: 2
+                                    }),
+                                    control: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        textIndent: "10px"
+                                    }),
+                                    singleValue: (baseStyles, state) => ({
+                                        ...baseStyles,
+                                        color: "#000000"
+                                    }),
+                                }}
+                                className="form-input"
                             />
             
                             <TextField
-                                label="Nama Informasi Dan Layanan"
-                                name="namaInformasiDanLayanan"
+                                label="Informasi Dan Layanan"
+                                name="informasiDanLayanan"
                                 variant="outlined"
                                 fullWidth
                                 margin="normal"
-                                value={addInformasiDanLayanan.namaInformasiDanLayanan}
-                                onChange={(e) => handleChange("namaInformasiDanLayanan", e.target.value)}
+                                multiline
+                                rows={5}
+                                value={addInformasiDanLayanan.informasiDanLayanan}
+                                onChange={(e) => handleChange("informasiDanLayanan", e.target.value)}
                             />
             
                             <Box

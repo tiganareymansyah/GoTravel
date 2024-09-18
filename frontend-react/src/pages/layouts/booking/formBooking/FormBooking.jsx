@@ -384,21 +384,40 @@ export default function FormBooking(props) {
                 metode_pembayaran: formik.values.paymentMethod
             }
 
-            const result = await apiPaymentGatewayMidtrans({
-                body: JSON.stringify(payload)
-            })
-
-            const { code, status, message, data } = result;
-
-            if(status === "success") {
-                window.snap.pay(data);
-
-                await apiRequestDataBooking({
+            if(payload.metode_pembayaran === "pg") {
+                const result = await apiPaymentGatewayMidtrans({
+                    body: JSON.stringify(payload)
+                })
+    
+                const { code, status, message, data } = result;
+    
+                if(status === "success") {
+                    window.snap.pay(data);
+    
+                    await apiRequestDataBooking({
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    props.doLoad();
+                }
+            } else {
+                const result = await apiRequestDataBooking({
                     body: JSON.stringify(payload)
                 });
+
+                const { code, status, message, data } = result;
                 
-                props.doLoad();
+                if(status === "success") {
+                    handleAlert(
+                        true, 
+                        "successNoReload", 
+                        "Sukses", 
+                        "Data anda sudah terkirim"
+                    );
+                    props.doLoad();
+                }
             }
+
         } catch (err) {
             console.log(err);
             props.doLoad();

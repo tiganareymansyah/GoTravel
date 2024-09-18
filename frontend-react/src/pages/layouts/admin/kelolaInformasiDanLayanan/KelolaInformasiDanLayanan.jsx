@@ -21,7 +21,13 @@ import {
 import { useMediaQuery } from "react-responsive";
 import { useKelolaInformasiDanLayananStyles } from "./style";
 import { orange } from "@mui/material/colors";
-import { apiAddDestinasi, apiDeleteDestinasi, apiEditDestinasi, apiGetTouristDestination } from "../../../../api/api";
+import { 
+    apiAddInformationAndServices, 
+    apiDeleteInformationAndServices, 
+    apiEditInformationAndServices, 
+    apiGetInformationAndServices, 
+    apiGetTouristDestination
+} from "../../../../api/api";
 import FormDialogAdd from "./form/FormDialogAdd";
 import FormDialogEdit from "./form/FormDialogEdit";
 import Alert from "../../../../components/Alert/Alert";
@@ -108,8 +114,14 @@ export default function KelolaInformasiDanLayanan ({
     const [message, setMessage] = useState("");
     const [addInformasiDanLayanan, setAddInformasiDanLayanan] = useState({
         id: "",
-        valueInformasiDanLayanan: "",
-        namaInformasiDanLayanan: ""
+        destinationName: "",
+        informasiDanLayanan: ""
+    });
+    const [selectState, setSelectState] = useState({
+        destinationName: {
+            selectedState: "",
+            states: [],
+        }
     });
 
     let itemPerPagesInformasiDanLayanan = 5;
@@ -120,18 +132,33 @@ export default function KelolaInformasiDanLayanan ({
 
     useEffect(() => {
         if(openEditDialog) {
+            getDestinationData();
             setAddInformasiDanLayanan((prev) => ({
                 ...prev,
                 id: editDataInformasiDanLayanan.id,
-                valueInformasiDanLayanan: editDataInformasiDanLayanan.value,
-                namaInformasiDanLayanan: editDataInformasiDanLayanan.nama_tujuan_wisata
+                destinationName: editDataInformasiDanLayanan.id_destinasi,
+                informasiDanLayanan: editDataInformasiDanLayanan.informasi_dan_layanan
             }));
         }
-    }, [openEditDialog]);
+
+        if(openEditDialog && 
+        selectState.destinationName.states?.length > 0) {
+            setSelectState((prev) => ({
+                ...prev,
+                destinationName: {
+                  ...prev["destinationName"],
+                  selectedState: 
+                    selectState.destinationName.states.filter((data) => 
+                        data.id === editDataInformasiDanLayanan.id_destinasi
+                    )[0]
+                }
+            }));
+        }
+    }, [openEditDialog, selectState.destinationName.states.length]);
 
     const handleGetDataInformasiDanLayanan = async () => {
         try {
-          const result = await apiGetTouristDestination();
+          const result = await apiGetInformationAndServices();
     
           const { code, status, message, data } = result;
     
@@ -162,15 +189,38 @@ export default function KelolaInformasiDanLayanan ({
         if(severity === "successNoReload") {
             location.href = "/kelola-admin";
         }
-    }
+    };
+
+    const handleChangeSelectState = (name, state) => {
+        setSelectState((prev) => ({
+            ...prev,
+            [name]: {
+                ...prev[name],
+                selectedState: state,
+            },
+        }));
+
+        setAddInformasiDanLayanan((prev) => ({
+            ...prev,
+            [name]: state.value
+        }));
+    };
 
     const handleAdd = () => {
         setOpenDialog(true);
         setAddInformasiDanLayanan((prev) => ({
             ...prev,
-            valueInformasiDanLayanan: "",
-            namaInformasiDanLayanan: ""
+            destinationName: "",
+            informasiDanLayanan: ""
         }));
+        setSelectState((prev) => ({
+            ...prev,
+            destinationName: {
+                ...prev.destinationName,
+                selectedState: "",
+            },
+        }));
+        getDestinationData();
     };
 
     const handleChange = (name, value) => {
@@ -189,11 +239,11 @@ export default function KelolaInformasiDanLayanan ({
         props.doLoad();
         try {
             let dataAdd = {
-                value: addInformasiDanLayanan.valueInformasiDanLayanan,
-                nama_tujuan_wisata: addInformasiDanLayanan.namaInformasiDanLayanan
+                id_destinasi: addInformasiDanLayanan.destinationName,
+                informasi_dan_layanan: addInformasiDanLayanan.informasiDanLayanan
             };
 
-            const result = await apiAddDestinasi({
+            const result = await apiAddInformationAndServices({
                 body: JSON.stringify(dataAdd)
             });
 
@@ -228,11 +278,11 @@ export default function KelolaInformasiDanLayanan ({
         try {
             let dataEdit = {
                 id: addInformasiDanLayanan.id,
-                value: addInformasiDanLayanan.valueInformasiDanLayanan,
-                nama_tujuan_wisata: addInformasiDanLayanan.namaInformasiDanLayanan
+                id_destinasi: addInformasiDanLayanan.destinationName,
+                informasi_dan_layanan: addInformasiDanLayanan.informasiDanLayanan
             };
 
-            const result = await apiEditDestinasi({
+            const result = await apiEditInformationAndServices({
                 body: JSON.stringify(dataEdit)
             });
 
@@ -255,7 +305,7 @@ export default function KelolaInformasiDanLayanan ({
         try {
             let urlParams = id;
 
-            const result = await apiDeleteDestinasi(urlParams);
+            const result = await apiDeleteInformationAndServices(urlParams);
 
             const { code, status, message, data } = result;
 
@@ -272,6 +322,35 @@ export default function KelolaInformasiDanLayanan ({
         }
     };
 
+    const getDestinationData = async () => {
+        try {
+            const record = await apiGetTouristDestination();
+
+            const { code, status, message, data } = record;
+
+            if(status === "success") {
+                const dataMapped = data?.map((item) => ({
+                    ...item,
+                    value: item.id,
+                    label: item.nama_tujuan_wisata
+                }));
+
+                setSelectState((prev) => ({
+                    ...prev,
+                    destinationName: {
+                        ...prev["destinationName"],
+                        states: dataMapped,
+                    },
+                }));
+            } else {
+                console.log("Not Found Destination");
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    console.log(addInformasiDanLayanan, selectState);
     console.log(dataInformasiDanLayanan, editDataInformasiDanLayanan);
 
     return (
@@ -293,7 +372,7 @@ export default function KelolaInformasiDanLayanan ({
                         <TableHead>
                             <TableRow>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">No.</TableCell>
-                                <TableCell sx={{ fontWeight: "bold" }} align="center">Value</TableCell>
+                                <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Wisata</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Nama Informasi Dan Layanan</TableCell>
                                 <TableCell sx={{ fontWeight: "bold" }} align="center">Actions</TableCell>
                             </TableRow>
@@ -305,8 +384,8 @@ export default function KelolaInformasiDanLayanan ({
                                     {dataMapInformasiDanLayanan?.map((data, index) => (
                                         <TableRow key={index}>
                                             <TableCell align="center">{(pageInformasiDanLayanan - 1) * itemPerPagesInformasiDanLayanan + index + 1}.</TableCell>
-                                            <TableCell align="center">{data.value}</TableCell>
                                             <TableCell align="center">{data.nama_tujuan_wisata}</TableCell>
+                                            <TableCell align="center">{data.informasi_dan_layanan}</TableCell>
                                             <TableCell sx={{ display: "flex", justifyContent: "center", }}>
                                                 <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                                     <Button 
@@ -356,7 +435,9 @@ export default function KelolaInformasiDanLayanan ({
                 <FormDialogAdd
                     openDialog={openDialog}
                     addInformasiDanLayanan={addInformasiDanLayanan}
+                    selectState={selectState}
                     handleChange={handleChange}
+                    handleChangeSelectState={handleChangeSelectState}
                     handleCloseAdd={handleCloseAdd}
                     handleAddInformasiDanLayanan={handleAddInformasiDanLayanan}
                 />
@@ -366,7 +447,9 @@ export default function KelolaInformasiDanLayanan ({
                 <FormDialogEdit
                     openEditDialog={openEditDialog}
                     addInformasiDanLayanan={addInformasiDanLayanan}
+                    selectState={selectState}
                     handleChange={handleChange}
+                    handleChangeSelectState={handleChangeSelectState}
                     handleCloseEdit={handleCloseEdit}
                     handleEditInformasiDanLayanan={handleEditInformasiDanLayanan}
                 />

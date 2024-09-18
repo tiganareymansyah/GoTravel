@@ -20,12 +20,14 @@
                     id,
                     id_destinasi,
                     informasi_dan_layanan,
-                    created_at
+                    created_at,
+                    update_now
 
                 ) VALUES (
                     :id,
                     :id_destinasi,
                     :informasi_dan_layanan,
+                    NOW(),
                     NOW()
                 )";
 
@@ -45,7 +47,8 @@
         }
 
         public function getOptionInformationAndServices($params) {
-            $query = "SELECT * FROM tm_information_and_services";
+            $query = "SELECT tmias.*, tmtd.nama_tujuan_wisata FROM tm_information_and_services tmias
+            INNER JOIN tm_tourist_destination tmtd ON tmias.id_destinasi = tmtd.id ORDER BY created_at DESC, update_now DESC";
 
             $stmt = $this->connection->prepare($query);
             $stmt->execute();
@@ -57,7 +60,8 @@
         public function editInformationAndServices($params) {
             $queryUpdate = "UPDATE tm_information_and_services SET 
                 id_destinasi = :id_destinasi, 
-                informasi_dan_layanan = :informasi_dan_layanan 
+                informasi_dan_layanan = :informasi_dan_layanan, 
+                update_now = NOW() 
                 WHERE id = :id
             ";
 

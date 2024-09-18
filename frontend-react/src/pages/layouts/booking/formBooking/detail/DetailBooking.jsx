@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Box, 
     Button, 
@@ -130,13 +130,22 @@ export default function DetailBooking(props) {
             states: [],
         },
         metodePembayaran: {
-            selectedState: { value: "payment gateway", label: "Payment Gateway" },
+            selectedState: { value: "pg", label: "Payment Gateway" },
             states: [],
         }
     });
     const [boolReschedule, setBoolReschedule] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(dataBooking.dariJam !== "") {
+            setDataBooking((prev) => ({
+                ...prev,
+                keJam: dataBooking.dariJam
+            }));
+        }
+    }, [dataBooking.dariJam]);
 
     const handleChange = (field, value) => {
         if(field === "mulaiBooking" || 

@@ -551,3 +551,69 @@ export async function apiDeleteContact(urlParams) {
         throw error;
     }
 }
+
+export async function apiGetInformationAndServices() {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + "/information-and-services/get-option",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiAddInformationAndServices({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/information-and-services/insert",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiEditInformationAndServices({ body }) {
+    try {
+        const response = await axios({
+            method: "POST",
+            url: ApiUrl + "/information-and-services/edit",
+            data: body,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteInformationAndServices(urlParams) {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + `/information-and-services/delete?id=${urlParams}`,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

@@ -47,7 +47,7 @@ export const useBerandaStyles = makeStyles({
         left: '50%',
         transform: 'translate(-50%, -50%)',
         color: 'white',
-        textAlign: 'center',
+        // textAlign: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         padding: '20px',
         borderRadius: '10px',
@@ -55,11 +55,12 @@ export const useBerandaStyles = makeStyles({
 
     overlayTitle: {
         fontSize: '3rem',
-        marginBottom: '10px',
+        marginBottom: '32px',
     },
 
     overlayText: {
-        fontSize: '1.5rem',
+        fontSize: '1.1rem',
+        textAlign: "justify"
     },
 
     paginationBullet: {
@@ -70,5 +71,17 @@ export const useBerandaStyles = makeStyles({
     paginationBulletActive: {
         backgroundColor: '#007bff',
         opacity: 1,
+    },
+
+    boxContent: {
+        height: "22vw",
+        overflowY: "auto",
+        alignContent: "center"
+    },
+
+    tableContainer: {
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center"
     }
 });

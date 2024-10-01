@@ -152,8 +152,8 @@ export default function App() {
           element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
         />
         <Route
-          path="/detail-booking"
-          element={<GoTravelIndex userLogin={dataUserLogin} dataBooking={dataBooking} doLoad={doLoad} />}
+          path="/booking/detail-booking"
+          element={<GoTravelIndex userLogin={dataUserLogin} doLoad={doLoad} />}
         />
       </Routes>
       <Loader open={loading} />

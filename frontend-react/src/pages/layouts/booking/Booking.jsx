@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Button, Chip, Divider, Pagination, Stack, Typography } from "@mui/material";
 import { Add } from '@mui/icons-material';
 import Navbar from "../../../components/navbar/Navbar";
@@ -7,6 +7,7 @@ import { useBookingStyles } from "./style";
 import { orange } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { capitalizeWords, formatDateToCustomString } from "../../../services/utils";
+import DetailBooking from "./formBooking/detail/DetailBooking";
 
 export default function Booking(props) {
     console.log(props);
@@ -66,7 +67,7 @@ export default function Booking(props) {
     const dataBooking = props?.dataBooking?.slice((page - 1) * 3, page * 3);
 
     const handleRequestByKodeBooking = (data) => {
-        navigate("/detail-booking");
+        navigate("/booking/detail-booking", { state: { dataByKodePermohonan: data } });
     };
 
     const isBookingExpired = (lastBooking, currentDate) => {

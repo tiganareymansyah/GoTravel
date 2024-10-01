@@ -27,8 +27,8 @@ export default function GoTravelIndex(props) {
                 <Profil userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
             ) : pathname === "/kelola-admin" ? (
                 <Admin userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
-            ) : pathname === "/detail-booking" ? (
-                <DetailBooking userLogin={props.userLogin} dataBooking={props.dataBooking} doLoad={props.doLoad} />
+            ) : pathname === "/booking/detail-booking" ? (
+                <DetailBooking userLogin={props.userLogin} doLoad={props.doLoad} />
             ) : ( 
                 console.log("Not Found")
             )}

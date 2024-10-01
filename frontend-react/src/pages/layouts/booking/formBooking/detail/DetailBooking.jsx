@@ -11,20 +11,29 @@ import {
     CalendarToday,  
     ArrowForward,
     Close,
-    EditCalendar
+    EditCalendar,
+    Person,
+    LocationOn,
+    Payments
 } from "@mui/icons-material";
 import { useMediaQuery } from "react-responsive";
 import { useDetailBookingStyles } from "./style";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { orange } from "@mui/material/colors";
 import DatePicker from "react-datepicker";
 import InputMask from "react-input-mask";
 import "react-datepicker/dist/react-datepicker.css";
-import { formatDateYYYYMMDD } from "../../../../../services/utils";
+import { formatDateYYYYMMDD, formatUangByKodeMataUang } from "../../../../../services/utils";
+// import  from '@mui/icons-material/Person';
 
 export default function DetailBooking(props) {
     console.log(props);
+
+    const location = useLocation();
+    const dataByKodePermohonan = location.state?.dataByKodePermohonan;
+
+    console.log(dataByKodePermohonan);
 
     const isMobile = useMediaQuery({ maxWidth: 991 });
     const classes = useDetailBookingStyles({ isMobile });
@@ -100,6 +109,7 @@ export default function DetailBooking(props) {
     };
 
     const [dataBooking, setDataBooking] = useState({
+        kode_booking: "",
         tujuan: "",
         transportasi: "",
         unit: "",
@@ -137,6 +147,30 @@ export default function DetailBooking(props) {
     const [boolReschedule, setBoolReschedule] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(dataByKodePermohonan) {
+            setDataBooking((prev) => ({
+                ...prev,
+                kode_booking: dataByKodePermohonan.kode_booking,
+                tujuan: "",
+                transportasi: "",
+                unit: "",
+                mulaiBooking: dataByKodePermohonan.mulai_booking,
+                dariJam: dataByKodePermohonan.dari_jam,
+                akhirBooking: dataByKodePermohonan.akhir_booking,
+                keJam: dataByKodePermohonan.ke_jam,
+                namaLengkap: dataByKodePermohonan.nama_lengkap,
+                nik: dataByKodePermohonan.nik,
+                email: dataByKodePermohonan.email,
+                nomorHp: dataByKodePermohonan.nomor_hp,
+                alamat: dataByKodePermohonan.alamat,
+                kodePembayaran: dataByKodePermohonan.kode_pembayaran,
+                totalKeseluruhan: dataByKodePermohonan.total_bayar,
+                metodePembayaran: ""
+            }));
+        }
+    }, [dataByKodePermohonan]);
 
     useEffect(() => {
         if(dataBooking.dariJam !== "") {
@@ -230,7 +264,7 @@ export default function DetailBooking(props) {
                     
                     <Box>
                         <Box className={classes.boxHeader}>
-                            <RecordVoiceOverOutlined
+                            <LocationOn
                                 fontSize="large"
                                 className={classes.icon}
                             />
@@ -243,6 +277,36 @@ export default function DetailBooking(props) {
                         </Box>
 
                         <Box className={classes.boxContent} sx={{ paddingTop: "20px" }}>
+                            <Box className={classes.boxForm}>
+                                <Typography
+                                    variant="h6"
+                                    className="form-label"
+                                    sx={styles.label}
+                                >
+                                    Kode Booking
+                                    <span style={{ color: "red" }}>&nbsp;*</span>
+                                </Typography>
+                                <TextField 
+                                    id="kodeBooking"
+                                    name="kodeBooking"
+                                    variant="outlined"
+                                    size="small"
+                                    placeholder="Kode Booking"
+                                    value={dataBooking.kode_booking}
+                                    onChange={(e) => handleChange("kode_booking", e.target.value)}
+                                    disabled
+                                    sx={styles.textField}
+                                    InputProps={{
+                                        classes: {
+                                            disabled: classes.disabled
+                                        },
+                                    }}
+                                    required
+                                />
+                            </Box>
+                        </Box>
+
+                        <Box className={classes.boxContent}>
                             <Box className={classes.boxForm}>
                                 <Typography
                                     variant="h6"
@@ -452,6 +516,7 @@ export default function DetailBooking(props) {
                                                                 "& .Mui-disabled": {
                                                                     WebkitTextFillColor: "black !important",
                                                                     background: "#d8d4d4",
+                                                                    fontWeight: "600"
                                                                 },
                                                             }}
                                                             InputProps={{
@@ -568,6 +633,7 @@ export default function DetailBooking(props) {
                                                                 "& .Mui-disabled": {
                                                                     WebkitTextFillColor: "black !important",
                                                                     background: "#d8d4d4",
+                                                                    fontWeight: "600"
                                                                 },
                                                             }}
                                                             InputProps={{
@@ -609,7 +675,7 @@ export default function DetailBooking(props) {
 
                     <Box sx={{ paddingTop: "32px" }}>
                         <Box className={classes.boxHeader}>
-                            <RecordVoiceOverOutlined
+                            <Person
                                 fontSize="large"
                                 className={classes.icon}
                             />
@@ -761,11 +827,18 @@ export default function DetailBooking(props) {
                                     value={dataBooking.alamat}
                                     onChange={(e) => handleChange("alamat", e.target.value)}
                                     disabled
-                                    sx={styles.textField}
+                                    sx={{
+                                        ...styles.textField,
+                                        "& .MuiInputBase-input": {
+                                            textIndent: "12px",
+                                            paddingTop: "10px"
+                                        }
+                                    }}
                                     InputProps={{
                                         classes: {
-                                            disabled: classes.disabled 
+                                            disabled: classes.disabled
                                         }
+
                                     }}
                                     required
                                 />
@@ -783,7 +856,7 @@ export default function DetailBooking(props) {
 
                     <Box sx={{ paddingTop: "32px" }}>
                         <Box className={classes.boxHeader}>
-                            <RecordVoiceOverOutlined
+                            <Payments
                                 fontSize="large"
                                 className={classes.icon}
                             />
@@ -841,7 +914,7 @@ export default function DetailBooking(props) {
                                     variant="outlined"
                                     size="small"
                                     placeholder="Total Keseluruhan"
-                                    value={dataBooking.totalKeseluruhan}
+                                    value={formatUangByKodeMataUang(dataBooking.totalKeseluruhan, "IDR")}
                                     onChange={(e) => handleChange("totalKeseluruhan", e.target.value)}
                                     disabled
                                     sx={styles.textField}

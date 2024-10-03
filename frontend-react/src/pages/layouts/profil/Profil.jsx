@@ -19,6 +19,7 @@ import {
     ArrowBack, 
     CalendarToday, 
     Close, 
+    CloudUploadOutlined, 
     DeleteForever, 
     LockReset, 
     Person, 
@@ -56,7 +57,6 @@ export default function Profil(props) {
             "&:hover": {
                 backgroundColor: "#3FA2F6",
             },
-
         },
 
         buttonEdit: {
@@ -87,6 +87,46 @@ export default function Profil(props) {
             "&.MuiFormControl-marginNormal": {
                 marginTop: "0px" 
             }
+        },
+
+        label: {
+            fontSize: "14px",
+        },
+
+        inputContainerChild: {
+            padding: 0.8,
+        },
+
+        buttonAddProfil: {
+            textAlign: "center",
+            color: "white",
+            gap: "10px",
+            borderRadius: "5px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            textTransform: "uppercase",
+            backgroundColor: "#0F67B1",
+            "&:hover": {
+                backgroundColor: "#3FA2F6",
+            },
+        },
+
+        buttonEditProfil: {
+            textAlign: "center",
+            color: "white",
+            gap: "10px",
+            borderRadius: "5px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            cursor: "pointer",
+            textTransform: "uppercase",
+            backgroundColor: "#367E18",
+            "&:hover": {
+                backgroundColor: "#54B435",
+            },
         }
     };
 
@@ -96,7 +136,8 @@ export default function Profil(props) {
         tbt: "",
         gender: "",
         email: "",
-        password: ""
+        password: "",
+        profil: ""
     });
     const [boolUbahDataProfil, setBoolUbahDataProfil] = useState(false);
     const [boolUbahPassword, setBoolUbahPassword] = useState(false);
@@ -106,6 +147,7 @@ export default function Profil(props) {
     const [title, setTitle] = useState("");
     const [message, setMessage] = useState("");
     const [cekEdit, setCekEdit] = useState("");
+    const [selectedImage, setSelectedImage] = useState();
 
     let profil = false;
 
@@ -149,6 +191,10 @@ export default function Profil(props) {
 
     const handleBatalDataProfil = () => {
         setBoolUbahDataProfil(false);
+        setDataProfile((prev) => ({
+            ...prev,
+            profil: ""
+        }));
     };
 
     const handleUbahPassword = () => {
@@ -245,7 +291,16 @@ export default function Profil(props) {
         }
     };
 
+    const handleImageChange = (file) => {
+        setSelectedImage(file);
+        setDataProfile((prev) => ({
+            ...prev,
+            profil: URL.createObjectURL(file)
+        }));
+    };
+
     console.log(dataProfile);
+    console.log(selectedImage);
 
     return (
         <>
@@ -266,10 +321,11 @@ export default function Profil(props) {
                     <Box className={classes.containerChild}>
                         <Box className={classes.setProfil}>
                             <Box className={classes.boxProfil}>
-                                {profil ? (
+                                {dataProfile.profil ? (
                                     <Zoom>
                                         <img 
-                                            src={"https://i.pinimg.com/564x/52/df/9f/52df9f251e55b28c5ea69444fdb3c0db.jpg"}
+                                            // src={"https://i.pinimg.com/564x/52/df/9f/52df9f251e55b28c5ea69444fdb3c0db.jpg"}
+                                            src={dataProfile.profil}
                                             style={{ 
                                                 width: "16.5vw", 
                                                 height: "39vh", 
@@ -288,31 +344,62 @@ export default function Profil(props) {
                             </Box>
 
                             {boolUbahDataProfil ? (
-                                <Box className={classes.boxButtonProfil} sx={{ display: "none" }}>
-                                    <Button
-                                        sx={styles.buttonDelete}
-                                        startIcon={<DeleteForever />}
-                                        // onClick={() => handleDeleteDestinasi(data.id)}
-                                    >
-                                        Hapus Profil
-                                    </Button>
+                                <Box className={classes.boxButtonProfil}>
+                                    {dataProfile.profil ? (
+                                        <>
+                                            <Button
+                                                sx={styles.buttonDelete}
+                                                startIcon={<DeleteForever />}
+                                                // onClick={() => handleDeleteDestinasi(data.id)}
+                                            >
+                                                Hapus Profil
+                                            </Button>
 
-                                    {profil ? (
-                                        <Button
-                                            sx={styles.buttonEdit}
-                                            startIcon={<LockReset />}
-                                            // onClick={() => handleDeleteDestinasi(data.id)}
-                                        >
-                                            Ubah Profil
-                                        </Button>
+                                            <FormLabel
+                                                htmlFor="picture"
+                                                sx={{
+                                                    ...styles.label,
+                                                    ...styles.inputContainerChild,
+                                                    ...styles.buttonEditProfil,
+                                                }}
+                                            >
+                                                <LockReset />
+                                                Ubah Profil
+                                            </FormLabel>
+                                            <input
+                                                id="picture"
+                                                type="file"
+                                                accept="image/*"
+                                                onClick={(e) => (e.target.value = null)}
+                                                onChange={(event) =>
+                                                    handleImageChange(event.target.files[0])
+                                                }
+                                                style={{ display: "none" }}
+                                            />
+                                        </>
                                     ) : (
-                                        <Button
-                                            sx={styles.buttonAdd}
-                                            startIcon={<AddCircle />}
-                                            // onClick={() => handleDeleteDestinasi(data.id)}
-                                        >
-                                            Tambah Profil
-                                        </Button>
+                                        <>
+                                            <FormLabel
+                                                htmlFor="picture"
+                                                sx={{
+                                                    ...styles.label,
+                                                    ...styles.inputContainerChild,
+                                                    ...styles.buttonAddProfil,
+                                                }}
+                                            >
+                                                <AddCircle />
+                                                Tambah Profil
+                                            </FormLabel>
+                                            <input
+                                                id="picture"
+                                                type="file"
+                                                onClick={(e) => (e.target.value = null)}
+                                                onChange={(event) =>
+                                                    handleImageChange(event.target.files[0])
+                                                }
+                                                style={{ display: "none" }}
+                                            />
+                                        </>
                                     )}
                                 </Box>
                             ) : null}

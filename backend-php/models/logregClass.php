@@ -164,7 +164,8 @@
                             "gender" => $result['gender'],
                             "email" => $result['email'],
                             "created_at" => $result['created_at'],
-                            "token" => $result['token']
+                            "token" => $result['token'],
+                            "foto_profil" => $result['foto_profil']
                             // "token_expiration" => time() + 60 // 1 menit
                             // "token_expiration" => time() + 24 * 60 * 60 // 1 hari
                         );
@@ -274,7 +275,7 @@
             }
         }
 
-        public function editUser($params) {
+        public function editUser($params, $image) {
             $querySelect = "SELECT * FROM login_user WHERE id_user = :id_user";
 
             $stmtSelect = $this->connection->prepare($querySelect);
@@ -292,9 +293,6 @@
                 $stmt->bindValue(":password", $params['password'] === "" ? $cekEmail['password'] : password_hash($params['password'], PASSWORD_DEFAULT));
                 $stmt->bindValue(":id_user", $params['id']);
                 $stmt->execute();
-    
-                if ($stmt->rowCount() > 0) return true;
-                else return false;
             } else {
                 $queryUpdate = "UPDATE login_user SET 
                     fullname = :fullname, 
@@ -309,10 +307,24 @@
                 $stmt->bindValue(":gender", $params['gender'] === "" ? $cekEmail['gender'] : strtoupper($params['gender']));
                 $stmt->bindValue(":id_user", $params['id']);
                 $stmt->execute();
-    
-                if ($stmt->rowCount() > 0) return true;
-                else return false;
             }
+
+            if (!empty($image['name'])) {
+                $uploadDir = __DIR__ . '/../profilImages/';
+                $imageName = uniqid() . '-' . basename($image['name']);
+                $uploadFile = $uploadDir . $imageName;
+
+                if (move_uploaded_file($image['tmp_name'], $uploadFile)) {
+                    $queryImageUpdate = "UPDATE login_user SET foto_profil = :foto_profil WHERE id_user = :id_user";
+                    $stmtImage = $this->connection->prepare($queryImageUpdate);
+                    $stmtImage->bindValue(":foto_profil", $imageName);
+                    $stmtImage->bindValue(":id_user", $params['id']);
+                    $stmtImage->execute();
+                }
+            }
+
+            if ($stmt->rowCount() > 0 || $stmtImage->rowCount() > 0) return true;
+            else return false;
         }
 
         public function getDataUserByEmail($params) {
@@ -328,6 +340,17 @@
             } catch (Exception $e) {
                 throw $e;
             }
+        }
+
+        public function deleteFotoProfil($params) {
+            $query = "UPDATE login_user SET foto_profil = NULL WHERE id_user = :id_user";
+
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindValue(":id_user", $params);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) return true;
+            else return false;
         }
 
         public function validationOtp($params) {

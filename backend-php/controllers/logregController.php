@@ -157,10 +157,11 @@
             }
         }
 
-        public function EditUser($params) {
+        public function EditUser($params, $image) {
             $logregClass = new LogregClass();
-            $logregResult = $logregClass->editUser($params);
 
+            $logregResult = $logregClass->editUser($params, $image);
+    
             if ($logregResult == false) {
                 http_response_code(404);
                 return array(
@@ -196,6 +197,27 @@
                     "status" => "success",
                     "message" => "Data booking by email ditemukan",
                     "data" => $logregResult
+                );
+            }
+        }
+
+        public function DeleteFotoProfil($params) {
+            $logregClass = new LogregClass();
+            $logregResult = $logregClass->deleteFotoProfil($params);
+
+            if ($logregResult == false) {
+                http_response_code(404);
+                return array(
+                    "code" => 404, 
+                    "status" => "failed",
+                    "message" => "Gagal hapus foto profil"
+                );
+            } else {
+                http_response_code(200);
+                return array(
+                    "code" => 200, 
+                    "status" => "success",
+                    "message" => "Foto profil berhasil dihapus"
                 );
             }
         }

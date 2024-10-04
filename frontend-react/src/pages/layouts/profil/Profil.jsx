@@ -37,7 +37,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { formatDateYYYYMMDD } from "../../../services/utils";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { apiEditRegisterUser } from "../../../api/api";
+import { apiDeleteFotoProfil, apiEditRegisterUser } from "../../../api/api";
 import Alert from "../../../components/Alert/Alert";
 
 export default function Profil(props) {
@@ -149,21 +149,8 @@ export default function Profil(props) {
     const [cekEdit, setCekEdit] = useState("");
     const [selectedImage, setSelectedImage] = useState();
 
-    let profil = false;
-
     useEffect(() => {
-        if(props.userLogin && 
-        !boolUbahDataProfil) {
-            setDataProfile((prev) => ({
-                ...prev,
-                id_user: props.userLogin.id_user,
-                fullname: props.userLogin.fullname,
-                tbt: props.userLogin.tbt,
-                gender: props.userLogin.gender,
-                email: props.userLogin.email,
-                password: ""
-            }));
-        }
+        fetchDataProfil();
     }, [props.userLogin, boolUbahDataProfil]);
 
     const handleAlert = (open, severity, title, message, cekEdit) => {
@@ -183,7 +170,46 @@ export default function Profil(props) {
                 location.href = "/booking";
             }
         }
-    }
+    };
+
+    const convertImageToBlob = async (imageUrl) => {
+        try {
+            const response = await fetch(imageUrl);
+    
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+
+            const blob = await response.blob();
+
+            return blob;
+        } catch (error) {
+            console.error("Error fetching image:", error);
+
+            return "";
+        }
+    };
+
+    const fetchDataProfil = async () => {
+        if (props.userLogin && !boolUbahDataProfil) {
+            let profilBlob = "";
+
+            if (props.userLogin.foto_profil) {
+                profilBlob = await convertImageToBlob(`http://localhost/aplikasi-ta-kuliah/backend-php/profilImages/${props.userLogin.foto_profil}`);
+            }
+
+            setDataProfile((prev) => ({
+                ...prev,
+                id_user: props.userLogin.id_user,
+                fullname: props.userLogin.fullname,
+                tbt: props.userLogin.tbt,
+                gender: props.userLogin.gender,
+                email: props.userLogin.email,
+                password: "",
+                profil: props.userLogin.foto_profil ? URL.createObjectURL(profilBlob) : ""
+            }));
+        }
+    };
 
     const handleUbahDataProfil = () => {
         setBoolUbahDataProfil(true);
@@ -225,28 +251,29 @@ export default function Profil(props) {
 
     const handleEditRegisterUser = async (e) => {
         e.preventDefault();
+    
+        const formData = new FormData();
+        formData.append('image', selectedImage);
 
-        if(boolUbahPassword && 
-        dataProfile.password === "") {
+        if (boolUbahPassword && dataProfile.password === "") {
             handleAlert(
                 true,
                 "warning",
                 "Pemberitahuan",
                 "Password tidak boleh kosong"
             );
-
             return false;
         }
-
+    
         try {
             let dataEdit = {};
-
-            if(boolUbahPassword) {
+    
+            if (boolUbahPassword) {
                 dataEdit = {
                     id: dataProfile.id_user,
                     password: dataProfile.password,
                     is_edit: 1
-                }
+                };
             } else {
                 dataEdit = {
                     id: dataProfile.id_user,
@@ -258,14 +285,18 @@ export default function Profil(props) {
                 };
             }
 
+            for (const key in dataEdit) {
+                formData.append(key, dataEdit[key]);
+            }
+
             const result = await apiEditRegisterUser({
-                body: JSON.stringify(dataEdit)
+                body: formData
             });
-
+    
             const { code, status, message, data } = result;
-
-            if(status === "success") {
-                if(dataEdit.is_edit === 1) {
+    
+            if (status === "success") {
+                if (dataEdit.is_edit === 1) {
                     handleAlert(
                         true,
                         "successNoReload",
@@ -273,7 +304,6 @@ export default function Profil(props) {
                         `${message}, silahkan login ulang`,
                         1
                     );
-
                     localStorage.removeItem("userLogin");
                     localStorage.removeItem("tokenTimestamp");
                 } else {
@@ -297,6 +327,27 @@ export default function Profil(props) {
             ...prev,
             profil: URL.createObjectURL(file)
         }));
+    };
+
+    const handleDeleteFotoProfil = async () => {
+        try {
+            let urlParams = props.userLogin.id_user;
+
+            const result = await apiDeleteFotoProfil(urlParams);
+
+            const { code, status, message, data } = result;
+
+            if(status === "success") {
+                handleAlert(
+                    true,
+                    "successNoReload",
+                    "Success",
+                    message
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     console.log(dataProfile);
@@ -350,7 +401,7 @@ export default function Profil(props) {
                                             <Button
                                                 sx={styles.buttonDelete}
                                                 startIcon={<DeleteForever />}
-                                                // onClick={() => handleDeleteDestinasi(data.id)}
+                                                onClick={handleDeleteFotoProfil}
                                             >
                                                 Hapus Profil
                                             </Button>

@@ -46,6 +46,22 @@ export async function apiEditRegisterUser({ body }) {
             url: ApiUrl + "/user/edit",
             data: body,
             headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function apiDeleteFotoProfil(urlParams) {
+    try {
+        const response = await axios({
+            method: "GET",
+            url: ApiUrl + `/user/delete?id=${urlParams}`,
+            headers: {
                 "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
             },
         });

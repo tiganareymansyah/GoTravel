@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   Badge,
   Box, 
@@ -25,6 +25,7 @@ import { useNavbarStyles } from "./style";
 import { useMediaQuery } from "react-responsive";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import logoGoTravel from "../../media/logo_gotravel1.png";
+import { apiGetDataUserLogin } from "../../api/api";
 
 export default function Navbar() {
   const isMobile = useMediaQuery({ maxWidth: 991 });
@@ -115,8 +116,69 @@ export default function Navbar() {
       created_at: "2024-10-10 08:21"
     }
   ]);
+  const [dataUserLogin, setDataUserLogin] = useState();
+  const [profil, setProfil] = useState({
+    foto: ""
+  });
+  
+  let cekLogin = localStorage.getItem("userLogin") ? JSON.parse(localStorage.getItem("userLogin")) : null
 
-  let profil = false;
+  useEffect(() => {
+    handleGetUserLogin();
+  }, []);
+
+  useEffect(() => {
+    fetchDataProfil();
+  }, [dataUserLogin]);
+
+  const handleGetUserLogin = async () => {
+    try {
+      let urlParams = cekLogin.email;
+
+      const result = await apiGetDataUserLogin(urlParams);
+
+      const { code, status, message, data } = result;
+
+      if(status === "success") {
+        setDataUserLogin(data[0]);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const convertImageToBlob = async (imageUrl) => {
+    try {
+      const response = await fetch(imageUrl);
+
+      if (!response.ok) {
+          throw new Error("Network response was not ok");
+      }
+
+      const blob = await response.blob();
+
+      return blob;
+    } catch (error) {
+      console.error("Error fetching image:", error);
+
+      return "";
+    }
+  };
+
+  const fetchDataProfil = async () => {
+    if (dataUserLogin) {
+      let profilBlob = "";
+
+      if (dataUserLogin.foto_profil) {
+        profilBlob = await convertImageToBlob(`http://localhost/aplikasi-ta-kuliah/backend-php/profilImages/${dataUserLogin.foto_profil}`);
+      }
+
+      setProfil((prev) => ({
+        ...prev,
+        foto: dataUserLogin.foto_profil ? URL.createObjectURL(profilBlob) : ""
+      }));
+    }
+  };
 
   const handleClickOpen = () => setOpenNotifikasi(prev => !prev);
 
@@ -125,6 +187,8 @@ export default function Navbar() {
     localStorage.removeItem("tokenTimestamp");
     navigate("/");
   }
+
+  console.log("Haha", dataUserLogin);
 
   return (
     <Box className={classes.root}>
@@ -250,10 +314,9 @@ export default function Navbar() {
 
           <NavLink to="/profil">
             <Box sx={styles.backgroundProfile}>
-              {(profil) ? (
+              {profil.foto ? (
                 <img 
-                  // src={`http://10.20.75.50/api/${fotoProfil}`}
-                  src={"https://i.pinimg.com/564x/52/df/9f/52df9f251e55b28c5ea69444fdb3c0db.jpg"}
+                  src={profil.foto}
                   style={styles.profile}
                 />
               ) : (

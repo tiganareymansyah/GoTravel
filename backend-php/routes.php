@@ -30,14 +30,23 @@
                 $result = $data;
             } else if($paths[4] == "edit") {
                 $logregController = new LogregController();
-                $data = $logregController->EditUser($jsonParams);
-                
-                $result = $data;
+
+                $data = $_POST;
+                $image = $_FILES['image'];
+
+                $result = $logregController->EditUser($data, $image);
             } else if($paths[4] == "get-data-user-by-email") {
                 $urlParams = $_GET['email'];
 
                 $logregController = new LogregController();
                 $data = $logregController->GetDataUserByEmail($urlParams);
+                
+                $result = $data;
+            } else if($paths[4] === "delete") {
+                $urlParams = $_GET['id'];
+
+                $logregController = new LogregController();
+                $data = $logregController->DeleteFotoProfil($urlParams);
                 
                 $result = $data;
             } else {
